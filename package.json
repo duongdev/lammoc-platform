@@ -18,15 +18,18 @@
     "@remix-run/serve": "^1.12.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "remix-island": "^0.1.2"
+    "react-hook-form": "^7.43.1",
+    "remix-island": "^0.1.2",
+    "yup": "^1.0.0"
   },
   "devDependencies": {
-    "@remix-run/dev": "^1.12.0",
+    "@remix-run/dev": "0.0.0-nightly-a024557-20230207",
     "@remix-run/eslint-config": "^1.12.0",
     "@types/react": "^18.0.27",
     "@types/react-dom": "^18.0.10",
     "eslint": "^8.33.0",
     "eslint-config-prettier": "^8.6.0",
+    "eslint-plugin-react": "^7.32.2",
     "typescript": "^4.9.5"
   },
   "engines": {

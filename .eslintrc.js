@@ -3,6 +3,7 @@ module.exports = {
   extends: [
     '@remix-run/eslint-config',
     '@remix-run/eslint-config/node',
+    'plugin:react/recommended',
     'prettier',
   ],
   rules: {
@@ -59,6 +60,11 @@ module.exports = {
         ],
         pathGroupsExcludedImportTypes: ['react'],
       },
+    ],
+    'react/react-in-jsx-scope': 0,
+    'react/jsx-sort-props': [
+      'warn',
+      { shorthandFirst: true, multiline: 'last' },
     ],
   },
   // We're using vitest which has a very similar API to jest
