@@ -1,14 +1,13 @@
 import type { ChangeEvent } from 'react'
-import { useRef } from 'react'
-import { useMemo } from 'react'
-import { useCallback, useEffect, useState } from 'react'
+import { useRef, useMemo, useCallback, useEffect, useState } from 'react'
 
 import { Alert, Box, Button, Stack, TextInput } from '@mantine/core'
 import type { ActionArgs, V2_MetaFunction } from '@remix-run/node'
-import { json } from '@remix-run/node'
-import { redirect } from '@remix-run/node'
+import { json, redirect } from '@remix-run/node'
 import { Form, useActionData, useTransition } from '@remix-run/react'
+import { AppwriteException, Users } from 'node-appwrite'
 
+import { awServer } from '~/libs/appwrite'
 import { wait } from '~/utils/common'
 import { getFormData } from '~/utils/forms'
 import { getTitle } from '~/utils/meta'
@@ -21,19 +20,8 @@ export const meta: V2_MetaFunction = () => [{ title: getTitle('Đăng nhập') }
   Otherwise, display phone not exists
 */
 export async function action({ request }: ActionArgs) {
+  const users = new Users(awServer)
   const { phone } = await getFormData<{ phone: string }>(request)
-
-  // dev
-  if (process.env.NODE_ENV === 'development') {
-    await wait(3000)
-
-    if (phone.endsWith('0')) {
-      return redirect(`./password?phone=${phone}`)
-    }
-    if (phone.endsWith('1')) {
-      return redirect(`./onboard?phone=${phone}`)
-    }
-  }
 
   // validate
   if (!phone.match(/^0\d{9}$/)) {
@@ -44,6 +32,20 @@ export async function action({ request }: ActionArgs) {
       },
       { status: 404 },
     )
+  }
+
+  try {
+    const existingUser = await users.get(phone)
+  } catch (error) {
+    if (error instanceof AppwriteException && error.code !== 404) {
+      return json(
+        {
+          errorMessage: error.message,
+          phone,
+        },
+        { status: error.code ?? 500 },
+      )
+    }
   }
 
   return json(

@@ -4,6 +4,7 @@ module.exports = {
     '@remix-run/eslint-config',
     '@remix-run/eslint-config/node',
     'plugin:react/recommended',
+    'plugin:import/recommended',
     'prettier',
   ],
   rules: {
