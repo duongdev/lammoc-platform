@@ -1,8 +1,8 @@
-import { RemixBrowser } from '@remix-run/react'
 import { startTransition } from 'react'
 import { hydrate as $hydrate } from 'react-dom'
 
 import { ClientProvider } from '@mantine/remix'
+import { RemixBrowser } from '@remix-run/react'
 
 const hydrate = () => {
   startTransition(() => {

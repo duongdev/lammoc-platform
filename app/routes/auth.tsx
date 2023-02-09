@@ -1,31 +1,35 @@
-import { Link, Outlet } from '@remix-run/react'
-
 import { Box, Container, Group, Image, Stack, Text, Title } from '@mantine/core'
+import { Link, Outlet } from '@remix-run/react'
+import type { V2_MetaFunction } from '@remix-run/react/dist/routeModules'
+
+import { getTitle } from '~/utils/meta'
+
+export const meta: V2_MetaFunction = () => [{ title: getTitle('Đăng nhập') }]
 
 export default function AuthLayout() {
   return (
-    <Container size="xs" py={60}>
+    <Container py={60} size="xs">
       <Stack>
         <Group align="baseline" spacing="lg">
           <Link
-            to="https://storelammoc.vn"
             target="_blank"
             title="Store Làm Mộc"
+            to="https://storelammoc.vn"
           >
-            <Image src="/img/slm-logo.png" height={40} width="auto" />
+            <Image height={40} src="/img/slm-logo.png" width="auto" />
           </Link>
           <Link
-            to="https://thichtulam.com"
             target="_blank"
             title="Thích Tự Làm"
+            to="https://thichtulam.com"
           >
-            <Image src="/img/ttl-logo.png" height={40} width="auto" />
+            <Image height={40} src="/img/ttl-logo.png" width="auto" />
           </Link>
         </Group>
         <Box>
-          <Title>Đăng nhập tài khoản</Title>
+          <Title>Đăng nhập</Title>
           <Text color="dimmed">
-            Kết nối tài khoản từ Store Làm Mộc và Thích Tự Làm
+            Kết nối tài khoản Store Làm Mộc và Thích Tự Làm
           </Text>
         </Box>
         <Outlet />

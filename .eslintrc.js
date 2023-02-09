@@ -49,7 +49,7 @@ module.exports = {
         'newlines-between': 'always',
         pathGroups: [
           {
-            pattern: '{react,react-dom,@remix-run}{/**,}',
+            pattern: '{react,react-dom}{/**,}',
             group: 'external',
             position: 'before',
           },

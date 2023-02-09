@@ -1,3 +1,5 @@
+import { createEmotionCache, MantineProvider } from '@mantine/core'
+import { StylesPlaceholder } from '@mantine/remix'
 import type { LinksFunction, V2_MetaFunction } from '@remix-run/node'
 import {
   Links,
@@ -8,8 +10,6 @@ import {
   ScrollRestoration,
 } from '@remix-run/react'
 
-import { createEmotionCache, MantineProvider } from '@mantine/core'
-import { StylesPlaceholder } from '@mantine/remix'
 
 import { theme } from './theme'
 
@@ -37,11 +37,11 @@ export const links: LinksFunction = () => {
   ]
 }
 
-createEmotionCache({ key: 'mantine' })
 
 export default function App() {
+  createEmotionCache({ key: 'mantine' })
   return (
-    <MantineProvider theme={theme} withGlobalStyles withNormalizeCSS>
+    <MantineProvider withGlobalStyles withNormalizeCSS theme={theme}>
       <html lang="en">
         <head>
           <StylesPlaceholder />
