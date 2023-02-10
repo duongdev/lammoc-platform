@@ -19,7 +19,7 @@ import {
 import { AppwriteException, Users } from 'node-appwrite'
 
 import { awServer } from '~/libs/appwrite.server'
-import { firebaseClient } from '~/libs/firebase'
+import { firebaseClient } from '~/libs/firebase.client'
 import { getUserIdFromPhone,  } from '~/utils/account'
 import { getFormData } from '~/utils/forms'
 import { getTitle } from '~/utils/meta'

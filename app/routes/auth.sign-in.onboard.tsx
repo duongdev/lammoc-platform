@@ -15,7 +15,7 @@ import {
 import { getAuth, PhoneAuthProvider, signInWithCredential } from 'firebase/auth'
 
 import LockedAuthPhoneInput from '~/components/locked-auth-phone'
-import { firebaseClient } from '~/libs/firebase'
+import { firebaseClient } from '~/libs/firebase.client'
 
 export function action() {
   return {}
