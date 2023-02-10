@@ -1,41 +1,24 @@
 import type { FormEvent } from 'react'
-import { useState, FormEventHandler, useCallback } from 'react'
+import { useState, useCallback } from 'react'
 
 import { Stack } from '@mantine/core'
-import type { ActionArgs, LoaderFunction } from '@remix-run/node'
-import { json, redirect } from '@remix-run/node'
-import { Form, Outlet, useNavigate, useSearchParams } from '@remix-run/react'
+import type {  LoaderFunction } from '@remix-run/node'
+import { redirect } from '@remix-run/node'
+import {
+  Form,
+  Outlet,
+  useLocation,
+  useNavigate,
+  useSearchParams,
+  useSubmit,
+} from '@remix-run/react'
 import { getAuth, PhoneAuthProvider, signInWithCredential } from 'firebase/auth'
 
 import LockedAuthPhoneInput from '~/components/locked-auth-phone'
-import { firebaseClient, setupFirebase } from '~/libs/firebase'
-import { getFormData } from '~/utils/forms'
+import { firebaseClient } from '~/libs/firebase'
 
-export async function action({ request }: ActionArgs) {
-  const url = new URL(request.url)
-  const phone = url.searchParams.get('phone')
-  const verificationId = url.searchParams.get('verificationId')
-  const { otp } = await getFormData<{ otp?: string }>(request)
-
-  console.log({ phone, verificationId })
-
-  if (!(phone && verificationId && otp)) {
-    return json(
-      {
-        success: false,
-        errorMessage: 'Không thể xác thực tài khoản',
-      },
-      { status: 400 },
-    )
-  }
-
-  const firebaseClient = setupFirebase()
-  getAuth(firebaseClient)
-
-  const auth = PhoneAuthProvider.credential(verificationId, otp)
-  console.log(auth.toJSON())
-
-  return json({})
+export function action() {
+  return {}
 }
 
 export const loader: LoaderFunction = async ({ request }) => {
@@ -52,17 +35,19 @@ export const loader: LoaderFunction = async ({ request }) => {
 
 export default function AuthSignInOnboard() {
   const navigate = useNavigate()
+  const location = useLocation()
   const [searchParams] = useSearchParams()
+  const submit = useSubmit()
   const phone = searchParams.get('phone')!
   const verificationId = searchParams.get('verificationId')!
   const [errorMessage, setErrorMessage] = useState('')
   const [isLoading, setIsLoading] = useState(false)
 
-  const handleSubmit = useCallback(
+  const handleVerifyOtp = useCallback(
     async (event: FormEvent<HTMLFormElement>) => {
       event.preventDefault()
 
-      const otp = (event.target as any).otp.value
+      const otp = (event.target as any).otp?.value
       if (!otp) {
         return
       }
@@ -88,6 +73,23 @@ export default function AuthSignInOnboard() {
       setIsLoading(false)
     },
     [navigate, phone, verificationId],
+  )
+
+  const handleSubmit = useCallback(
+    async (event: FormEvent<HTMLFormElement>) => {
+      const otp = (event.target as any).otp?.value
+
+      if (otp) {
+        return handleVerifyOtp(event)
+      }
+
+      event.preventDefault()
+      submit(event.currentTarget, {
+        relative: 'path',
+        action: `${location.pathname}${location.search}`,
+      })
+    },
+    [handleVerifyOtp, location.pathname, location.search, submit],
   )
 
   return (

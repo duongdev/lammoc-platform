@@ -18,8 +18,9 @@ import {
 } from 'firebase/auth'
 import { AppwriteException, Users } from 'node-appwrite'
 
-import { awServer } from '~/libs/appwrite'
+import { awServer } from '~/libs/appwrite.server'
 import { firebaseClient } from '~/libs/firebase'
+import { getUserIdFromPhone,  } from '~/utils/account'
 import { getFormData } from '~/utils/forms'
 import { getTitle } from '~/utils/meta'
 
@@ -47,9 +48,9 @@ export async function action({ request }: ActionArgs) {
   }
 
   try {
-    const existingUser = await users.get(phone)
+    const existingUser = await users.get(getUserIdFromPhone(phone))
 
-    if (existingUser.password) {
+    if (existingUser.password && existingUser.phoneVerification) {
       return redirect(`./password?phone=${phone}`)
     }
     return json({

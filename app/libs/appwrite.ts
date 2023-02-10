@@ -1,6 +1,7 @@
-import Server from 'node-appwrite'
+import { Account, Client } from 'appwrite'
 
-export const awServer = new Server.Client()
-  .setEndpoint(process.env.APPWRITE_ENDPOINT ?? '')
-  .setProject(process.env.APPWRITE_PROJECT ?? '')
-  .setKey(process.env.APPWRITE_API_KEY ?? '')
+export const awClient = new Client()
+  .setEndpoint('https://brains.withDustin.com/v1')
+  .setProject('tlm-platform')
+
+export const awAccount = new Account(awClient)

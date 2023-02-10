@@ -10,14 +10,12 @@ import {
   ScrollRestoration,
 } from '@remix-run/react'
 
-
 import { theme } from './theme'
 
 export const meta: V2_MetaFunction = () => [
   {
-    charset: 'utf-8',
-    title: 'Thích Làm Mộc',
-    viewport: 'width=device-width,initial-scale=1',
+    name: 'viewport',
+    content: 'width=device-width,initial-scale=1,max-scale=1',
   },
 ]
 
@@ -37,7 +35,6 @@ export const links: LinksFunction = () => {
   ]
 }
 
-
 export default function App() {
   createEmotionCache({ key: 'mantine' })
   return (
@@ -45,6 +42,8 @@ export default function App() {
       <html lang="en">
         <head>
           <StylesPlaceholder />
+          <meta charSet="utf-8" />
+          <meta content="width=device-width,initial-scale=1" name="viewport" />
           <Meta />
           <Links />
         </head>
