@@ -18,6 +18,8 @@
     "@remix-run/serve": "^1.12.0",
     "@tabler/icons-react": "^2.2.0",
     "appwrite": "^10.2.0",
+    "firebase": "^9.17.1",
+    "firebase-admin": "^11.5.0",
     "node-appwrite": "^8.2.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",

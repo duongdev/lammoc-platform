@@ -4,11 +4,22 @@ import { useRef, useMemo, useCallback, useEffect, useState } from 'react'
 import { Alert, Box, Button, Stack, TextInput } from '@mantine/core'
 import type { ActionArgs, V2_MetaFunction } from '@remix-run/node'
 import { json, redirect } from '@remix-run/node'
-import { Form, useActionData, useTransition } from '@remix-run/react'
+import {
+  Form,
+  useActionData,
+  useNavigate,
+  useTransition,
+} from '@remix-run/react'
+import type { Auth } from 'firebase/auth'
+import {
+  RecaptchaVerifier,
+  getAuth,
+  signInWithPhoneNumber,
+} from 'firebase/auth'
 import { AppwriteException, Users } from 'node-appwrite'
 
 import { awServer } from '~/libs/appwrite'
-import { wait } from '~/utils/common'
+import { firebaseClient } from '~/libs/firebase'
 import { getFormData } from '~/utils/forms'
 import { getTitle } from '~/utils/meta'
 
@@ -27,6 +38,7 @@ export async function action({ request }: ActionArgs) {
   if (!phone.match(/^0\d{9}$/)) {
     return json(
       {
+        success: false,
         errorMessage: 'Số điện thoại không hợp lệ.',
         phone,
       },
@@ -36,10 +48,20 @@ export async function action({ request }: ActionArgs) {
 
   try {
     const existingUser = await users.get(phone)
+
+    if (existingUser.password) {
+      return redirect(`./password?phone=${phone}`)
+    }
+    return json({
+      success: true,
+      errorMessage: null,
+      phone,
+    })
   } catch (error) {
     if (error instanceof AppwriteException && error.code !== 404) {
       return json(
         {
+          success: false,
           errorMessage: error.message,
           phone,
         },
@@ -50,6 +72,7 @@ export async function action({ request }: ActionArgs) {
 
   return json(
     {
+      success: false,
       errorMessage: 'Số điện thoại này chưa có đơn hàng trong hệ thống.',
       phone,
     },
@@ -58,8 +81,13 @@ export async function action({ request }: ActionArgs) {
 }
 
 export default function SignIn() {
-  const { state } = useTransition()
+  const navigate = useNavigate()
+  const transition = useTransition()
   const actionData = useActionData<typeof action>()
+  const recaptchaVerifierRef = useRef<RecaptchaVerifier>()
+  const authRef = useRef<Auth>()
+
+  const [isAuthenticating, setIsAuthenticating] = useState(false)
 
   const [phone, setPhone] = useState('')
   const [errorMessage, setErrorMessage] = useState(
@@ -67,7 +95,10 @@ export default function SignIn() {
   )
   const phoneRef = useRef<HTMLInputElement>(null)
 
-  const isSubmitting = useMemo(() => state === 'submitting', [state])
+  const isSubmitting = useMemo(
+    () => transition.type !== 'idle' || isAuthenticating,
+    [isAuthenticating, transition.type],
+  )
 
   const handlePhoneChange = useCallback(
     (event: ChangeEvent<HTMLInputElement>) => {
@@ -77,12 +108,67 @@ export default function SignIn() {
     [],
   )
 
+  const handleSendSms = useCallback(
+    async (phoneNumber: string) => {
+      const auth = authRef.current
+      const verifier = recaptchaVerifierRef.current
+      if (!(auth && verifier)) return
+
+      setIsAuthenticating(true)
+
+      try {
+        const result = await signInWithPhoneNumber(
+          auth,
+          phoneNumber.replace(/^0/, '+84'),
+          verifier!,
+        )
+
+        if (result) {
+          navigate(
+            `./onboard?phone=${phoneNumber}&verificationId=${result.verificationId}`,
+          )
+        }
+      } catch (err) {
+        console.error(err)
+        setErrorMessage('Không thể gửi OTP. Vui lòng thử lại.')
+      }
+
+      setIsAuthenticating(false)
+    },
+    [navigate],
+  )
+
   useEffect(() => {
     setErrorMessage(actionData?.errorMessage ?? null)
     if (actionData?.errorMessage) {
       phoneRef.current?.focus()
     }
   }, [actionData?.errorMessage])
+
+  useEffect(() => {
+    if (actionData?.success) {
+      handleSendSms(actionData.phone)
+    }
+  }, [actionData?.success, handleSendSms, actionData?.phone])
+
+  // On mount
+  useEffect(() => {
+    setTimeout(() => {
+      authRef.current = getAuth(firebaseClient)
+      authRef.current.useDeviceLanguage()
+
+      recaptchaVerifierRef.current = new RecaptchaVerifier(
+        'sign-in-button',
+        {
+          size: 'invisible',
+          callback: () => {
+            // reCAPTCHA solved, allow signInWithPhoneNumber.
+          },
+        },
+        authRef?.current!,
+      )
+    }, 100)
+  }, [])
 
   return (
     <Form method="post">
@@ -105,6 +191,7 @@ export default function SignIn() {
         <Box>
           <Button
             disabled={!!errorMessage}
+            id="sign-in-button"
             loading={isSubmitting}
             type="submit"
           >
