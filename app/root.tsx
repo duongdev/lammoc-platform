@@ -57,3 +57,19 @@ export default function App() {
     </MantineProvider>
   )
 }
+export function ErrorBoundary({ error }: any) {
+  console.error(error)
+  return (
+    <html>
+      <head>
+        <title>Oh no!</title>
+        <Meta />
+        <Links />
+      </head>
+      <body>
+        {/* add the UI you want your users to see */}
+        <Scripts />
+      </body>
+    </html>
+  )
+}
