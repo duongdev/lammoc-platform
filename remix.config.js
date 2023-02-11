@@ -6,6 +6,7 @@ module.exports = {
   future: {
     v2_routeConvention: true,
     v2_meta: true,
+    v2_errorBoundary: false
   },
   // appDirectory: "app",
   // assetsBuildDirectory: "public/build",

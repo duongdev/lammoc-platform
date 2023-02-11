@@ -20,41 +20,39 @@ export const meta: V2_MetaFunction = () => [
 ]
 
 export const links: LinksFunction = () => {
-  return [
-    { rel: 'icon', type: 'image/x-icon', href: '/favicon.png' },
-    { rel: 'preconnect', href: 'https://fonts.googleapis.com' },
-    {
-      rel: 'preconnect',
-      href: 'https://fonts.gstatic.com',
-      crossOrigin: 'anonymous',
-    },
-    {
-      rel: 'stylesheet',
-      href: 'https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:ital,wght@0,200;0,300;0,400;0,500;0,600;1,200;1,300;1,400;1,500;1,600&display=swap',
-    },
-  ]
+  return [{ rel: 'icon', type: 'image/x-icon', href: '/favicon.png' }]
 }
 
 export default function App() {
   createEmotionCache({ key: 'mantine' })
   return (
-    <MantineProvider withGlobalStyles withNormalizeCSS theme={theme}>
-      <html lang="en">
-        <head>
-          <StylesPlaceholder />
-          <meta charSet="utf-8" />
-          <meta content="width=device-width,initial-scale=1" name="viewport" />
-          <Meta />
-          <Links />
-        </head>
-        <body>
+    <html lang="en">
+      <head>
+        <StylesPlaceholder />
+        <meta charSet="utf-8" />
+        <meta content="width=device-width,initial-scale=1" name="viewport" />
+        <Meta />
+        <Links />
+        <link href="https://fonts.googleapis.com" rel="preconnect" />
+        <link
+          crossOrigin=""
+          href="https://fonts.gstatic.com"
+          rel="preconnect"
+        />
+        <link
+          href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:ital,wght@0,200;0,300;0,400;0,500;0,600;1,200;1,300;1,400;1,500;1,600&display=swap"
+          rel="stylesheet"
+        />
+      </head>
+      <body>
+        <MantineProvider withGlobalStyles withNormalizeCSS theme={theme}>
           <Outlet />
-          <ScrollRestoration />
-          <Scripts />
-          <LiveReload />
-        </body>
-      </html>
-    </MantineProvider>
+        </MantineProvider>
+        <ScrollRestoration />
+        <Scripts />
+        <LiveReload />
+      </body>
+    </html>
   )
 }
 export function ErrorBoundary({ error }: any) {
