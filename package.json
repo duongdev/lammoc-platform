@@ -5,7 +5,8 @@
   "scripts": {
     "build": "remix build",
     "dev": "remix dev",
-    "start": "remix-serve build"
+    "start": "remix-serve build",
+    "sync-sapo": "tsnd -r dotenv/config -r tsconfig-paths/register tasks/sync-sapo.ts"
   },
   "dependencies": {
     "@emotion/react": "^11.10.5",
@@ -14,6 +15,7 @@
     "@mantine/hooks": "5.10.3",
     "@mantine/remix": "5.10.3",
     "@mantine/ssr": "^5.10.3",
+    "@prisma/client": "4.10.1",
     "@remix-run/node": "0.0.0-nightly-a024557-20230207",
     "@remix-run/react": "0.0.0-nightly-a024557-20230207",
     "@remix-run/serve": "0.0.0-nightly-a024557-20230207",
@@ -28,6 +30,7 @@
     "isbot": "^3.6.5",
     "jsonwebtoken": "^9.0.0",
     "node-appwrite": "^8.2.0",
+    "puppeteer": "^19.7.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-hook-form": "^7.43.1",
@@ -42,11 +45,14 @@
     "@types/jsonwebtoken": "^9.0.1",
     "@types/react": "^18.0.28",
     "@types/react-dom": "^18.0.10",
+    "dotenv": "^16.0.3",
     "eslint": "^8.34.0",
     "eslint-config-prettier": "^8.6.0",
     "eslint-plugin-import": "^2.27.5",
     "eslint-plugin-react": "^7.32.2",
     "prisma": "^4.10.1",
+    "ts-node-dev": "^2.0.0",
+    "tsconfig-paths": "^4.1.2",
     "typescript": "^4.9.5"
   },
   "engines": {

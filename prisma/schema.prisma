@@ -9,3 +9,68 @@ datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
+
+enum Tenant {
+  STORE_LAM_MOC
+  THICH_TU_LAM
+}
+
+model AppMeta {
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  value String @default("")
+}
+
+model Customer {
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  phone     String   @unique
+
+  tenants Tenant[]
+
+  name  String
+  email String?
+  Order Order[]
+}
+
+model Order {
+  id        String   @id
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  code      String   @unique
+  tenant    Tenant
+
+  customer   Customer @relation(fields: [customerId], references: [id])
+  customerId String
+}
+
+model Product {
+  id        String   @id
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  tenant    Tenant
+
+  name           String
+  description    String?
+  ProductVariant ProductVariant[]
+}
+
+model ProductVariant {
+  id        String   @id
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  tenant    Tenant
+
+  name        String
+  description String?
+  sku         String?
+  barcode     String?
+  unit        String?
+  images      String[]
+
+  product   Product @relation(fields: [productId], references: [id])
+  productId String
+}
