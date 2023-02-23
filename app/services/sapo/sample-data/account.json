@@ -1,0 +1,35 @@
+{
+  "id": 315193,
+  "tenant_id": 232800,
+  "description": "TLM-VINH-CEO",
+  "mobile": "0346848118",
+  "address": "Hồ Chí Minh",
+  "dob": null,
+  "created_on": "2020-02-26T02:31:28Z",
+  "last_login": "2021-06-10T09:59:46Z",
+  "modified_on": "2022-03-04T15:50:25Z",
+  "status": "active",
+  "full_name": "Vinh Nguyễn",
+  "avatar_url": null,
+  "email": "store@lammoc.vn",
+  "first_name": "Nguyễn",
+  "account_type_id": 1,
+  "user_name": "vinh@lammoc.vn",
+  "last_name": "Vinh",
+  "guide_status": "pos",
+  "account_owner": true,
+  "has_password": true,
+  "country_code": "84",
+  "is_account_sso": true,
+  "has_upgraded_sso": true,
+  "intl_phone_no": "84346848118",
+  "language_code": "vi",
+  "account_roles": [
+    {
+      "location_id": 0,
+      "tenant_role_id": 1,
+      "scopes": ["full"]
+    }
+  ],
+  "data_permissions": null
+}

@@ -27,13 +27,16 @@ model Customer {
   id        String   @id @default(cuid())
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-  phone     String   @unique
 
-  tenants Tenant[]
+  tenant Tenant
 
+  phone String[]
   name  String
+  code  String
   email String?
   Order Order[]
+
+  @@index([phone])
 }
 
 model Order {
