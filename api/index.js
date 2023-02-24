@@ -1054,73 +1054,8 @@ function VerifyToken() {
   }, this);
 }
 
-// app/routes/sapo/auth/index.tsx
-var auth_exports2 = {};
-__export(auth_exports2, {
-  default: () => SapoAuthIndex,
-  loader: () => loader6
-});
-var import_react16 = require("@remix-run/react");
-
-// app/services/sapo/sapo.server.ts
-var import_puppeteer = __toESM(require("puppeteer"));
-
-// app/libs/prisma.server.ts
-var import_client = require("@prisma/client"), prisma = new import_client.PrismaClient(), prisma_server_default = prisma;
-
-// app/services/sapo/sapo.server.ts
-var Sapo = class {
-  constructor(username = SAPO_USER, password = SAPO_PASS) {
-    this.username = username;
-    this.password = password;
-  }
-  async getCookies() {
-    try {
-      return (await prisma_server_default.appMeta.findUniqueOrThrow({
-        where: { id: "SAPO_TOKEN" }
-      })).value;
-    } catch {
-      return this.refreshCookies();
-    }
-  }
-  async refreshCookies(workspace = "store-lam-moc") {
-    let browser = await import_puppeteer.default.launch(PUPPETEER_CONFIG), page = await browser.newPage();
-    await page.goto(
-      `https://accounts.sapo.vn/login?clientId=a2KG8sj3g1&domain=${workspace}&relativeContextPath=/admin/orders`,
-      { waitUntil: "domcontentloaded" }
-    ), await page.type("#username", this.username), await page.type("#password", this.password), await page.click(".btn-login"), await page.waitForSelector(".sb-avatar", {
-      timeout: 3 * 60 * 1e3
-    });
-    let cookies = await page.cookies();
-    await browser.close();
-    let cookiesValue = JSON.stringify(cookies);
-    return await prisma_server_default.appMeta.upsert({
-      where: { id: "SAPO_TOKEN" },
-      create: { id: "SAPO_TOKEN", value: cookiesValue },
-      update: { value: cookiesValue }
-    }), cookies;
-  }
-};
-
-// app/routes/sapo/auth/index.tsx
-var import_jsx_dev_runtime14 = require("react/jsx-dev-runtime");
-async function loader6() {
-  return await new Sapo().getCookies();
-}
-function SapoAuthIndex() {
-  let cookies = (0, import_react16.useLoaderData)();
-  return /* @__PURE__ */ (0, import_jsx_dev_runtime14.jsxDEV)(import_jsx_dev_runtime14.Fragment, { children: [
-    "Cookies: ",
-    JSON.stringify(cookies)
-  ] }, void 0, !0, {
-    fileName: "app/routes/sapo/auth/index.tsx",
-    lineNumber: 15,
-    columnNumber: 10
-  }, this);
-}
-
 // server-assets-manifest:@remix-run/dev/assets-manifest
-var assets_manifest_default = { version: "6fbc79ad", entry: { module: "/build/entry.client-NUB5443R.js", imports: ["/build/_shared/chunk-R4X34R2G.js", "/build/_shared/chunk-QMO3DUTB.js", "/build/_shared/chunk-JFGGNZNB.js", "/build/_shared/chunk-FZWZ7CBK.js", "/build/_shared/chunk-WQGPB5ZT.js", "/build/_shared/chunk-JE7OEZ56.js"] }, routes: { root: { id: "root", parentId: void 0, path: "", index: void 0, caseSensitive: void 0, module: "/build/root-FE2L5BFI.js", imports: void 0, hasAction: !1, hasLoader: !1, hasCatchBoundary: !1, hasErrorBoundary: !0 }, "routes/_index": { id: "routes/_index", parentId: "root", path: void 0, index: !0, caseSensitive: void 0, module: "/build/routes/_index-SLM5RJ3B.js", imports: void 0, hasAction: !1, hasLoader: !0, hasCatchBoundary: !1, hasErrorBoundary: !1 }, "routes/about": { id: "routes/about", parentId: "root", path: "about", index: void 0, caseSensitive: void 0, module: "/build/routes/about-EZZ65SQY.js", imports: void 0, hasAction: !1, hasLoader: !1, hasCatchBoundary: !1, hasErrorBoundary: !1 }, "routes/app": { id: "routes/app", parentId: "root", path: "app", index: void 0, caseSensitive: void 0, module: "/build/routes/app-PP2DFH6I.js", imports: ["/build/_shared/chunk-6DYQSZVH.js", "/build/_shared/chunk-CZGLH4KO.js", "/build/_shared/chunk-I5C3MQNK.js"], hasAction: !1, hasLoader: !1, hasCatchBoundary: !1, hasErrorBoundary: !1 }, "routes/app/_index": { id: "routes/app/_index", parentId: "routes/app", path: void 0, index: !0, caseSensitive: void 0, module: "/build/routes/app/_index-WYX2QXFE.js", imports: void 0, hasAction: !1, hasLoader: !1, hasCatchBoundary: !1, hasErrorBoundary: !1 }, "routes/app/user": { id: "routes/app/user", parentId: "routes/app", path: "user", index: void 0, caseSensitive: void 0, module: "/build/routes/app/user-THQFLHWG.js", imports: void 0, hasAction: !1, hasLoader: !1, hasCatchBoundary: !1, hasErrorBoundary: !1 }, "routes/auth": { id: "routes/auth", parentId: "root", path: "auth", index: void 0, caseSensitive: void 0, module: "/build/routes/auth-SRWIC6XM.js", imports: ["/build/_shared/chunk-JAS2VC4Y.js", "/build/_shared/chunk-I5C3MQNK.js"], hasAction: !1, hasLoader: !1, hasCatchBoundary: !1, hasErrorBoundary: !1 }, "routes/auth._index": { id: "routes/auth._index", parentId: "routes/auth", path: void 0, index: !0, caseSensitive: void 0, module: "/build/routes/auth._index-WES2NHDK.js", imports: void 0, hasAction: !1, hasLoader: !0, hasCatchBoundary: !1, hasErrorBoundary: !1 }, "routes/auth.sign-in._index": { id: "routes/auth.sign-in._index", parentId: "routes/auth", path: "sign-in", index: !0, caseSensitive: void 0, module: "/build/routes/auth.sign-in._index-6UHVYXWK.js", imports: ["/build/_shared/chunk-SOJZ3V3V.js", "/build/_shared/chunk-ORECHP3L.js"], hasAction: !0, hasLoader: !1, hasCatchBoundary: !1, hasErrorBoundary: !1 }, "routes/auth.sign-in.onboard": { id: "routes/auth.sign-in.onboard", parentId: "routes/auth", path: "sign-in/onboard", index: void 0, caseSensitive: void 0, module: "/build/routes/auth.sign-in.onboard-74QDS3YW.js", imports: ["/build/_shared/chunk-SOJZ3V3V.js", "/build/_shared/chunk-VLWZLAX2.js"], hasAction: !0, hasLoader: !0, hasCatchBoundary: !1, hasErrorBoundary: !1 }, "routes/auth.sign-in.onboard._index": { id: "routes/auth.sign-in.onboard._index", parentId: "routes/auth.sign-in.onboard", path: void 0, index: !0, caseSensitive: void 0, module: "/build/routes/auth.sign-in.onboard._index-IRMPHAUD.js", imports: void 0, hasAction: !1, hasLoader: !1, hasCatchBoundary: !1, hasErrorBoundary: !1 }, "routes/auth.sign-in.onboard.password": { id: "routes/auth.sign-in.onboard.password", parentId: "routes/auth.sign-in.onboard", path: "password", index: void 0, caseSensitive: void 0, module: "/build/routes/auth.sign-in.onboard.password-R5WEHSVF.js", imports: ["/build/_shared/chunk-ORECHP3L.js", "/build/_shared/chunk-CEVNSJUE.js"], hasAction: !0, hasLoader: !1, hasCatchBoundary: !1, hasErrorBoundary: !1 }, "routes/auth.sign-in.password": { id: "routes/auth.sign-in.password", parentId: "routes/auth", path: "sign-in/password", index: void 0, caseSensitive: void 0, module: "/build/routes/auth.sign-in.password-H75UVB7V.js", imports: ["/build/_shared/chunk-VLWZLAX2.js", "/build/_shared/chunk-ORECHP3L.js", "/build/_shared/chunk-CEVNSJUE.js", "/build/_shared/chunk-CZGLH4KO.js"], hasAction: !0, hasLoader: !0, hasCatchBoundary: !1, hasErrorBoundary: !1 }, "routes/auth.verify": { id: "routes/auth.verify", parentId: "routes/auth", path: "verify", index: void 0, caseSensitive: void 0, module: "/build/routes/auth.verify-UKTU6CVV.js", imports: ["/build/_shared/chunk-CEVNSJUE.js", "/build/_shared/chunk-CZGLH4KO.js"], hasAction: !1, hasLoader: !0, hasCatchBoundary: !1, hasErrorBoundary: !1 }, "routes/sapo/auth": { id: "routes/sapo/auth", parentId: "root", path: "sapo/auth", index: void 0, caseSensitive: void 0, module: "/build/routes/sapo/auth-4PWROC2O.js", imports: void 0, hasAction: !1, hasLoader: !0, hasCatchBoundary: !1, hasErrorBoundary: !1 } }, cssBundleHref: void 0, url: "/build/manifest-6FBC79AD.js" };
+var assets_manifest_default = { version: "2825afe3", entry: { module: "/build/entry.client-N3CFG3LV.js", imports: ["/build/_shared/chunk-P5YR5LFM.js", "/build/_shared/chunk-QHKQVQ6J.js", "/build/_shared/chunk-TK6KNGBM.js", "/build/_shared/chunk-IMDFIINT.js", "/build/_shared/chunk-WQGPB5ZT.js", "/build/_shared/chunk-JE7OEZ56.js"] }, routes: { root: { id: "root", parentId: void 0, path: "", index: void 0, caseSensitive: void 0, module: "/build/root-YUFHZ3EA.js", imports: void 0, hasAction: !1, hasLoader: !1, hasCatchBoundary: !1, hasErrorBoundary: !0 }, "routes/_index": { id: "routes/_index", parentId: "root", path: void 0, index: !0, caseSensitive: void 0, module: "/build/routes/_index-SLM5RJ3B.js", imports: void 0, hasAction: !1, hasLoader: !0, hasCatchBoundary: !1, hasErrorBoundary: !1 }, "routes/about": { id: "routes/about", parentId: "root", path: "about", index: void 0, caseSensitive: void 0, module: "/build/routes/about-EZZ65SQY.js", imports: void 0, hasAction: !1, hasLoader: !1, hasCatchBoundary: !1, hasErrorBoundary: !1 }, "routes/app": { id: "routes/app", parentId: "root", path: "app", index: void 0, caseSensitive: void 0, module: "/build/routes/app-7OL4KLG7.js", imports: ["/build/_shared/chunk-6DYQSZVH.js", "/build/_shared/chunk-CZGLH4KO.js", "/build/_shared/chunk-I5C3MQNK.js"], hasAction: !1, hasLoader: !1, hasCatchBoundary: !1, hasErrorBoundary: !1 }, "routes/app/_index": { id: "routes/app/_index", parentId: "routes/app", path: void 0, index: !0, caseSensitive: void 0, module: "/build/routes/app/_index-AEWAJCEH.js", imports: void 0, hasAction: !1, hasLoader: !1, hasCatchBoundary: !1, hasErrorBoundary: !1 }, "routes/app/user": { id: "routes/app/user", parentId: "routes/app", path: "user", index: void 0, caseSensitive: void 0, module: "/build/routes/app/user-THQFLHWG.js", imports: void 0, hasAction: !1, hasLoader: !1, hasCatchBoundary: !1, hasErrorBoundary: !1 }, "routes/auth": { id: "routes/auth", parentId: "root", path: "auth", index: void 0, caseSensitive: void 0, module: "/build/routes/auth-L7GT3V7T.js", imports: ["/build/_shared/chunk-JAS2VC4Y.js", "/build/_shared/chunk-I5C3MQNK.js"], hasAction: !1, hasLoader: !1, hasCatchBoundary: !1, hasErrorBoundary: !1 }, "routes/auth._index": { id: "routes/auth._index", parentId: "routes/auth", path: void 0, index: !0, caseSensitive: void 0, module: "/build/routes/auth._index-WES2NHDK.js", imports: void 0, hasAction: !1, hasLoader: !0, hasCatchBoundary: !1, hasErrorBoundary: !1 }, "routes/auth.sign-in._index": { id: "routes/auth.sign-in._index", parentId: "routes/auth", path: "sign-in", index: !0, caseSensitive: void 0, module: "/build/routes/auth.sign-in._index-2ZORTZUJ.js", imports: ["/build/_shared/chunk-SOJZ3V3V.js", "/build/_shared/chunk-ORECHP3L.js"], hasAction: !0, hasLoader: !1, hasCatchBoundary: !1, hasErrorBoundary: !1 }, "routes/auth.sign-in.onboard": { id: "routes/auth.sign-in.onboard", parentId: "routes/auth", path: "sign-in/onboard", index: void 0, caseSensitive: void 0, module: "/build/routes/auth.sign-in.onboard-6TCL2FEP.js", imports: ["/build/_shared/chunk-SOJZ3V3V.js", "/build/_shared/chunk-5KEXRVK6.js"], hasAction: !0, hasLoader: !0, hasCatchBoundary: !1, hasErrorBoundary: !1 }, "routes/auth.sign-in.onboard._index": { id: "routes/auth.sign-in.onboard._index", parentId: "routes/auth.sign-in.onboard", path: void 0, index: !0, caseSensitive: void 0, module: "/build/routes/auth.sign-in.onboard._index-P4FG3FKI.js", imports: void 0, hasAction: !1, hasLoader: !1, hasCatchBoundary: !1, hasErrorBoundary: !1 }, "routes/auth.sign-in.onboard.password": { id: "routes/auth.sign-in.onboard.password", parentId: "routes/auth.sign-in.onboard", path: "password", index: void 0, caseSensitive: void 0, module: "/build/routes/auth.sign-in.onboard.password-YR2QS6QN.js", imports: ["/build/_shared/chunk-ORECHP3L.js", "/build/_shared/chunk-CEVNSJUE.js"], hasAction: !0, hasLoader: !1, hasCatchBoundary: !1, hasErrorBoundary: !1 }, "routes/auth.sign-in.password": { id: "routes/auth.sign-in.password", parentId: "routes/auth", path: "sign-in/password", index: void 0, caseSensitive: void 0, module: "/build/routes/auth.sign-in.password-AX675JGC.js", imports: ["/build/_shared/chunk-5KEXRVK6.js", "/build/_shared/chunk-ORECHP3L.js", "/build/_shared/chunk-CEVNSJUE.js", "/build/_shared/chunk-CZGLH4KO.js"], hasAction: !0, hasLoader: !0, hasCatchBoundary: !1, hasErrorBoundary: !1 }, "routes/auth.verify": { id: "routes/auth.verify", parentId: "routes/auth", path: "verify", index: void 0, caseSensitive: void 0, module: "/build/routes/auth.verify-SFIKUY7P.js", imports: ["/build/_shared/chunk-CEVNSJUE.js", "/build/_shared/chunk-CZGLH4KO.js"], hasAction: !1, hasLoader: !0, hasCatchBoundary: !1, hasErrorBoundary: !1 } }, cssBundleHref: void 0, url: "/build/manifest-2825AFE3.js" };
 
 // server-entry-module:@remix-run/dev/server-build
 var assetsBuildDirectory = "public/build", future = { unstable_cssModules: !1, unstable_cssSideEffectImports: !1, unstable_dev: !1, unstable_postcss: !1, unstable_tailwind: !1, unstable_vanillaExtract: !1, v2_errorBoundary: !1, v2_meta: !0, v2_routeConvention: !0 }, publicPath = "/build/", entry = { module: entry_server_exports }, routes = {
@@ -1235,14 +1170,6 @@ var assetsBuildDirectory = "public/build", future = { unstable_cssModules: !1, u
     index: void 0,
     caseSensitive: void 0,
     module: auth_verify_exports
-  },
-  "routes/sapo/auth": {
-    id: "routes/sapo/auth",
-    parentId: "root",
-    path: "sapo/auth",
-    index: void 0,
-    caseSensitive: void 0,
-    module: auth_exports2
   }
 };
 // Annotate the CommonJS export names for ESM import in node:

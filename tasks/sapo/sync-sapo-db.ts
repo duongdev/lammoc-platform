@@ -1,6 +1,6 @@
 import Debug from 'debug'
 
-import { Sapo } from 'tasks/sapo/sapo.service'
+import { Sapo } from './sapo.service'
 
 const log = Debug('Sapo:sync-sapo')
 
@@ -12,13 +12,13 @@ export const main = async () => {
   log(`Signed in as [${account.id}] ${account.full_name}`)
 
   log(`Sync customers`)
-  // await sapo.syncCustomers()
+  await sapo.syncCustomers()
 
   log('Sync product categories')
-  // await sapo.syncProductCategories()
+  await sapo.syncProductCategories()
 
   log('Sync products')
-  // await sapo.syncProducts()
+  await sapo.syncProducts()
 
   log('Sync orders')
   await sapo.syncOrders()
