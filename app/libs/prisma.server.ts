@@ -5,7 +5,7 @@ import debug from 'debug'
 
 const prisma = new PrismaClient()
 
-export const transactionChunk = <T = unknown>(
+export const createChunkTransactions = <T = unknown>(
   options: {
     log?: Debugger
     size?: number
@@ -14,25 +14,40 @@ export const transactionChunk = <T = unknown>(
   const { size = 500, log: $log } = options
 
   const log = $log ?? debug('libs:prisma:transactionChunk')
+  let proceeded = 0
 
-  let transactions: Prisma.PrismaPromise<T>[] = []
+  let pending: Prisma.PrismaPromise<T>[] = []
 
   const clear = () => {
-    transactions = []
+    pending = []
+  }
+
+  const proceed = async () => {
+    log(`Executing ${pending.length} transactions`)
+
+    await prisma.$transaction(pending)
+    proceeded += pending.length
+
+    log(`Executed ${proceeded} transactions`)
+
+    clear()
   }
 
   const add = async (transaction: Prisma.PrismaPromise<T>) => {
-    transactions.push(transaction)
+    pending.push(transaction)
 
-    if (transactions.length >= size) {
-      log(`Executing ${transactions.length} transactions`)
-      await prisma.$transaction(transactions)
-      log(`Executed ${transactions.length} transactions`)
-      clear()
+    if (pending.length >= size) {
+      await proceed()
     }
   }
 
-  return { add, clear, transactions }
+  return {
+    add,
+    clear,
+    close: proceed,
+    proceeded: () => proceeded,
+    pending: () => pending,
+  }
 }
 
 export default prisma

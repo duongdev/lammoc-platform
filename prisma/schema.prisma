@@ -26,9 +26,9 @@ model AppMeta {
 model Customer {
   id        String   @id @default(cuid())
   createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-  tenant Tenant
+  updatedAt DateTime
+  syncedAt  DateTime @updatedAt
+  tenant    Tenant
 
   phone String[]
   name  String
@@ -42,18 +42,63 @@ model Customer {
 model Order {
   id        String   @id
   createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  code      String   @unique
+  updatedAt DateTime
+  syncedAt  DateTime @updatedAt
   tenant    Tenant
 
-  customer   Customer @relation(fields: [customerId], references: [id])
-  customerId String
+  code              String
+  issuedAt          DateTime?
+  canceledAt        DateTime?
+  status            String?
+  packedStatus      String?
+  fulfillmentStatus String?
+  receivedStatus    String?
+  paymentStatus     String?
+  returnStatus      String?
+  einvoiceStatus    String?
+  total             Float
+  totalDiscount     Float
+  discountReason    String?
+  totalTax          Float?
+  note              String?
+  tags              String[]
+  channel           String?
+
+  customer           Customer          @relation(fields: [customerId], references: [id])
+  customerId         String
+  deliveryFee        OrderDeliveryFee? @relation(fields: [orderDeliveryFeeId], references: [id])
+  orderDeliveryFeeId String?
+}
+
+model OrderLineItem {
+  id        String   @id
+  createdAt DateTime @default(now())
+  updatedAt DateTime
+  syncedAt  DateTime @updatedAt
+  tenant    Tenant
+
+  taxRate                   Float?
+  taxAmount                 Float?
+  discountValue             Float?
+  discountReason            String?
+  discountAmount            Float?
+  note                      String?
+  price                     Float
+  quantity                  Float?
+  lineAmount                Float?
+  distributedDiscountAmount Float?
+
+  product          Product        @relation(fields: [productId], references: [id])
+  productId        String
+  variant          ProductVariant @relation(fields: [productVariantId], references: [id])
+  productVariantId String
 }
 
 model Product {
   id        String   @id
   createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  updatedAt DateTime
+  syncedAt  DateTime @updatedAt
   tenant    Tenant
 
   name        String
@@ -66,12 +111,14 @@ model Product {
   productBrandId    String?
   brand             ProductBrand?    @relation(fields: [productBrandId], references: [id])
   ProductVariant    ProductVariant[]
+  OrderLineItem     OrderLineItem[]
 }
 
 model ProductVariant {
   id        String   @id
   createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  updatedAt DateTime
+  syncedAt  DateTime @updatedAt
   tenant    Tenant
 
   name        String
@@ -87,12 +134,14 @@ model ProductVariant {
   productCategoryId String?
   brand             ProductBrand?    @relation(fields: [productBrandId], references: [id])
   productBrandId    String?
+  OrderLineItem     OrderLineItem[]
 }
 
 model ProductBrand {
   id        String   @id
   createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  updatedAt DateTime
+  syncedAt  DateTime @updatedAt
   tenant    Tenant
 
   name           String
@@ -104,7 +153,8 @@ model ProductBrand {
 model ProductCategory {
   id        String   @id
   createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  updatedAt DateTime
+  syncedAt  DateTime @updatedAt
   tenant    Tenant
 
   name           String
@@ -112,4 +162,16 @@ model ProductCategory {
   code           String
   Product        Product[]
   ProductVariant ProductVariant[]
+}
+
+model OrderDeliveryFee {
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now())
+  syncedAt  DateTime @updatedAt
+  tenant    Tenant
+
+  shippingCostId   String?
+  shippingCostName String?
+  fee              Float   @default(0)
+  Order            Order[]
 }

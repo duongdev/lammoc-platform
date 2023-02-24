@@ -1,6 +1,6 @@
 import { useLoaderData } from '@remix-run/react'
 
-import { Sapo } from 'tasks/sapo/sapo.server'
+import { Sapo } from 'tasks/sapo/sapo.service'
 
 export async function loader() {
   const sapo = new Sapo()
