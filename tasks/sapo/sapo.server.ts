@@ -1,17 +1,27 @@
-import type { Prisma } from '@prisma/client'
+import type { Prisma, Product } from '@prisma/client'
 import type { Debugger } from 'debug'
 import Debug from 'debug'
 import type { Got } from 'got-cjs'
 import got from 'got-cjs'
-import { flatten } from 'lodash'
+import { flatten, toString } from 'lodash'
 import puppeteer from 'puppeteer'
 
 import { PUPPETEER_CONFIG, SAPO_PASS, SAPO_USER } from '~/config/app-config'
-import prisma from '~/libs/prisma.server'
+import prisma, { transactionChunk } from '~/libs/prisma.server'
 import { normalizePhoneNumber } from '~/utils/account'
 
 import { SAPO_TENANT } from './sapo.const'
-import type { SapoAccount, SapoCustomer, SapoTenant } from './sapo.type'
+import type {
+  SapoAccount,
+  SapoCustomer,
+  SapoProductCategory,
+  SapoProductItem,
+  SapoTenant,
+} from './sapo.type'
+import type { PaginationInput } from './sapo.util'
+import { getPaginationOptions } from './sapo.util'
+
+const TRANSACTION_SIZE = 500
 
 export class Sapo {
   private sapo: Got
@@ -140,52 +150,19 @@ export class Sapo {
     return profiles
   }
 
-  async syncCustomers({
-    countLimit,
-    perPage = 250,
-  }: {
-    countLimit?: number
-    perPage?: number
-  } = {}) {
-    this.log('Sync all customers', { countLimit, perPage })
-    let totalCustomers = -1
+  /** Sync all customers from Sapo to DB */
+  async syncCustomers(options?: PaginationInput) {
+    this.log('Sync all customers', options)
 
     const paginate = this.sapo.paginate<SapoCustomer>(
       'customers/doSearch.json',
-      {
+      getPaginationOptions({
+        ...options,
         searchParams: {
-          limit: perPage,
           sort: 'modified_on,desc',
         },
-        pagination: {
-          paginate: ({ currentItems, response }) => {
-            // If there are no more data, finish.
-            if (currentItems.length === 0) {
-              return false
-            }
-
-            const metadata = JSON.parse((response as any).body).metadata
-
-            if (totalCustomers < 0) {
-              totalCustomers = metadata.total
-            }
-
-            return {
-              searchParams: {
-                page: +metadata.page + 1,
-                limit: perPage,
-              },
-            }
-          },
-          transform: (response: any) => {
-            return JSON.parse(response.body).customers
-          },
-          ...(countLimit ? { countLimit } : {}),
-        },
-      },
+      }),
     )
-
-    let index = 1
 
     for await (const customer of paginate) {
       const customerData: Prisma.CustomerCreateInput = {
@@ -205,7 +182,7 @@ export class Sapo {
         createdAt: new Date(customer.created_on),
       }
 
-      const res = await prisma.customer.upsert({
+      const upserted = await prisma.customer.upsert({
         where: {
           id: customer.id.toString(),
         },
@@ -214,14 +191,103 @@ export class Sapo {
       })
 
       this.log(
-        `[${index} / ${totalCustomers}] ${
-          res.createdAt === res.updatedAt ? 'Created' : 'Updated'
+        `${
+          upserted.createdAt === upserted.updatedAt ? 'Created' : 'Updated'
         } customer [${customer.id}] ${customer.name} (${
           customer.phone_number
         })`,
       )
-
-      index += 1
     }
+  }
+
+  /** Sync all categories from Sapo to DB */
+  async syncProductCategories(options?: PaginationInput) {
+    this.log('Sync all categories', options)
+
+    const paginate = this.sapo.paginate<SapoProductCategory>(
+      'categories.json',
+      getPaginationOptions(options),
+    )
+
+    let [created, updated] = [0, 0]
+
+    for await (const category of paginate) {
+      const categoryData: Prisma.ProductCategoryCreateInput = {
+        id: toString(category.id),
+        code: toString(category.code),
+        name: category.name,
+        tenant: SAPO_TENANT[this.tenant],
+        createdAt: new Date(category.created_on),
+        description: category.description,
+      }
+
+      const upserted = await prisma.productCategory.upsert({
+        where: { id: categoryData.id },
+        create: categoryData,
+        update: categoryData,
+      })
+
+      if (upserted.createdAt === upserted.updatedAt) created += 1
+      else updated += 1
+    }
+
+    this.log(`Synced categories`, { created, updated })
+  }
+
+  async syncProducts(options?: PaginationInput) {
+    this.log('Sync all products', options)
+
+    const paginate = this.sapo.paginate<SapoProductItem>(
+      'products.json',
+      getPaginationOptions(options),
+    )
+
+    const transactions = transactionChunk<Product>({
+      size: TRANSACTION_SIZE,
+      log: this.log,
+    })
+
+    for await (const product of paginate) {
+      const productData: Prisma.ProductCreateInput = {
+        id: toString(product.id),
+        name: product.name,
+        tenant: SAPO_TENANT[this.tenant],
+        brand: product.brand_id
+          ? {
+              connectOrCreate: {
+                where: { id: toString(product.brand_id) },
+                create: {
+                  id: toString(product.brand_id),
+                  name: product.brand,
+                  tenant: SAPO_TENANT[this.tenant],
+                },
+              },
+            }
+          : undefined,
+        category: product.category_id
+          ? {
+              connect: { id: toString(product.category_id) },
+            }
+          : undefined,
+        createdAt: new Date(product.created_on),
+        description: product.description,
+        tags: product.tags
+          .split(',')
+          .map((tag) => tag.trim())
+          .filter((t) => !!t),
+        images:
+          product.images.map((img) => img.full_path).filter((i) => !!i) ?? [],
+      }
+
+      await transactions.add(
+        prisma.product.upsert({
+          where: { id: productData.id },
+          create: productData,
+          update: productData,
+        }),
+      )
+    }
+
+    this.log(`Synced products`)
   }
 }

@@ -56,9 +56,16 @@ model Product {
   updatedAt DateTime @updatedAt
   tenant    Tenant
 
-  name           String
-  description    String?
-  ProductVariant ProductVariant[]
+  name        String
+  description String?
+  tags        String[]
+  images      String[]
+
+  productCategoryId String?
+  category          ProductCategory? @relation(fields: [productCategoryId], references: [id])
+  productBrandId    String?
+  brand             ProductBrand?    @relation(fields: [productBrandId], references: [id])
+  ProductVariant    ProductVariant[]
 }
 
 model ProductVariant {
@@ -74,6 +81,35 @@ model ProductVariant {
   unit        String?
   images      String[]
 
-  product   Product @relation(fields: [productId], references: [id])
-  productId String
+  product           Product          @relation(fields: [productId], references: [id])
+  productId         String
+  category          ProductCategory? @relation(fields: [productCategoryId], references: [id])
+  productCategoryId String?
+  brand             ProductBrand?    @relation(fields: [productBrandId], references: [id])
+  productBrandId    String?
+}
+
+model ProductBrand {
+  id        String   @id
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  tenant    Tenant
+
+  name           String
+  isDeleted      Boolean          @default(false)
+  Product        Product[]
+  ProductVariant ProductVariant[]
+}
+
+model ProductCategory {
+  id        String   @id
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  tenant    Tenant
+
+  name           String
+  description    String?
+  code           String
+  Product        Product[]
+  ProductVariant ProductVariant[]
 }

@@ -6,7 +6,7 @@
     "build": "remix build",
     "dev": "remix dev",
     "start": "remix-serve build",
-    "sync-sapo": "tsnd -r dotenv/config -r tsconfig-paths/register tasks/sync-sapo.ts"
+    "sync-sapo-db": "DEBUG=Sapo:* tsnd -r dotenv/config -r tsconfig-paths/register tasks/sapo/sync-sapo-db.ts"
   },
   "dependencies": {
     "@emotion/react": "^11.10.5",
