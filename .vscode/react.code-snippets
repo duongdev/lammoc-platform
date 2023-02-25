@@ -1,0 +1,40 @@
+{
+  "React functional component": {
+    "scope": "typescriptreact",
+    "prefix": "rfc",
+    "body": [
+      "import { FC } from 'react'",
+      "",
+      "export type ${1:$TM_FILENAME_BASE}Props = {}",
+      "",
+      "const ${1:$TM_FILENAME_BASE}: FC<${1:$TM_FILENAME_BASE}Props> = () => {",
+      "  return <$3>${4:$TM_FILENAME_BASE}</$3>",
+      "}",
+      "",
+      "export default ${1:$TM_FILENAME_BASE}",
+      ""
+    ],
+    "description": "Creates a React functional component"
+  },
+  "Export react component": {
+    "scope": "typescript",
+    "prefix": "erfc",
+    "body": [
+      "export { default } from './${TM_DIRECTORY/^.+\\/(.*)$/$1/}'",
+      "export * from './${TM_DIRECTORY/^.+\\/(.*)$/$1/}'",
+      ""
+    ]
+  },
+  "Export lazy component": {
+    "scope": "typescript",
+    "prefix": "erfclz",
+    "body": [
+      "import { lazy } from 'react'",
+      "",
+      "const ${1:${TM_DIRECTORY/^.+\\/(.*)$/$1/}} = lazy(() => import('./${1:${TM_DIRECTORY/^.+\\/(.*)$/$1/}}'))",
+      "",
+      "export default ${1:${TM_DIRECTORY/^.+\\/(.*)$/$1/}}",
+      ""
+    ]
+  }
+}

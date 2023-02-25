@@ -1,3 +1,6 @@
+import { useAuth } from '~/contexts/auth-context'
+
 export default function User() {
-  return '123'
+  const { customer } = useAuth()
+  return customer?.name
 }

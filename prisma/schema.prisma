@@ -28,14 +28,21 @@ model Account {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  phone         String @unique
+  phone         String    @unique
   password      String
   name          String
   lastLoggedIn  DateTime?
   phoneVerified Boolean   @default(false)
+  roles AccountRole[]
 
   customer   Customer? @relation(fields: [customerId], references: [id])
   customerId String?
+}
+
+enum AccountRole {
+  DEVELOPER
+  ADMIN
+  STAFF
 }
 
 model Customer {
