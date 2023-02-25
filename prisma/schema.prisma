@@ -23,6 +23,21 @@ model AppMeta {
   value String @default("")
 }
 
+model Account {
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  phone         String?
+  password      String
+  name          String
+  lastLoggedIn  DateTime?
+  phoneVerified Boolean   @default(false)
+
+  customer   Customer? @relation(fields: [customerId], references: [id])
+  customerId String?
+}
+
 model Customer {
   id        String   @id @default(cuid())
   createdAt DateTime @default(now())
@@ -30,11 +45,12 @@ model Customer {
   syncedAt  DateTime @updatedAt
   tenant    Tenant
 
-  phone String[]
-  name  String
-  code  String
-  email String?
-  Order Order[]
+  phone    String[]
+  name     String
+  code     String
+  email    String?
+  orders   Order[]
+  accounts Account[]
 
   @@index([phone])
 }
@@ -110,8 +126,8 @@ model Product {
   category          ProductCategory? @relation(fields: [productCategoryId], references: [id])
   productBrandId    String?
   brand             ProductBrand?    @relation(fields: [productBrandId], references: [id])
-  ProductVariant    ProductVariant[]
-  OrderLineItem     OrderLineItem[]
+  productVariants   ProductVariant[]
+  orderLineItems    OrderLineItem[]
 }
 
 model ProductVariant {
@@ -134,7 +150,7 @@ model ProductVariant {
   productCategoryId String?
   brand             ProductBrand?    @relation(fields: [productBrandId], references: [id])
   productBrandId    String?
-  OrderLineItem     OrderLineItem[]
+  orderLineItems    OrderLineItem[]
 }
 
 model ProductBrand {
@@ -144,10 +160,10 @@ model ProductBrand {
   syncedAt  DateTime @updatedAt
   tenant    Tenant
 
-  name           String
-  isDeleted      Boolean          @default(false)
-  Product        Product[]
-  ProductVariant ProductVariant[]
+  name            String
+  isDeleted       Boolean          @default(false)
+  products        Product[]
+  productVariants ProductVariant[]
 }
 
 model ProductCategory {
@@ -157,11 +173,11 @@ model ProductCategory {
   syncedAt  DateTime @updatedAt
   tenant    Tenant
 
-  name           String
-  description    String?
-  code           String
-  Product        Product[]
-  ProductVariant ProductVariant[]
+  name            String
+  description     String?
+  code            String
+  products        Product[]
+  productVariants ProductVariant[]
 }
 
 model OrderDeliveryFee {
@@ -173,5 +189,5 @@ model OrderDeliveryFee {
   shippingCostId   String?
   shippingCostName String?
   fee              Float   @default(0)
-  Order            Order[]
+  orders           Order[]
 }
