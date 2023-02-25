@@ -9,35 +9,37 @@ import { awAccount } from '~/libs/appwrite'
 import { JWT_SECRET, verify } from '~/libs/jwt.server'
 
 export async function loader({ request }: LoaderArgs) {
-  const url = new URL(request.url)
-  const token = url.searchParams.get('token')
+  return null
 
-  if (!token) {
-    return redirect('/auth')
-  }
+  // const url = new URL(request.url)
+  // const token = url.searchParams.get('token')
 
-  const decoded = verify(token, JWT_SECRET)
+  // if (!token) {
+  //   return redirect('/auth')
+  // }
 
-  return decoded
+  // const decoded = verify(token, JWT_SECRET)
+
+  // return decoded
 }
 
 export default function VerifyToken() {
-  const {
-    email,
-    password,
-  }: {
-    email: string
-    password: string
-  } = useLoaderData() as any
-  const navigate = useNavigate()
+  // const {
+  //   email,
+  //   password,
+  // }: {
+  //   email: string
+  //   password: string
+  // } = useLoaderData() as any
+  // const navigate = useNavigate()
 
-  useEffect(() => {
-    console.log({ email, password })
-    awAccount.createEmailSession(email, password).then(() => {
-      navigate('/app', { replace: true })
-    })
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
+  // useEffect(() => {
+  //   console.log({ email, password })
+  //   awAccount.createEmailSession(email, password).then(() => {
+  //     navigate('/app', { replace: true })
+  //   })
+  //   // eslint-disable-next-line react-hooks/exhaustive-deps
+  // }, [])
 
   return (
     <Box sx={{ textAlign: 'center' }}>

@@ -16,11 +16,10 @@ import {
   getAuth,
   signInWithPhoneNumber,
 } from 'firebase/auth'
-import { AppwriteException, Users } from 'node-appwrite'
 
-import { awServer } from '~/libs/appwrite.server'
 import { firebaseClient } from '~/libs/firebase.client'
-import { getUserIdFromPhone,  } from '~/utils/account'
+import prisma from '~/libs/prisma.server'
+import { normalizePhoneNumber } from '~/utils/account'
 import { getFormData } from '~/utils/forms'
 import { getTitle } from '~/utils/meta'
 
@@ -32,8 +31,7 @@ export const meta: V2_MetaFunction = () => [{ title: getTitle('Đăng nhập') }
   Otherwise, display phone not exists
 */
 export async function action({ request }: ActionArgs) {
-  const users = new Users(awServer)
-  const { phone } = await getFormData<{ phone: string }>(request)
+  let { phone } = await getFormData<{ phone: string }>(request)
 
   // validate
   if (!phone.match(/^0\d{9}$/)) {
@@ -43,32 +41,32 @@ export async function action({ request }: ActionArgs) {
         errorMessage: 'Số điện thoại không hợp lệ.',
         phone,
       },
-      { status: 404 },
+      { status: 400 },
     )
   }
 
-  try {
-    const existingUser = await users.get(getUserIdFromPhone(phone))
+  phone = normalizePhoneNumber(phone)
 
-    if (existingUser.password && existingUser.phoneVerification) {
-      return redirect(`./password?phone=${phone}`)
-    }
+  const accountByPhone = await prisma.account.findFirst({ where: { phone } })
+
+  if (
+    accountByPhone &&
+    accountByPhone.password &&
+    accountByPhone.phoneVerified
+  ) {
+    return redirect(`./password?phone=${phone}&accountId=${accountByPhone.id}`)
+  }
+
+  const customerByPhone = await prisma.customer.findFirst({
+    where: { phone: { has: phone } },
+  })
+
+  if (customerByPhone) {
     return json({
       success: true,
       errorMessage: null,
       phone,
     })
-  } catch (error) {
-    if (error instanceof AppwriteException && error.code !== 404) {
-      return json(
-        {
-          success: false,
-          errorMessage: error.message,
-          phone,
-        },
-        { status: error.code ?? 500 },
-      )
-    }
   }
 
   return json(
@@ -95,6 +93,8 @@ export default function SignIn() {
     actionData?.errorMessage ?? null,
   )
   const phoneRef = useRef<HTMLInputElement>(null)
+
+  console.log(transition, actionData)
 
   const isSubmitting = useMemo(
     () => transition.type !== 'idle' || isAuthenticating,

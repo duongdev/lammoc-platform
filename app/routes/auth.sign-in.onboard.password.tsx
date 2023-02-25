@@ -2,22 +2,21 @@ import { useEffect, useRef } from 'react'
 
 import { Alert, Button, Group, PasswordInput } from '@mantine/core'
 import type { ActionArgs } from '@remix-run/node'
-import { redirect, json } from '@remix-run/node'
+import { json } from '@remix-run/node'
 import { useActionData, useTransition } from '@remix-run/react'
 
+import { PASSWORD_SALT } from '~/config/app-config'
 import {
+  CUSTOMER_NOT_FOUND,
   INVALID_PASSWORD_LENGTH,
   UNABLE_TO_SET_PASSWORD,
 } from '~/config/messages'
-import { awUsers } from '~/libs/appwrite.server'
+import { hashSync } from '~/libs/bcrypt.server'
 import { firebaseAdmin } from '~/libs/firebase.server'
-import { JWT_SECRET, sign } from '~/libs/jwt.server'
-import {
-  getAuthEmailFromPhone,
-  getUserIdFromPhone,
-  normalizePhoneNumber,
-} from '~/utils/account'
+import prisma from '~/libs/prisma.server'
+import { normalizePhoneNumber } from '~/utils/account'
 import { getFormData } from '~/utils/forms'
+import { createUserSession } from '~/utils/session.server'
 
 export async function action({ request }: ActionArgs) {
   const url = new URL(request.url)
@@ -65,29 +64,49 @@ export async function action({ request }: ActionArgs) {
       )
     }
 
-    // Update user
-    const userId = getUserIdFromPhone(decoded.phone_number)
-    const userPhone = normalizePhoneNumber(phone)
-    const userEmail = getAuthEmailFromPhone(userPhone)
+    const hashedPassword = hashSync(password, PASSWORD_SALT)
+    const normalizedPhone = normalizePhoneNumber(phone)
 
-    await awUsers
-      .updatePassword(userId, password)
-      .then((res) => console.log(`[updatePassword]`, res))
-    await awUsers
-      .updateEmail(userId, userEmail)
-      .then((res) => console.log(`[updateEmail]`, res))
-    await awUsers
-      .updateEmailVerification(userId, true)
-      .then((res) => console.log(`[updateEmailVerification]`, res))
-    await awUsers
-      .updatePhoneVerification(userId, true)
-      .then((res) => console.log(`[updatePhoneVerification]`, res))
-
-    const appToken = sign({ userId, email: userEmail, password }, JWT_SECRET, {
-      expiresIn: '5m',
+    const customer = await prisma.customer.findFirst({
+      where: { phone: { has: normalizedPhone } },
     })
 
-    return redirect(`/auth/verify?token=${appToken}`, { status: 302 })
+    if (!customer) {
+      return json(
+        { success: false, errorMessage: CUSTOMER_NOT_FOUND },
+        { status: 404 },
+      )
+    }
+
+    let account = await prisma.account.findFirst({
+      where: { phone: normalizedPhone },
+    })
+
+    // If account exists, update password & verifiedPhone
+    if (account) {
+      account = await prisma.account.update({
+        where: { id: account.id },
+        data: {
+          password: hashedPassword,
+          phoneVerified: true,
+          customerId: customer.id,
+        },
+      })
+    } else {
+      // If account doesn't exist, create new account
+      account = await prisma.account.create({
+        data: {
+          name: customer.name,
+          password: hashedPassword,
+          customerId: customer.id,
+          lastLoggedIn: new Date(),
+          phone: normalizedPhone,
+          phoneVerified: true,
+        },
+      })
+    }
+
+    return createUserSession(account.id, '/app')
   } catch (error: any) {
     console.error(error)
     return json(

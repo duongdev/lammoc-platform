@@ -5,3 +5,4 @@ export const INVALID_PASSWORD_LENGTH = 'Mật khẩu phải có ít nhất 8 ký
 export const INVALID_AUTH_CREDENTIALS = 'Thông tin đăng nhập không đúng.'
 export const RATE_LIMIT_EXCEEDED =
   'Quá nhiều yêu cầu trong thời gian ngắn. Vui lòng thử lại sau.'
+export const CUSTOMER_NOT_FOUND = 'Không thể tìm thấy thông tin khách hàng'

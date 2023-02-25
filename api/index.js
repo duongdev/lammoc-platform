@@ -257,14 +257,7 @@ __export(app_exports, {
 var import_react4 = require("@remix-run/react");
 
 // app/config/app-config.ts
-var APP_NAME = "Th\xEDch L\xE0m M\u1ED9c", PUPPETEER_CONFIG = {
-  headless: process.env.HEADLESS === "true",
-  defaultViewport: {
-    height: 1200,
-    width: 1200
-  },
-  timeout: 18e4
-}, SAPO_USER = process.env.SAPO_USER, SAPO_PASS = process.env.SAPO_PASS;
+var APP_NAME = "Th\xEDch L\xE0m M\u1ED9c";
 
 // app/hooks/useAuth.ts
 var import_react3 = require("react"), import_constate = __toESM(require("constate"));
@@ -342,14 +335,15 @@ function AuthLayout() {
   return /* @__PURE__ */ (0, import_jsx_dev_runtime6.jsxDEV)(import_core3.Container, { py: 60, size: "xs", children: /* @__PURE__ */ (0, import_jsx_dev_runtime6.jsxDEV)(import_core3.Stack, { children: [
     /* @__PURE__ */ (0, import_jsx_dev_runtime6.jsxDEV)(import_core3.Group, { align: "baseline", spacing: "lg", children: [
       /* @__PURE__ */ (0, import_jsx_dev_runtime6.jsxDEV)(
-        import_react5.Link,
+        "a",
         {
+          href: "https://storelammoc.vn",
+          rel: "noreferrer",
           target: "_blank",
           title: "Store L\xE0m M\u1ED9c",
-          to: "https://storelammoc.vn",
           children: /* @__PURE__ */ (0, import_jsx_dev_runtime6.jsxDEV)(import_core3.Image, { height: 40, src: "/img/slm-logo.png", width: "auto" }, void 0, !1, {
             fileName: "app/routes/auth.tsx",
-            lineNumber: 19,
+            lineNumber: 20,
             columnNumber: 13
           }, this)
         },
@@ -363,14 +357,15 @@ function AuthLayout() {
         this
       ),
       /* @__PURE__ */ (0, import_jsx_dev_runtime6.jsxDEV)(
-        import_react5.Link,
+        "a",
         {
+          href: "https://thichtulam.com",
+          rel: "noreferrer",
           target: "_blank",
           title: "Th\xEDch T\u1EF1 L\xE0m",
-          to: "https://thichtulam.com",
           children: /* @__PURE__ */ (0, import_jsx_dev_runtime6.jsxDEV)(import_core3.Image, { height: 40, src: "/img/ttl-logo.png", width: "auto" }, void 0, !1, {
             fileName: "app/routes/auth.tsx",
-            lineNumber: 26,
+            lineNumber: 28,
             columnNumber: 13
           }, this)
         },
@@ -378,7 +373,7 @@ function AuthLayout() {
         !1,
         {
           fileName: "app/routes/auth.tsx",
-          lineNumber: 21,
+          lineNumber: 22,
           columnNumber: 11
         },
         this
@@ -391,22 +386,22 @@ function AuthLayout() {
     /* @__PURE__ */ (0, import_jsx_dev_runtime6.jsxDEV)(import_core3.Box, { children: [
       /* @__PURE__ */ (0, import_jsx_dev_runtime6.jsxDEV)(import_core3.Title, { children: "\u0110\u0103ng nh\u1EADp" }, void 0, !1, {
         fileName: "app/routes/auth.tsx",
-        lineNumber: 30,
+        lineNumber: 32,
         columnNumber: 11
       }, this),
       /* @__PURE__ */ (0, import_jsx_dev_runtime6.jsxDEV)(import_core3.Text, { color: "dimmed", children: "K\u1EBFt n\u1ED1i t\xE0i kho\u1EA3n Store L\xE0m M\u1ED9c v\xE0 Th\xEDch T\u1EF1 L\xE0m" }, void 0, !1, {
         fileName: "app/routes/auth.tsx",
-        lineNumber: 31,
+        lineNumber: 33,
         columnNumber: 11
       }, this)
     ] }, void 0, !0, {
       fileName: "app/routes/auth.tsx",
-      lineNumber: 29,
+      lineNumber: 31,
       columnNumber: 9
     }, this),
     /* @__PURE__ */ (0, import_jsx_dev_runtime6.jsxDEV)(import_react5.Outlet, {}, void 0, !1, {
       fileName: "app/routes/auth.tsx",
-      lineNumber: 35,
+      lineNumber: 37,
       columnNumber: 9
     }, this)
   ] }, void 0, !0, {
@@ -434,16 +429,14 @@ __export(auth_sign_in_index_exports, {
   default: () => SignIn,
   meta: () => meta4
 });
-var import_react6 = require("react"), import_core4 = require("@mantine/core"), import_node3 = require("@remix-run/node"), import_react7 = require("@remix-run/react"), import_auth = require("firebase/auth"), import_node_appwrite2 = require("node-appwrite");
+var import_react6 = require("react"), import_core4 = require("@mantine/core"), import_node3 = require("@remix-run/node"), import_react7 = require("@remix-run/react"), import_auth = require("firebase/auth"), import_firebase = __toESM(require_firebase());
 
-// app/libs/appwrite.server.ts
-var import_node_appwrite = __toESM(require("node-appwrite")), awServer = new import_node_appwrite.default.Client().setEndpoint(process.env.APPWRITE_ENDPOINT ?? "").setProject(process.env.APPWRITE_PROJECT ?? "").setKey(process.env.APPWRITE_API_KEY ?? ""), awUsers = new import_node_appwrite.Users(awServer);
-
-// app/routes/auth.sign-in._index.tsx
-var import_firebase = __toESM(require_firebase());
+// app/libs/prisma.server.ts
+var import_client = require("@prisma/client"), import_debug = __toESM(require("debug")), prisma = new import_client.PrismaClient();
+var prisma_server_default = prisma;
 
 // app/utils/account.ts
-var normalizePhoneNumber = (phone) => `+${phone.replace(/\D/g, "").replace(/^0/, "84")}`, getUserIdFromPhone = (phone) => normalizePhoneNumber(phone).replace(/\D/g, "").replace(/^0/, ""), getAuthEmailFromPhone = (phone) => `p_${getUserIdFromPhone(phone).replace(/\D/g, "")}@khachhang.lammoc.vn`;
+var normalizePhoneNumber = (phone) => `+${phone.replace(/\D/g, "").replace(/^0/, "84")}`;
 
 // app/utils/forms.ts
 var getFormData = async (request) => Object.fromEntries(await request.formData());
@@ -451,7 +444,7 @@ var getFormData = async (request) => Object.fromEntries(await request.formData()
 // app/routes/auth.sign-in._index.tsx
 var import_jsx_dev_runtime7 = require("react/jsx-dev-runtime"), meta4 = () => [{ title: getTitle("\u0110\u0103ng nh\u1EADp") }];
 async function action({ request }) {
-  let users = new import_node_appwrite2.Users(awServer), { phone } = await getFormData(request);
+  let { phone } = await getFormData(request);
   if (!phone.match(/^0\d{9}$/))
     return (0, import_node3.json)(
       {
@@ -459,27 +452,17 @@ async function action({ request }) {
         errorMessage: "S\u1ED1 \u0111i\u1EC7n tho\u1EA1i kh\xF4ng h\u1EE3p l\u1EC7.",
         phone
       },
-      { status: 404 }
+      { status: 400 }
     );
-  try {
-    let existingUser = await users.get(getUserIdFromPhone(phone));
-    return existingUser.password && existingUser.phoneVerification ? (0, import_node3.redirect)(`./password?phone=${phone}`) : (0, import_node3.json)({
-      success: !0,
-      errorMessage: null,
-      phone
-    });
-  } catch (error) {
-    if (error instanceof import_node_appwrite2.AppwriteException && error.code !== 404)
-      return (0, import_node3.json)(
-        {
-          success: !1,
-          errorMessage: error.message,
-          phone
-        },
-        { status: error.code ?? 500 }
-      );
-  }
-  return (0, import_node3.json)(
+  phone = normalizePhoneNumber(phone);
+  let accountByPhone = await prisma_server_default.account.findFirst({ where: { phone } });
+  return accountByPhone && accountByPhone.password && accountByPhone.phoneVerified ? (0, import_node3.redirect)(`./password?phone=${phone}&accountId=${accountByPhone.id}`) : await prisma_server_default.customer.findFirst({
+    where: { phone: { has: phone } }
+  }) ? (0, import_node3.json)({
+    success: !0,
+    errorMessage: null,
+    phone
+  }) : (0, import_node3.json)(
     {
       success: !1,
       errorMessage: "S\u1ED1 \u0111i\u1EC7n tho\u1EA1i n\xE0y ch\u01B0a c\xF3 \u0111\u01A1n h\xE0ng trong h\u1EC7 th\u1ED1ng.",
@@ -491,7 +474,9 @@ async function action({ request }) {
 function SignIn() {
   let navigate = (0, import_react7.useNavigate)(), transition = (0, import_react7.useTransition)(), actionData = (0, import_react7.useActionData)(), recaptchaVerifierRef = (0, import_react6.useRef)(), authRef = (0, import_react6.useRef)(), [isAuthenticating, setIsAuthenticating] = (0, import_react6.useState)(!1), [phone, setPhone] = (0, import_react6.useState)(""), [errorMessage, setErrorMessage] = (0, import_react6.useState)(
     (actionData == null ? void 0 : actionData.errorMessage) ?? null
-  ), phoneRef = (0, import_react6.useRef)(null), isSubmitting = (0, import_react6.useMemo)(
+  ), phoneRef = (0, import_react6.useRef)(null);
+  console.log(transition, actionData);
+  let isSubmitting = (0, import_react6.useMemo)(
     () => transition.type !== "idle" || isAuthenticating,
     [isAuthenticating, transition.type]
   ), handlePhoneChange = (0, import_react6.useCallback)(
@@ -791,10 +776,15 @@ __export(auth_sign_in_onboard_password_exports, {
   action: () => action3,
   default: () => AuthSignInOnboardPassword
 });
-var import_react12 = require("react"), import_core8 = require("@mantine/core"), import_node5 = require("@remix-run/node"), import_react13 = require("@remix-run/react");
+var import_react12 = require("react"), import_core8 = require("@mantine/core"), import_node6 = require("@remix-run/node"), import_react13 = require("@remix-run/react");
 
 // app/config/messages.ts
-var UNABLE_TO_SET_PASSWORD = "Kh\xF4ng th\u1EC3 c\u1EADp nh\u1EADt m\u1EADt kh\u1EA9u. Vui l\xF2ng th\u1EED l\u1EA1i.", INVALID_PASSWORD_LENGTH = "M\u1EADt kh\u1EA9u ph\u1EA3i c\xF3 \xEDt nh\u1EA5t 8 k\xFD t\u1EF1.", INVALID_AUTH_CREDENTIALS = "Th\xF4ng tin \u0111\u0103ng nh\u1EADp kh\xF4ng \u0111\xFAng.", RATE_LIMIT_EXCEEDED = "Qu\xE1 nhi\u1EC1u y\xEAu c\u1EA7u trong th\u1EDDi gian ng\u1EAFn. Vui l\xF2ng th\u1EED l\u1EA1i sau.";
+var UNABLE_TO_SET_PASSWORD = "Kh\xF4ng th\u1EC3 c\u1EADp nh\u1EADt m\u1EADt kh\u1EA9u. Vui l\xF2ng th\u1EED l\u1EA1i.", INVALID_PASSWORD_LENGTH = "M\u1EADt kh\u1EA9u ph\u1EA3i c\xF3 \xEDt nh\u1EA5t 8 k\xFD t\u1EF1.", INVALID_AUTH_CREDENTIALS = "Th\xF4ng tin \u0111\u0103ng nh\u1EADp kh\xF4ng \u0111\xFAng.";
+var CUSTOMER_NOT_FOUND = "Kh\xF4ng th\u1EC3 t\xECm th\u1EA5y th\xF4ng tin kh\xE1ch h\xE0ng";
+
+// app/libs/bcrypt.server.ts
+var bcrypt_server_exports = {};
+__reExport(bcrypt_server_exports, require("bcrypt"));
 
 // app/libs/firebase.server.ts
 var import_firebase_admin = __toESM(require("firebase-admin"));
@@ -813,20 +803,44 @@ import_firebase_admin.default.apps.length || import_firebase_admin.default.initi
 });
 var firebaseAdmin = import_firebase_admin.default;
 
-// app/libs/jwt.server.ts
-var jwt_server_exports = {};
-__export(jwt_server_exports, {
-  JWT_SECRET: () => JWT_SECRET
+// app/utils/session.server.ts
+var import_node5 = require("@remix-run/node"), import_bcrypt = require("bcrypt");
+async function signIn({
+  phone,
+  password
+}) {
+  let account = await prisma_server_default.account.findUnique({ where: { phone } });
+  return !account || !await (0, import_bcrypt.compareSync)(password, account.password) ? null : { id: account.id };
+}
+var sessionSecret = process.env.SESSION_SECRET;
+if (!sessionSecret)
+  throw new Error("SESSION_SECRET must be set");
+var storage = (0, import_node5.createCookieSessionStorage)({
+  cookie: {
+    name: "RJ_session",
+    secure: !1,
+    secrets: [sessionSecret],
+    sameSite: "lax",
+    path: "/",
+    maxAge: 60 * 60 * 24 * 30,
+    httpOnly: !0
+  }
 });
-__reExport(jwt_server_exports, require("jsonwebtoken"));
-var JWT_SECRET = process.env.JWT_SECRET;
+async function createUserSession(accountId, redirectTo) {
+  let session = await storage.getSession();
+  return session.set("accountId", accountId), (0, import_node5.redirect)(redirectTo, {
+    headers: {
+      "Set-Cookie": await storage.commitSession(session)
+    }
+  });
+}
 
 // app/routes/auth.sign-in.onboard.password.tsx
 var import_jsx_dev_runtime11 = require("react/jsx-dev-runtime");
 async function action3({ request }) {
   let url = new URL(request.url), phone = url.searchParams.get("phone"), token = url.searchParams.get("token"), { password } = await getFormData(request);
   if (!(phone && token && password))
-    return (0, import_node5.json)(
+    return (0, import_node6.json)(
       {
         success: !1,
         errorMessage: UNABLE_TO_SET_PASSWORD
@@ -834,7 +848,7 @@ async function action3({ request }) {
       { status: 400 }
     );
   if (((password == null ? void 0 : password.length) ?? 0) < 8)
-    return (0, import_node5.json)(
+    return (0, import_node6.json)(
       {
         success: !1,
         errorMessage: INVALID_PASSWORD_LENGTH
@@ -844,23 +858,45 @@ async function action3({ request }) {
   try {
     let decoded = await firebaseAdmin.auth().verifyIdToken(token);
     if (!decoded.phone_number)
-      return (0, import_node5.json)(
+      return (0, import_node6.json)(
         { success: !1, errorMessage: UNABLE_TO_SET_PASSWORD },
         { status: 500 }
       );
     if (normalizePhoneNumber(phone) !== normalizePhoneNumber(decoded.phone_number))
-      return (0, import_node5.json)(
+      return (0, import_node6.json)(
         { success: !1, errorMessage: UNABLE_TO_SET_PASSWORD },
         { status: 400 }
       );
-    let userId = getUserIdFromPhone(decoded.phone_number), userPhone = normalizePhoneNumber(phone), userEmail = getAuthEmailFromPhone(userPhone);
-    await awUsers.updatePassword(userId, password).then((res) => console.log("[updatePassword]", res)), await awUsers.updateEmail(userId, userEmail).then((res) => console.log("[updateEmail]", res)), await awUsers.updateEmailVerification(userId, !0).then((res) => console.log("[updateEmailVerification]", res)), await awUsers.updatePhoneVerification(userId, !0).then((res) => console.log("[updatePhoneVerification]", res));
-    let appToken = (0, jwt_server_exports.sign)({ userId, email: userEmail, password }, JWT_SECRET, {
-      expiresIn: "5m"
+    let hashedPassword = (0, bcrypt_server_exports.hashSync)(password, 10), normalizedPhone = normalizePhoneNumber(phone), customer = await prisma_server_default.customer.findFirst({
+      where: { phone: { has: normalizedPhone } }
     });
-    return (0, import_node5.redirect)(`/auth/verify?token=${appToken}`, { status: 302 });
+    if (!customer)
+      return (0, import_node6.json)(
+        { success: !1, errorMessage: CUSTOMER_NOT_FOUND },
+        { status: 404 }
+      );
+    let account = await prisma_server_default.account.findFirst({
+      where: { phone: normalizedPhone }
+    });
+    return account ? account = await prisma_server_default.account.update({
+      where: { id: account.id },
+      data: {
+        password: hashedPassword,
+        phoneVerified: !0,
+        customerId: customer.id
+      }
+    }) : account = await prisma_server_default.account.create({
+      data: {
+        name: customer.name,
+        password: hashedPassword,
+        customerId: customer.id,
+        lastLoggedIn: new Date(),
+        phone: normalizedPhone,
+        phoneVerified: !0
+      }
+    }), createUserSession(account.id, "/app");
   } catch (error) {
-    return console.error(error), (0, import_node5.json)(
+    return console.error(error), (0, import_node6.json)(
       { success: !1, errorMessage: UNABLE_TO_SET_PASSWORD },
       { status: 500 }
     );
@@ -876,7 +912,7 @@ function AuthSignInOnboardPassword() {
   }, [errorMessage]), /* @__PURE__ */ (0, import_jsx_dev_runtime11.jsxDEV)(import_jsx_dev_runtime11.Fragment, { children: [
     /* @__PURE__ */ (0, import_jsx_dev_runtime11.jsxDEV)(import_core8.Alert, { children: "H\xE3y thi\u1EBFt l\u1EADp m\u1EADt kh\u1EA9u \u0111\u1EC3 thu\u1EADn ti\u1EC7n cho c\xE1c l\u1EA7n \u0111\u0103ng nh\u1EADp sau." }, void 0, !1, {
       fileName: "app/routes/auth.sign-in.onboard.password.tsx",
-      lineNumber: 115,
+      lineNumber: 134,
       columnNumber: 7
     }, this),
     /* @__PURE__ */ (0, import_jsx_dev_runtime11.jsxDEV)(
@@ -894,35 +930,35 @@ function AuthSignInOnboardPassword() {
       !1,
       {
         fileName: "app/routes/auth.sign-in.onboard.password.tsx",
-        lineNumber: 119,
+        lineNumber: 138,
         columnNumber: 7
       },
       this
     ),
     errorMessage && /* @__PURE__ */ (0, import_jsx_dev_runtime11.jsxDEV)(import_core8.Alert, { color: "red", children: errorMessage }, void 0, !1, {
       fileName: "app/routes/auth.sign-in.onboard.password.tsx",
-      lineNumber: 129,
+      lineNumber: 148,
       columnNumber: 24
     }, this),
     /* @__PURE__ */ (0, import_jsx_dev_runtime11.jsxDEV)(import_core8.Group, { children: [
       /* @__PURE__ */ (0, import_jsx_dev_runtime11.jsxDEV)(import_core8.Button, { loading: isLoading, type: "submit", children: "L\u01B0u m\u1EADt kh\u1EA9u" }, void 0, !1, {
         fileName: "app/routes/auth.sign-in.onboard.password.tsx",
-        lineNumber: 132,
+        lineNumber: 151,
         columnNumber: 9
       }, this),
       /* @__PURE__ */ (0, import_jsx_dev_runtime11.jsxDEV)(import_core8.Button, { disabled: !0, color: "dark", type: "button", variant: "default", children: "B\u1ECF qua" }, void 0, !1, {
         fileName: "app/routes/auth.sign-in.onboard.password.tsx",
-        lineNumber: 135,
+        lineNumber: 154,
         columnNumber: 9
       }, this)
     ] }, void 0, !0, {
       fileName: "app/routes/auth.sign-in.onboard.password.tsx",
-      lineNumber: 131,
+      lineNumber: 150,
       columnNumber: 7
     }, this)
   ] }, void 0, !0, {
     fileName: "app/routes/auth.sign-in.onboard.password.tsx",
-    lineNumber: 114,
+    lineNumber: 133,
     columnNumber: 5
   }, this);
 }
@@ -934,43 +970,29 @@ __export(auth_sign_in_password_exports, {
   default: () => AuthSignInPassword,
   loader: () => loader4
 });
-var import_core9 = require("@mantine/core"), import_node6 = require("@remix-run/node"), import_react14 = require("@remix-run/react"), import_appwrite5 = require("appwrite");
-
-// app/utils/common.ts
-var wait = async (ms = 1e3) => new Promise((resolve) => setTimeout(resolve, ms));
-
-// app/routes/auth.sign-in.password.tsx
+var import_core9 = require("@mantine/core"), import_node7 = require("@remix-run/node"), import_react14 = require("@remix-run/react");
 var import_jsx_dev_runtime12 = require("react/jsx-dev-runtime"), loader4 = async ({ request }) => {
   let phone = new URL(request.url).searchParams.get("phone");
-  return phone ? { phone } : (0, import_node6.redirect)("..");
+  return phone ? { phone } : (0, import_node7.redirect)("..");
 };
 async function action4({ request }) {
   let { phone, password } = await getFormData(request);
   if (!(phone && password))
-    return (0, import_node6.json)({ errorMessage: INVALID_AUTH_CREDENTIALS }, { status: 400 });
-  let userId = getUserIdFromPhone(phone), userEmail = getAuthEmailFromPhone(phone);
-  try {
-    let session = await awAccount.createEmailSession(userEmail, password), appToken = (0, jwt_server_exports.sign)({ userId, email: userEmail, password }, JWT_SECRET, {
-      expiresIn: "5m"
-    });
-    return await awUsers.deleteSession(userId, session.$id), await wait(500), (0, import_node6.redirect)(`/auth/verify?token=${appToken}`, { status: 302 });
-  } catch (error) {
-    if (console.error(error), error instanceof import_appwrite5.AppwriteException && error.code === 429)
-      return (0, import_node6.json)({ errorMessage: RATE_LIMIT_EXCEEDED }, { status: 429 });
-  }
-  return (0, import_node6.json)({ errorMessage: INVALID_AUTH_CREDENTIALS }, { status: 400 });
+    return (0, import_node7.json)({ errorMessage: INVALID_AUTH_CREDENTIALS }, { status: 400 });
+  let account = await signIn({ phone: normalizePhoneNumber(phone), password });
+  return account ? createUserSession(account.id, "/app") : (0, import_node7.json)({ errorMessage: INVALID_AUTH_CREDENTIALS }, { status: 400 });
 }
 function AuthSignInPassword() {
   let actionData = (0, import_react14.useActionData)(), { state } = (0, import_react14.useTransition)(), [searchParams] = (0, import_react14.useSearchParams)(), phone = searchParams.get("phone"), isSubmitting = state === "submitting";
   return /* @__PURE__ */ (0, import_jsx_dev_runtime12.jsxDEV)(import_react14.Form, { method: "post", children: /* @__PURE__ */ (0, import_jsx_dev_runtime12.jsxDEV)(import_core9.Stack, { children: [
     /* @__PURE__ */ (0, import_jsx_dev_runtime12.jsxDEV)(LockedAuthPhoneInput, { editTo: "..", phone }, void 0, !1, {
       fileName: "app/routes/auth.sign-in.password.tsx",
-      lineNumber: 85,
+      lineNumber: 69,
       columnNumber: 9
     }, this),
     /* @__PURE__ */ (0, import_jsx_dev_runtime12.jsxDEV)("input", { hidden: !0, readOnly: !0, name: "phone", value: phone }, void 0, !1, {
       fileName: "app/routes/auth.sign-in.password.tsx",
-      lineNumber: 86,
+      lineNumber: 70,
       columnNumber: 9
     }, this),
     /* @__PURE__ */ (0, import_jsx_dev_runtime12.jsxDEV)(
@@ -987,37 +1009,37 @@ function AuthSignInPassword() {
       !1,
       {
         fileName: "app/routes/auth.sign-in.password.tsx",
-        lineNumber: 87,
+        lineNumber: 71,
         columnNumber: 9
       },
       this
     ),
     /* @__PURE__ */ (0, import_jsx_dev_runtime12.jsxDEV)(import_core9.Checkbox, { label: "Ghi nh\u1EDB \u0111\u0103ng nh\u1EADp", name: "rememberLogin" }, void 0, !1, {
       fileName: "app/routes/auth.sign-in.password.tsx",
-      lineNumber: 95,
+      lineNumber: 79,
       columnNumber: 9
     }, this),
     (actionData == null ? void 0 : actionData.errorMessage) && /* @__PURE__ */ (0, import_jsx_dev_runtime12.jsxDEV)(import_core9.Alert, { color: "red", children: actionData.errorMessage }, void 0, !1, {
       fileName: "app/routes/auth.sign-in.password.tsx",
-      lineNumber: 97,
+      lineNumber: 81,
       columnNumber: 11
     }, this),
     /* @__PURE__ */ (0, import_jsx_dev_runtime12.jsxDEV)(import_core9.Box, { children: /* @__PURE__ */ (0, import_jsx_dev_runtime12.jsxDEV)(import_core9.Button, { loading: isSubmitting, type: "submit", children: "\u0110\u0103ng nh\u1EADp" }, void 0, !1, {
       fileName: "app/routes/auth.sign-in.password.tsx",
-      lineNumber: 100,
+      lineNumber: 84,
       columnNumber: 11
     }, this) }, void 0, !1, {
       fileName: "app/routes/auth.sign-in.password.tsx",
-      lineNumber: 99,
+      lineNumber: 83,
       columnNumber: 9
     }, this)
   ] }, void 0, !0, {
     fileName: "app/routes/auth.sign-in.password.tsx",
-    lineNumber: 84,
+    lineNumber: 68,
     columnNumber: 7
   }, this) }, void 0, !1, {
     fileName: "app/routes/auth.sign-in.password.tsx",
-    lineNumber: 83,
+    lineNumber: 67,
     columnNumber: 5
   }, this);
 }
@@ -1028,34 +1050,24 @@ __export(auth_verify_exports, {
   default: () => VerifyToken,
   loader: () => loader5
 });
-var import_react15 = require("react"), import_core10 = require("@mantine/core"), import_node7 = require("@remix-run/node"), import_react_router = require("react-router");
-var import_jsx_dev_runtime13 = require("react/jsx-dev-runtime");
+var import_core10 = require("@mantine/core"), import_jsx_dev_runtime13 = require("react/jsx-dev-runtime");
 async function loader5({ request }) {
-  let token = new URL(request.url).searchParams.get("token");
-  return token ? (0, jwt_server_exports.verify)(token, JWT_SECRET) : (0, import_node7.redirect)("/auth");
+  return null;
 }
 function VerifyToken() {
-  let {
-    email,
-    password
-  } = (0, import_react_router.useLoaderData)(), navigate = (0, import_react_router.useNavigate)();
-  return (0, import_react15.useEffect)(() => {
-    console.log({ email, password }), awAccount.createEmailSession(email, password).then(() => {
-      navigate("/app", { replace: !0 });
-    });
-  }, []), /* @__PURE__ */ (0, import_jsx_dev_runtime13.jsxDEV)(import_core10.Box, { sx: { textAlign: "center" }, children: /* @__PURE__ */ (0, import_jsx_dev_runtime13.jsxDEV)(import_core10.Loader, {}, void 0, !1, {
+  return /* @__PURE__ */ (0, import_jsx_dev_runtime13.jsxDEV)(import_core10.Box, { sx: { textAlign: "center" }, children: /* @__PURE__ */ (0, import_jsx_dev_runtime13.jsxDEV)(import_core10.Loader, {}, void 0, !1, {
     fileName: "app/routes/auth.verify.tsx",
-    lineNumber: 44,
+    lineNumber: 46,
     columnNumber: 7
   }, this) }, void 0, !1, {
     fileName: "app/routes/auth.verify.tsx",
-    lineNumber: 43,
+    lineNumber: 45,
     columnNumber: 5
   }, this);
 }
 
 // server-assets-manifest:@remix-run/dev/assets-manifest
-var assets_manifest_default = { version: "2825afe3", entry: { module: "/build/entry.client-N3CFG3LV.js", imports: ["/build/_shared/chunk-P5YR5LFM.js", "/build/_shared/chunk-QHKQVQ6J.js", "/build/_shared/chunk-TK6KNGBM.js", "/build/_shared/chunk-IMDFIINT.js", "/build/_shared/chunk-WQGPB5ZT.js", "/build/_shared/chunk-JE7OEZ56.js"] }, routes: { root: { id: "root", parentId: void 0, path: "", index: void 0, caseSensitive: void 0, module: "/build/root-YUFHZ3EA.js", imports: void 0, hasAction: !1, hasLoader: !1, hasCatchBoundary: !1, hasErrorBoundary: !0 }, "routes/_index": { id: "routes/_index", parentId: "root", path: void 0, index: !0, caseSensitive: void 0, module: "/build/routes/_index-SLM5RJ3B.js", imports: void 0, hasAction: !1, hasLoader: !0, hasCatchBoundary: !1, hasErrorBoundary: !1 }, "routes/about": { id: "routes/about", parentId: "root", path: "about", index: void 0, caseSensitive: void 0, module: "/build/routes/about-EZZ65SQY.js", imports: void 0, hasAction: !1, hasLoader: !1, hasCatchBoundary: !1, hasErrorBoundary: !1 }, "routes/app": { id: "routes/app", parentId: "root", path: "app", index: void 0, caseSensitive: void 0, module: "/build/routes/app-7OL4KLG7.js", imports: ["/build/_shared/chunk-6DYQSZVH.js", "/build/_shared/chunk-CZGLH4KO.js", "/build/_shared/chunk-I5C3MQNK.js"], hasAction: !1, hasLoader: !1, hasCatchBoundary: !1, hasErrorBoundary: !1 }, "routes/app/_index": { id: "routes/app/_index", parentId: "routes/app", path: void 0, index: !0, caseSensitive: void 0, module: "/build/routes/app/_index-AEWAJCEH.js", imports: void 0, hasAction: !1, hasLoader: !1, hasCatchBoundary: !1, hasErrorBoundary: !1 }, "routes/app/user": { id: "routes/app/user", parentId: "routes/app", path: "user", index: void 0, caseSensitive: void 0, module: "/build/routes/app/user-THQFLHWG.js", imports: void 0, hasAction: !1, hasLoader: !1, hasCatchBoundary: !1, hasErrorBoundary: !1 }, "routes/auth": { id: "routes/auth", parentId: "root", path: "auth", index: void 0, caseSensitive: void 0, module: "/build/routes/auth-L7GT3V7T.js", imports: ["/build/_shared/chunk-JAS2VC4Y.js", "/build/_shared/chunk-I5C3MQNK.js"], hasAction: !1, hasLoader: !1, hasCatchBoundary: !1, hasErrorBoundary: !1 }, "routes/auth._index": { id: "routes/auth._index", parentId: "routes/auth", path: void 0, index: !0, caseSensitive: void 0, module: "/build/routes/auth._index-WES2NHDK.js", imports: void 0, hasAction: !1, hasLoader: !0, hasCatchBoundary: !1, hasErrorBoundary: !1 }, "routes/auth.sign-in._index": { id: "routes/auth.sign-in._index", parentId: "routes/auth", path: "sign-in", index: !0, caseSensitive: void 0, module: "/build/routes/auth.sign-in._index-2ZORTZUJ.js", imports: ["/build/_shared/chunk-SOJZ3V3V.js", "/build/_shared/chunk-ORECHP3L.js"], hasAction: !0, hasLoader: !1, hasCatchBoundary: !1, hasErrorBoundary: !1 }, "routes/auth.sign-in.onboard": { id: "routes/auth.sign-in.onboard", parentId: "routes/auth", path: "sign-in/onboard", index: void 0, caseSensitive: void 0, module: "/build/routes/auth.sign-in.onboard-6TCL2FEP.js", imports: ["/build/_shared/chunk-SOJZ3V3V.js", "/build/_shared/chunk-5KEXRVK6.js"], hasAction: !0, hasLoader: !0, hasCatchBoundary: !1, hasErrorBoundary: !1 }, "routes/auth.sign-in.onboard._index": { id: "routes/auth.sign-in.onboard._index", parentId: "routes/auth.sign-in.onboard", path: void 0, index: !0, caseSensitive: void 0, module: "/build/routes/auth.sign-in.onboard._index-P4FG3FKI.js", imports: void 0, hasAction: !1, hasLoader: !1, hasCatchBoundary: !1, hasErrorBoundary: !1 }, "routes/auth.sign-in.onboard.password": { id: "routes/auth.sign-in.onboard.password", parentId: "routes/auth.sign-in.onboard", path: "password", index: void 0, caseSensitive: void 0, module: "/build/routes/auth.sign-in.onboard.password-YR2QS6QN.js", imports: ["/build/_shared/chunk-ORECHP3L.js", "/build/_shared/chunk-CEVNSJUE.js"], hasAction: !0, hasLoader: !1, hasCatchBoundary: !1, hasErrorBoundary: !1 }, "routes/auth.sign-in.password": { id: "routes/auth.sign-in.password", parentId: "routes/auth", path: "sign-in/password", index: void 0, caseSensitive: void 0, module: "/build/routes/auth.sign-in.password-AX675JGC.js", imports: ["/build/_shared/chunk-5KEXRVK6.js", "/build/_shared/chunk-ORECHP3L.js", "/build/_shared/chunk-CEVNSJUE.js", "/build/_shared/chunk-CZGLH4KO.js"], hasAction: !0, hasLoader: !0, hasCatchBoundary: !1, hasErrorBoundary: !1 }, "routes/auth.verify": { id: "routes/auth.verify", parentId: "routes/auth", path: "verify", index: void 0, caseSensitive: void 0, module: "/build/routes/auth.verify-SFIKUY7P.js", imports: ["/build/_shared/chunk-CEVNSJUE.js", "/build/_shared/chunk-CZGLH4KO.js"], hasAction: !1, hasLoader: !0, hasCatchBoundary: !1, hasErrorBoundary: !1 } }, cssBundleHref: void 0, url: "/build/manifest-2825AFE3.js" };
+var assets_manifest_default = { version: "5ed3396c", entry: { module: "/build/entry.client-5ZBIOR7M.js", imports: ["/build/_shared/chunk-OEMKKXRM.js", "/build/_shared/chunk-JK2J5KJC.js", "/build/_shared/chunk-RQFEN56L.js", "/build/_shared/chunk-VIPVJV6J.js", "/build/_shared/chunk-5KL4PAQL.js"] }, routes: { root: { id: "root", parentId: void 0, path: "", index: void 0, caseSensitive: void 0, module: "/build/root-42KLWAW6.js", imports: void 0, hasAction: !1, hasLoader: !1, hasCatchBoundary: !1, hasErrorBoundary: !0 }, "routes/_index": { id: "routes/_index", parentId: "root", path: void 0, index: !0, caseSensitive: void 0, module: "/build/routes/_index-FD5GBRGY.js", imports: void 0, hasAction: !1, hasLoader: !0, hasCatchBoundary: !1, hasErrorBoundary: !1 }, "routes/about": { id: "routes/about", parentId: "root", path: "about", index: void 0, caseSensitive: void 0, module: "/build/routes/about-5LWV4GCJ.js", imports: void 0, hasAction: !1, hasLoader: !1, hasCatchBoundary: !1, hasErrorBoundary: !1 }, "routes/app": { id: "routes/app", parentId: "root", path: "app", index: void 0, caseSensitive: void 0, module: "/build/routes/app-BWHZWKAT.js", imports: ["/build/_shared/chunk-AJ6CB5Z3.js", "/build/_shared/chunk-EJTMMG3N.js"], hasAction: !1, hasLoader: !1, hasCatchBoundary: !1, hasErrorBoundary: !1 }, "routes/app/_index": { id: "routes/app/_index", parentId: "routes/app", path: void 0, index: !0, caseSensitive: void 0, module: "/build/routes/app/_index-RITZGN3Q.js", imports: void 0, hasAction: !1, hasLoader: !1, hasCatchBoundary: !1, hasErrorBoundary: !1 }, "routes/app/user": { id: "routes/app/user", parentId: "routes/app", path: "user", index: void 0, caseSensitive: void 0, module: "/build/routes/app/user-TYGK5LKV.js", imports: void 0, hasAction: !1, hasLoader: !1, hasCatchBoundary: !1, hasErrorBoundary: !1 }, "routes/auth": { id: "routes/auth", parentId: "root", path: "auth", index: void 0, caseSensitive: void 0, module: "/build/routes/auth-OW6MJMCM.js", imports: ["/build/_shared/chunk-DMULDC2W.js", "/build/_shared/chunk-EJTMMG3N.js"], hasAction: !1, hasLoader: !1, hasCatchBoundary: !1, hasErrorBoundary: !1 }, "routes/auth._index": { id: "routes/auth._index", parentId: "routes/auth", path: void 0, index: !0, caseSensitive: void 0, module: "/build/routes/auth._index-GKPGSVA5.js", imports: void 0, hasAction: !1, hasLoader: !0, hasCatchBoundary: !1, hasErrorBoundary: !1 }, "routes/auth.sign-in._index": { id: "routes/auth.sign-in._index", parentId: "routes/auth", path: "sign-in", index: !0, caseSensitive: void 0, module: "/build/routes/auth.sign-in._index-LZVLFSWU.js", imports: ["/build/_shared/chunk-SOJZ3V3V.js", "/build/_shared/chunk-W4EJMWRT.js"], hasAction: !0, hasLoader: !1, hasCatchBoundary: !1, hasErrorBoundary: !1 }, "routes/auth.sign-in.onboard": { id: "routes/auth.sign-in.onboard", parentId: "routes/auth", path: "sign-in/onboard", index: void 0, caseSensitive: void 0, module: "/build/routes/auth.sign-in.onboard-MIMOPSLI.js", imports: ["/build/_shared/chunk-SOJZ3V3V.js", "/build/_shared/chunk-4BHUUGM6.js"], hasAction: !0, hasLoader: !0, hasCatchBoundary: !1, hasErrorBoundary: !1 }, "routes/auth.sign-in.onboard._index": { id: "routes/auth.sign-in.onboard._index", parentId: "routes/auth.sign-in.onboard", path: void 0, index: !0, caseSensitive: void 0, module: "/build/routes/auth.sign-in.onboard._index-FXVVEVYT.js", imports: void 0, hasAction: !1, hasLoader: !1, hasCatchBoundary: !1, hasErrorBoundary: !1 }, "routes/auth.sign-in.onboard.password": { id: "routes/auth.sign-in.onboard.password", parentId: "routes/auth.sign-in.onboard", path: "password", index: void 0, caseSensitive: void 0, module: "/build/routes/auth.sign-in.onboard.password-5T5H3O5I.js", imports: ["/build/_shared/chunk-W4EJMWRT.js", "/build/_shared/chunk-65B4HZGS.js", "/build/_shared/chunk-EJTMMG3N.js"], hasAction: !0, hasLoader: !1, hasCatchBoundary: !1, hasErrorBoundary: !1 }, "routes/auth.sign-in.password": { id: "routes/auth.sign-in.password", parentId: "routes/auth", path: "sign-in/password", index: void 0, caseSensitive: void 0, module: "/build/routes/auth.sign-in.password-YJCYXMN5.js", imports: ["/build/_shared/chunk-4BHUUGM6.js", "/build/_shared/chunk-65B4HZGS.js"], hasAction: !0, hasLoader: !0, hasCatchBoundary: !1, hasErrorBoundary: !1 }, "routes/auth.verify": { id: "routes/auth.verify", parentId: "routes/auth", path: "verify", index: void 0, caseSensitive: void 0, module: "/build/routes/auth.verify-SJKNC6H5.js", imports: void 0, hasAction: !1, hasLoader: !0, hasCatchBoundary: !1, hasErrorBoundary: !1 } }, cssBundleHref: void 0, url: "/build/manifest-5ED3396C.js" };
 
 // server-entry-module:@remix-run/dev/server-build
 var assetsBuildDirectory = "public/build", future = { unstable_cssModules: !1, unstable_cssSideEffectImports: !1, unstable_dev: !1, unstable_postcss: !1, unstable_tailwind: !1, unstable_vanillaExtract: !1, v2_errorBoundary: !1, v2_meta: !0, v2_routeConvention: !0 }, publicPath = "/build/", entry = { module: entry_server_exports }, routes = {

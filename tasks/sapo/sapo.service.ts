@@ -6,10 +6,10 @@ import got from 'got-cjs'
 import { flatten, toString } from 'lodash'
 import puppeteer from 'puppeteer'
 
-import { PUPPETEER_CONFIG, SAPO_PASS, SAPO_USER } from '~/config/app-config'
 import prisma, { createChunkTransactions } from '~/libs/prisma.server'
 import { normalizePhoneNumber } from '~/utils/account'
 
+import { PUPPETEER_CONFIG, SAPO_PASS, SAPO_USER } from './sapo.config'
 import { SAPO_TENANT } from './sapo.const'
 import type {
   SapoAccount,
