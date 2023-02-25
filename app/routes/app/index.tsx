@@ -1,3 +1,4 @@
+import { Container } from '@mantine/core'
 import type { LoaderArgs, V2_MetaFunction } from '@remix-run/node'
 import { redirect } from '@remix-run/node'
 import { Outlet, useLoaderData } from '@remix-run/react'
@@ -28,10 +29,10 @@ export default function App() {
       <AppBar
         links={[
           { label: 'Đơn hàng', link: '/app/orders' },
-          { label: 'Tài khoản', link: '/app/account' },
+          { label: 'Tài khoản', link: '/app/user' },
         ]}
       />
-      <Outlet />
+      <Container my={40}><Outlet /></Container>
     </AuthProvider>
   )
 }

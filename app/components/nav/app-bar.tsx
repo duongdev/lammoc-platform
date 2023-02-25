@@ -1,95 +1,111 @@
-import type { FC } from 'react'
+import type { FC} from 'react';
+import { useEffect } from 'react'
 
 import {
-  Box,
   Burger,
-  Center,
   Container,
   createStyles,
   Group,
   Header,
   Image,
-  Menu,
+  Paper,
+  Transition,
 } from '@mantine/core'
 import { useDisclosure } from '@mantine/hooks'
-import { Link } from '@remix-run/react'
-import { IconChevronDown } from '@tabler/icons-react'
+import { Link, NavLink, useLocation } from '@remix-run/react'
+
+const HEADER_HEIGHT = 56
 
 export type HeaderProps = {
   links: {
     link: string
     label: string
-    links?: { link: string; label: string }[]
   }[]
   logoLink?: string
 }
 
 const AppBar: FC<HeaderProps> = ({ links, logoLink = '/' }) => {
-  const { classes } = useStyles()
-  const [opened, { toggle }] = useDisclosure(false)
+  const [opened, { toggle, close }] = useDisclosure(false)
+  const { classes, cx } = useStyles()
+  const location = useLocation()
 
   const items = links.map((link) => {
-    const menuItems = link.links?.map((item) => (
-      <Menu.Item key={item.link}>{item.label}</Menu.Item>
-    ))
-
-    if (menuItems) {
-      return (
-        <Menu exitTransitionDuration={0} key={link.label} trigger="hover">
-          <Menu.Target>
-            <Link className={classes.link} to={link.link}>
-              <Center>
-                <span className={classes.linkLabel}>{link.label}</span>
-                <IconChevronDown size={12} stroke={1.5} />
-              </Center>
-            </Link>
-          </Menu.Target>
-          <Menu.Dropdown>{menuItems}</Menu.Dropdown>
-        </Menu>
-      )
-    }
-
     return (
-      <Link className={classes.link} key={link.label} to={link.link}>
+      <NavLink
+        key={link.label}
+        to={link.link}
+        className={({ isActive }) =>
+          cx(classes.link, {
+            [classes.linkActive]: isActive,
+          })
+        }
+      >
         {link.label}
-      </Link>
+      </NavLink>
     )
   })
 
-  console.log(items)
+  useEffect(() => {
+    close()
+  }, [close, location])
 
   return (
-    <Header height={56}>
-      <Container sx={{ height: '100%' }}>
-        <Box className={classes.inner}>
-          <Link
-            title="Store Làm Mộc"
-            to={logoLink}
-          >
-            <Image height={36} src="/img/slm-logo.png" width="auto" />
-          </Link>
+    <Header className={classes.root} height={HEADER_HEIGHT}>
+      <Container className={classes.header}>
+        <Link title="Store Làm Mộc" to={logoLink}>
+          <Image height={36} src="/img/slm-logo.png" width="auto" />
+        </Link>
 
-          <Group className={classes.links} spacing={5}>
-            {items}
-          </Group>
-          <Burger
-            className={classes.burger}
-            onClick={toggle}
-            opened={opened}
-            size="sm"
-          />
-        </Box>
+        <Group className={classes.links} spacing={5}>
+          {items}
+        </Group>
+
+        <Burger
+          className={classes.burger}
+          onClick={toggle}
+          opened={opened}
+          size="sm"
+        />
+
+        <Transition duration={200} mounted={opened} transition="pop-top-right">
+          {(styles) => (
+            <Paper withBorder className={classes.dropdown} style={styles}>
+              {items}
+            </Paper>
+          )}
+        </Transition>
       </Container>
     </Header>
   )
 }
 
 const useStyles = createStyles((theme) => ({
-  inner: {
-    height: 56,
+  root: {
+    position: 'relative',
+    zIndex: 1,
+  },
+
+  dropdown: {
+    position: 'absolute',
+    top: HEADER_HEIGHT,
+    left: 0,
+    right: 0,
+    zIndex: 0,
+    borderTopRightRadius: 0,
+    borderTopLeftRadius: 0,
+    borderTopWidth: 0,
+    overflow: 'hidden',
+
+    [theme.fn.largerThan('sm')]: {
+      display: 'none',
+    },
+  },
+
+  header: {
     display: 'flex',
     justifyContent: 'space-between',
     alignItems: 'center',
+    height: '100%',
   },
 
   links: {
@@ -123,10 +139,22 @@ const useStyles = createStyles((theme) => ({
           ? theme.colors.dark[6]
           : theme.colors.gray[0],
     },
+
+    [theme.fn.smallerThan('sm')]: {
+      borderRadius: 0,
+      padding: theme.spacing.md,
+    },
   },
 
-  linkLabel: {
-    marginRight: 5,
+  linkActive: {
+    '&, &:hover': {
+      backgroundColor: theme.fn.variant({
+        variant: 'light',
+        color: theme.primaryColor,
+      }).background,
+      color: theme.fn.variant({ variant: 'light', color: theme.primaryColor })
+        .color,
+    },
   },
 }))
 
