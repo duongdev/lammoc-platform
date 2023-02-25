@@ -94,8 +94,6 @@ export default function SignIn() {
   )
   const phoneRef = useRef<HTMLInputElement>(null)
 
-  console.log(transition, actionData)
-
   const isSubmitting = useMemo(
     () => transition.type !== 'idle' || isAuthenticating,
     [isAuthenticating, transition.type],
