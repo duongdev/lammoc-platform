@@ -22,7 +22,7 @@ import type {
 import type { PaginationInput } from './sapo.util'
 import { getPaginationOptions } from './sapo.util'
 
-const TRANSACTION_SIZE = 500
+const TRANSACTION_SIZE = 250
 
 export class Sapo {
   private sapo: Got

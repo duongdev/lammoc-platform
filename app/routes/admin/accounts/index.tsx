@@ -1,13 +1,28 @@
 import type { FC } from 'react'
 
-import { useAuth } from '~/contexts/auth-context'
+import { Box, Stack } from '@mantine/core'
+import type { Account } from '@prisma/client'
+import { useLoaderData } from '@remix-run/react'
+
+import prisma from '~/libs/prisma.server'
+
+export async function loader() {
+  const accounts = await prisma.account.findMany()
+  return { accounts }
+}
 
 export type AccountsProps = {}
 
 const Accounts: FC<AccountsProps> = () => {
-  const { account } = useAuth()
+  const { accounts } = useLoaderData<{ accounts: Account[] }>()
 
-  return <>accounts</>
+  return (
+    <Stack spacing="md">
+      {accounts.map((account) => (
+        <Box key={account.id}>{account.name}</Box>
+      ))}
+    </Stack>
+  )
 }
 
 export default Accounts

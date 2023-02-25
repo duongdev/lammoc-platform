@@ -14,6 +14,7 @@ export async function loader({ request }: LoaderArgs) {
   const account = await getAuthAccount(request)
 
   if (!(account && account.customer)) {
+    console.warn('account not found in session', { account })
     const searchParams = new URLSearchParams([['redirectTo', request.url]])
     throw redirect(`/auth/sign-in?${searchParams}`)
   }
@@ -32,7 +33,9 @@ export default function App() {
           { label: 'Tài khoản', link: '/app/user' },
         ]}
       />
-      <Container my={40}><Outlet /></Container>
+      <Container my={40}>
+        <Outlet />
+      </Container>
     </AuthProvider>
   )
 }

@@ -13,7 +13,7 @@ export async function loader({ request }: LoaderArgs) {
   const account = await getAuthAccount(request)
 
   if (!account?.roles.some((role) => ADMIN_ROLES.includes(role))) {
-    return redirect('/app')
+    return redirect('/auth')
   }
 
   return { account }
@@ -29,7 +29,7 @@ const Admin: FC<AdminProps> = () => {
   }
 
   return (
-    <AuthProvider account={data.account as Account}>
+    <AuthProvider account={data.account as Account} roles={data.account.roles}>
       <Outlet />
     </AuthProvider>
   )

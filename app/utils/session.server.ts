@@ -13,7 +13,7 @@ export async function signIn({
   phone: string
   password: string
 }) {
-  const account = await prisma.account.findUnique({ where: { phone } })
+  const account = await prisma.account.findFirst({ where: { phone } })
 
   if (!account) {
     return null
@@ -74,6 +74,9 @@ export async function requireAccountId(
 ) {
   const session = await getAuthSession(request)
   const accountId = session.get(ACCOUNT_ID)
+
+  console.log({ session, accountId })
+
   if (!accountId || typeof accountId !== 'string') {
     const searchParams = new URLSearchParams([['redirectTo', redirectTo]])
     throw redirect(`/auth/sign-in?${searchParams}`)
@@ -88,7 +91,7 @@ export async function getAuthAccount(request: Request) {
   }
 
   try {
-    const account = await prisma.account.findUnique({
+    const account = await prisma.account.findFirst({
       where: { id: accountId },
       include: { customer: true },
     })

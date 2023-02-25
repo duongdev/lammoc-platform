@@ -1,12 +1,13 @@
 import Debug from 'debug'
 
 import { Sapo } from './sapo.service'
+import type { SapoTenant } from './sapo.type'
 
 const log = Debug('Sapo:sync-sapo')
 
-export const main = async () => {
+export const sync = async (tenant: SapoTenant) => {
   log('Sync sapo data...')
-  const sapo = new Sapo('thichtulam')
+  const sapo = new Sapo(tenant)
 
   const { account } = await sapo.profiles()
   log(`Signed in as [${account.id}] ${account.full_name}`)
@@ -24,4 +25,4 @@ export const main = async () => {
   await sapo.syncOrders()
 }
 
-main()
+sync('store-lam-moc').then(() => sync('thichtulam'))
