@@ -14,9 +14,9 @@ import {
 import { hashSync } from '~/libs/bcrypt.server'
 import { firebaseAdmin } from '~/libs/firebase.server'
 import prisma from '~/libs/prisma.server'
+import { createAuthSession } from '~/services/session.server'
 import { normalizePhoneNumber } from '~/utils/account'
 import { getFormData } from '~/utils/forms'
-import { createUserSession } from '~/utils/session.server'
 
 export async function action({ request }: ActionArgs) {
   const url = new URL(request.url)
@@ -106,7 +106,7 @@ export async function action({ request }: ActionArgs) {
       })
     }
 
-    return createUserSession(account.id, '/app')
+    return createAuthSession({ accountId: account.id, redirectTo: '/app' })
   } catch (error: any) {
     console.error(error)
     return json(

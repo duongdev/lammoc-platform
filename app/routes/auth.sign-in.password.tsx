@@ -16,14 +16,11 @@ import {
 } from '@remix-run/react'
 
 import LockedAuthPhoneInput from '~/components/locked-auth-phone'
-import {
-  INVALID_AUTH_CREDENTIALS,
-} from '~/config/messages'
-import {
-  normalizePhoneNumber,
-} from '~/utils/account'
+import { INVALID_AUTH_CREDENTIALS } from '~/config/messages'
+import { signIn } from '~/services/auth.server'
+import { createAuthSession } from '~/services/session.server'
+import { normalizePhoneNumber } from '~/utils/account'
 import { getFormData } from '~/utils/forms'
-import { createUserSession, signIn } from '~/utils/session.server'
 
 export const loader: LoaderFunction = async ({ request }) => {
   const url = new URL(request.url)
@@ -52,11 +49,11 @@ export async function action({ request }: ActionArgs) {
     return json({ errorMessage: INVALID_AUTH_CREDENTIALS }, { status: 400 })
   }
 
-  return createUserSession(account.id, '/app')
+  return createAuthSession({ accountId: account.id, redirectTo: '/app' })
 }
 
 export default function AuthSignInPassword() {
-  const actionData = useActionData<typeof action>()
+  const actionData = useActionData()
   const { state } = useTransition()
   const [searchParams] = useSearchParams()
 

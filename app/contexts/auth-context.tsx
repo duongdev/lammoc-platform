@@ -1,25 +1,24 @@
 import type { FC, ReactNode } from 'react'
 import { createContext, useContext } from 'react'
 
-import type { Account, AccountRole, Customer } from '@prisma/client'
+import type { Account, AccountRole } from '@prisma/client'
 
 export type AuthContextValue = {
   account?: Account
-  customer?: Customer
+  customerPhones: string
   roles: AccountRole[]
 }
 
 const AuthContext = createContext<AuthContextValue>(null as any)
 
 export const useAuth = () => {
-  const { account, customer } = useContext(AuthContext)
+  const { account, customerPhones = [] } = useContext(AuthContext)
 
   return {
     account,
     $account: account!,
     roles: account?.roles ?? [],
-    customer,
-    $customer: customer!,
+    customerPhones,
   }
 }
 
