@@ -1,20 +1,34 @@
 import type { FC } from 'react'
 
-import { Box, Container, Stack, Title } from '@mantine/core'
-import type { ActionArgs } from '@remix-run/node'
-import { useFetcher, useLoaderData } from '@remix-run/react'
+import { Box, Container, Pagination, Stack, Title } from '@mantine/core'
+import type { ActionArgs, LoaderArgs } from '@remix-run/node'
+import {
+  useFetcher,
+  useLoaderData,
+  useNavigate,
+  useSearchParams,
+} from '@remix-run/react'
 
 import prisma from '~/libs/prisma.server'
 import { createAuthSession, getAuthSession } from '~/services/session.server'
+import { getSearchParams } from '~/utils/common'
 
-export const loader = async () => {
+const PER_PAGE = 20
+
+export const loader = async ({ request }: LoaderArgs) => {
+  const searchParams = getSearchParams(request)
+  const page = +(searchParams.get('page') ?? 1)
+
   const customers = await prisma.customer.findMany({
     orderBy: { orders: { _count: 'desc' } },
-    include: { orders: true, accounts: true },
-    take: process.env.NODE_ENV === 'development' ? 50 : undefined,
+    include: { _count: true },
+    take: PER_PAGE,
+    skip: (page - 1) * PER_PAGE,
   })
 
-  return { customers }
+  const totalCount = await prisma.customer.count()
+
+  return { customers, totalCount }
 }
 
 export const action = async ({ request }: ActionArgs) => {
@@ -29,8 +43,6 @@ export const action = async ({ request }: ActionArgs) => {
     return null
   }
 
-  console.log('customerPhones', customer.phone)
-
   return createAuthSession({
     accountId,
     __unsafeDeveloperOverridesPhones: customer.phone,
@@ -41,18 +53,19 @@ export const action = async ({ request }: ActionArgs) => {
 export type CustomerListProps = {}
 
 const CustomerList: FC<CustomerListProps> = () => {
-  const { customers } = useLoaderData<typeof loader>()
+  const { customers, totalCount } = useLoaderData<typeof loader>()
   const fetcher = useFetcher()
+  const [search] = useSearchParams()
+  const navigate = useNavigate()
+  const page = +(search.get('page') ?? 1)
 
   const handleSignInAsCustomer = (customerId: string) => {
     return fetcher.submit({ customerId }, { method: 'post' })
   }
 
   return (
-    <Container>
-      <Title mb={40} mt={40}>
-        Khách hàng ({customers.length})
-      </Title>
+    <Container sx={{ marginTop: 40, marginBottom: 40 }}>
+      <Title mb={40}>Khách hàng ({totalCount})</Title>
 
       <Stack spacing={16}>
         {customers.map((customer) => (
@@ -61,10 +74,18 @@ const CustomerList: FC<CustomerListProps> = () => {
             onClick={() => handleSignInAsCustomer(customer.id)}
           >
             [{customer.tenant}] <b>{customer.name}</b>{' '}
-            {customer.phone.join(' - ')} - {customer.orders.length} đơn
+            {customer.phone.join(' - ')} - {customer._count.orders} đơn .{' '}
+            {/* {customer._count} */}
           </Box>
         ))}
       </Stack>
+
+      <Pagination
+        mt={32}
+        onChange={(page) => navigate({ search: `page=${page}` })}
+        page={page}
+        total={totalCount / PER_PAGE}
+      />
     </Container>
   )
 }
