@@ -1,3 +1,5 @@
+import type { Tenant } from '@prisma/client'
+
 import prisma from '~/libs/prisma.server'
 
 import { getMaxTake } from './common.server'
@@ -8,13 +10,19 @@ export const getCustomerOrders = async (
     skip = 0,
     status,
     take = 20,
+    tenant,
   }: {
     take?: number
     skip?: number
     status?: string
+    tenant?: Tenant
   },
 ) => {
-  const where = { customer: { phone: { hasSome: customerPhones } }, status }
+  const where = {
+    customer: { phone: { hasSome: customerPhones } },
+    status,
+    tenant,
+  }
 
   const [orders, totalCount] = await prisma.$transaction([
     prisma.order.findMany({

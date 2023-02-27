@@ -32,6 +32,7 @@ export async function loader({ request }: LoaderArgs) {
 
   const page = +(searchParams.get('page') ?? 1)
   const status = searchParams.get('status') ?? undefined
+  const tenant: any = searchParams.get('tenant') ?? undefined
 
   const { orders, totalCount, totalPages } = await getCustomerOrders(
     customerPhones,
@@ -39,6 +40,7 @@ export async function loader({ request }: LoaderArgs) {
       skip: (page - 1) * PER_PAGE,
       take: PER_PAGE,
       status: status === 'all' ? undefined : status,
+      tenant: tenant === 'all' ? undefined : tenant,
     },
   )
 
