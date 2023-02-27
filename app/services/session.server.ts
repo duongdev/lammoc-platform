@@ -96,8 +96,8 @@ export const getAuthSession = async (request: Request) => {
   const customerPhones = session.get(CUSTOMER_PHONES) ?? ''
 
   return {
-    accountId: typeof accountId === 'string' ? accountId : null,
-    customerPhones: customerPhones.split(','),
+    accountId: typeof accountId === 'string' ? (accountId as string) : null,
+    customerPhones: customerPhones.split(',') as string[],
   }
 }
 
