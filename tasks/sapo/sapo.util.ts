@@ -1,4 +1,8 @@
-import type { OptionsWithPagination, SearchParameters } from 'got-cjs'
+import type {
+  FilterData,
+  OptionsWithPagination,
+  SearchParameters,
+} from 'got-cjs'
 
 export const DEFAULT_PER_PAGE = 250
 
@@ -12,9 +16,12 @@ export const getPaginationOptions = <T = unknown, R = unknown>({
   itemsKey,
   perPage = DEFAULT_PER_PAGE,
   searchParams = {},
+  shouldContinue,
 }: PaginationInput & {
   itemsKey?: string
   searchParams?: SearchParameters | URLSearchParams
+  // eslint-disable-next-line no-unused-vars
+  shouldContinue?: (data: FilterData<T>) => boolean
 } = {}): OptionsWithPagination<T, R> => ({
   searchParams: {
     limit: perPage,
@@ -46,5 +53,6 @@ export const getPaginationOptions = <T = unknown, R = unknown>({
       return JSON.parse(response.body)[key ?? ''] ?? []
     },
     ...(countLimit ? { countLimit } : {}),
+    ...(shouldContinue ? { shouldContinue } : {}),
   },
 })

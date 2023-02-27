@@ -349,12 +349,32 @@ export class Sapo {
     this.log(`Synced ${transaction.proceeded()} products`)
   }
 
-  async syncOrders(options?: PaginationInput) {
+  async syncOrders({
+    onlyModified,
+    ...options
+  }: PaginationInput & { onlyModified?: boolean } = {}) {
     this.log('Sync all orders', options)
+
+    const lastSync = (
+      await prisma.order.findFirst({
+        orderBy: { syncedAt: 'desc' },
+      })
+    )?.syncedAt
+
+    this.log(`Last sync:`, lastSync)
 
     const paginate = this.sapo.paginate<SapoOrderItem>(
       'orders.json',
-      getPaginationOptions(options),
+      getPaginationOptions({
+        searchParams: {
+          sort_by: 'modified_on desc',
+        },
+        shouldContinue:
+          onlyModified && lastSync
+            ? (data) => new Date(data.item.modified_on) > lastSync
+            : undefined,
+        ...options,
+      }),
     )
 
     const transaction = createChunkTransactions<Order | OrderLineItem>({
