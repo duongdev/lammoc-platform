@@ -22,6 +22,9 @@ export const getCustomerOrders = async (
       include: {
         customer: true,
         deliveryFee: true,
+        lineItems: {
+          include: { variant: { include: { product: true } } },
+        },
       },
       orderBy: { createdAt: 'desc' },
       take: getMaxTake(take),

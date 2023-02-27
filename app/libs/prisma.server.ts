@@ -31,8 +31,8 @@ export const createChunkTransactions = <T = unknown>(
     clear()
   }
 
-  const add = async (transaction: Prisma.PrismaPromise<T>) => {
-    pending.push(transaction)
+  const add = async (...transaction: Prisma.PrismaPromise<T>[]) => {
+    pending.push(...transaction)
 
     if (pending.length >= size) {
       await proceed()

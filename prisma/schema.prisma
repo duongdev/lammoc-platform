@@ -28,12 +28,12 @@ model Account {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  phone         String    @unique
+  phone         String        @unique
   password      String
   name          String
   lastLoggedIn  DateTime?
-  phoneVerified Boolean   @default(false)
-  roles AccountRole[]
+  phoneVerified Boolean       @default(false)
+  roles         AccountRole[]
 
   customer   Customer? @relation(fields: [customerId], references: [id])
   customerId String?
@@ -48,7 +48,7 @@ enum AccountRole {
 model Customer {
   id        String   @id @default(cuid())
   createdAt DateTime @default(now())
-  updatedAt DateTime
+  updatedAt DateTime @default(now())
   syncedAt  DateTime @updatedAt
   tenant    Tenant
 
@@ -65,7 +65,7 @@ model Customer {
 model Order {
   id        String   @id
   createdAt DateTime @default(now())
-  updatedAt DateTime
+  updatedAt DateTime @default(now())
   syncedAt  DateTime @updatedAt
   tenant    Tenant
 
@@ -87,16 +87,17 @@ model Order {
   tags              String[]
   channel           String?
 
-  customer           Customer          @relation(fields: [customerId], references: [id])
+  customer           Customer          @relation(fields: [customerId], references: [id], onUpdate: Cascade, onDelete: Cascade)
   customerId         String
-  deliveryFee        OrderDeliveryFee? @relation(fields: [orderDeliveryFeeId], references: [id])
+  deliveryFee        OrderDeliveryFee? @relation(fields: [orderDeliveryFeeId], references: [id], onUpdate: Cascade, onDelete: Cascade)
   orderDeliveryFeeId String?
+  lineItems          OrderLineItem[]
 }
 
 model OrderLineItem {
   id        String   @id
   createdAt DateTime @default(now())
-  updatedAt DateTime
+  updatedAt DateTime @default(now())
   syncedAt  DateTime @updatedAt
   tenant    Tenant
 
@@ -111,16 +112,18 @@ model OrderLineItem {
   lineAmount                Float?
   distributedDiscountAmount Float?
 
-  product          Product        @relation(fields: [productId], references: [id])
+  product          Product        @relation(fields: [productId], references: [id], onUpdate: NoAction, onDelete: NoAction)
   productId        String
-  variant          ProductVariant @relation(fields: [productVariantId], references: [id])
+  variant          ProductVariant @relation(fields: [productVariantId], references: [id], onUpdate: NoAction, onDelete: NoAction)
   productVariantId String
+  order            Order          @relation(fields: [orderId], references: [id], onUpdate: Cascade, onDelete: Cascade)
+  orderId          String
 }
 
 model Product {
   id        String   @id
   createdAt DateTime @default(now())
-  updatedAt DateTime
+  updatedAt DateTime @default(now())
   syncedAt  DateTime @updatedAt
   tenant    Tenant
 
@@ -130,9 +133,9 @@ model Product {
   images      String[]
 
   productCategoryId String?
-  category          ProductCategory? @relation(fields: [productCategoryId], references: [id])
+  category          ProductCategory? @relation(fields: [productCategoryId], references: [id], onUpdate: Cascade, onDelete: Cascade)
   productBrandId    String?
-  brand             ProductBrand?    @relation(fields: [productBrandId], references: [id])
+  brand             ProductBrand?    @relation(fields: [productBrandId], references: [id], onUpdate: Cascade, onDelete: Cascade)
   productVariants   ProductVariant[]
   orderLineItems    OrderLineItem[]
 }
@@ -140,7 +143,7 @@ model Product {
 model ProductVariant {
   id        String   @id
   createdAt DateTime @default(now())
-  updatedAt DateTime
+  updatedAt DateTime @default(now())
   syncedAt  DateTime @updatedAt
   tenant    Tenant
 
@@ -151,11 +154,11 @@ model ProductVariant {
   unit        String?
   images      String[]
 
-  product           Product          @relation(fields: [productId], references: [id])
+  product           Product          @relation(fields: [productId], references: [id], onUpdate: Cascade, onDelete: Cascade)
   productId         String
-  category          ProductCategory? @relation(fields: [productCategoryId], references: [id])
+  category          ProductCategory? @relation(fields: [productCategoryId], references: [id], onUpdate: Cascade, onDelete: Cascade)
   productCategoryId String?
-  brand             ProductBrand?    @relation(fields: [productBrandId], references: [id])
+  brand             ProductBrand?    @relation(fields: [productBrandId], references: [id], onUpdate: Cascade, onDelete: Cascade)
   productBrandId    String?
   orderLineItems    OrderLineItem[]
 }
@@ -163,7 +166,7 @@ model ProductVariant {
 model ProductBrand {
   id        String   @id
   createdAt DateTime @default(now())
-  updatedAt DateTime
+  updatedAt DateTime @default(now())
   syncedAt  DateTime @updatedAt
   tenant    Tenant
 
@@ -176,7 +179,7 @@ model ProductBrand {
 model ProductCategory {
   id        String   @id
   createdAt DateTime @default(now())
-  updatedAt DateTime
+  updatedAt DateTime @default(now())
   syncedAt  DateTime @updatedAt
   tenant    Tenant
 

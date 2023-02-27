@@ -1,8 +1,19 @@
 import type { FC } from 'react'
+import { useCallback } from 'react'
 
-import { Box, Pagination, Space, Stack, Tabs, Title } from '@mantine/core'
+import {
+  Box,
+  Group,
+  Pagination,
+  SegmentedControl,
+  Space,
+  Stack,
+  Tabs,
+  Title,
+} from '@mantine/core'
+import { Tenant } from '@prisma/client'
 import type { LoaderArgs, V2_MetaFunction } from '@remix-run/node'
-import { useNavigate, useSearchParams } from '@remix-run/react'
+import { useSearchParams } from '@remix-run/react'
 
 import OrderItem from '~/components/order-item'
 import { getCustomerOrders } from '~/services/order.server'
@@ -27,7 +38,7 @@ export async function loader({ request }: LoaderArgs) {
     {
       skip: (page - 1) * PER_PAGE,
       take: PER_PAGE,
-      status,
+      status: status === 'all' ? undefined : status,
     },
   )
 
@@ -43,20 +54,48 @@ export async function loader({ request }: LoaderArgs) {
 export type OrdersIndexProps = {}
 
 const OrdersIndex: FC<OrdersIndexProps> = () => {
-  const navigate = useNavigate()
-  const [params] = useSearchParams()
+  const [params, setParams] = useSearchParams()
   const { orders, totalPages, page } = useSuperLoaderData<typeof loader>()
 
   const status = params.get('status') ?? 'all'
+  const tenant = params.get('tenant') ?? 'all'
+
+  const handleFilterChange = useCallback(
+    (name: string, action?: 'reset_page') => (value: any) => {
+      if (action === 'reset_page') {
+        params.delete('page')
+      }
+
+      if (value === 'all') {
+        params.delete(name)
+      } else {
+        params.set(name, value)
+      }
+
+      setParams(params)
+    },
+    [params, setParams],
+  )
 
   return (
     <>
-      <Title>Đơn hàng của bạn</Title>
+      <Group position="apart">
+        <Title>Đơn hàng của bạn</Title>
+        <SegmentedControl
+          onChange={handleFilterChange('tenant', 'reset_page')}
+          value={tenant}
+          data={[
+            { label: 'Tất cả', value: 'all' },
+            { label: 'Store Làm Mộc', value: Tenant.STORE_LAM_MOC },
+            { label: 'Thích Tự Làm', value: Tenant.THICH_TU_LAM },
+          ]}
+        />
+      </Group>
 
       <Box mt={24}>
         <Tabs
           defaultValue="all"
-          onTabChange={(value) => navigate(`.?status=${value}`)}
+          onTabChange={handleFilterChange('status', 'reset_page')}
           value={status}
         >
           <Tabs.List>
@@ -64,7 +103,7 @@ const OrdersIndex: FC<OrdersIndexProps> = () => {
             <Tabs.Tab value="new">Đơn mới</Tabs.Tab>
             <Tabs.Tab value="processing">Đang xử lý</Tabs.Tab>
             <Tabs.Tab value="completed">Hoàn thành</Tabs.Tab>
-            <Tabs.Tab value="canceled">Đã huỷ</Tabs.Tab>
+            <Tabs.Tab value="cancelled">Đã huỷ</Tabs.Tab>
           </Tabs.List>
         </Tabs>
 
@@ -76,7 +115,7 @@ const OrdersIndex: FC<OrdersIndexProps> = () => {
           <Space />
 
           <Pagination
-            onChange={(page) => navigate(`?page=${page}`)}
+            onChange={handleFilterChange('page')}
             page={page}
             total={totalPages}
           />

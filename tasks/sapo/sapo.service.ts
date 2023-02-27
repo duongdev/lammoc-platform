@@ -1,4 +1,4 @@
-import type { Order, Prisma, Product } from '@prisma/client'
+import type { Order, OrderLineItem, Prisma, Product } from '@prisma/client'
 import type { Debugger } from 'debug'
 import Debug from 'debug'
 import type { Got } from 'got-cjs'
@@ -258,6 +258,19 @@ export class Sapo {
     })
 
     for await (const product of paginate) {
+      const category = {
+        id: toString(product.category_id),
+        code: product.category_code,
+        name: product.category,
+        tenant: SAPO_TENANT[this.tenant],
+        updatedAt: new Date(),
+      }
+      const brand = {
+        id: toString(product.brand_id),
+        name: product.brand,
+        tenant: SAPO_TENANT[this.tenant],
+        updatedAt: new Date(),
+      }
       const productData: Prisma.ProductCreateInput = {
         id: toString(product.id),
         name: product.name,
@@ -266,18 +279,16 @@ export class Sapo {
           ? {
               connectOrCreate: {
                 where: { id: toString(product.brand_id) },
-                create: {
-                  id: toString(product.brand_id),
-                  name: product.brand,
-                  tenant: SAPO_TENANT[this.tenant],
-                  updatedAt: new Date(),
-                },
+                create: brand,
               },
             }
           : undefined,
         category: product.category_id
           ? {
-              connect: { id: toString(product.category_id) },
+              connectOrCreate: {
+                where: { id: toString(product.category_id) },
+                create: category,
+              },
             }
           : undefined,
         createdAt: new Date(product.created_on),
@@ -289,6 +300,39 @@ export class Sapo {
           .filter((t) => !!t),
         images:
           product.images.map((img) => img.full_path).filter((i) => !!i) ?? [],
+        productVariants: {
+          connectOrCreate: product.variants.map((variant) => ({
+            where: { id: toString(variant.id) },
+            create: {
+              id: toString(variant.id),
+              name: variant.name,
+              tenant: SAPO_TENANT[this.tenant],
+              updatedAt: new Date(variant.modified_on),
+              barcode: variant.barcode,
+              brand: product.brand_id
+                ? {
+                    connectOrCreate: {
+                      where: { id: toString(product.brand_id) },
+                      create: brand,
+                    },
+                  }
+                : undefined,
+              category: product.category_id
+                ? {
+                    connectOrCreate: {
+                      where: { id: toString(product.category_id) },
+                      create: category,
+                    },
+                  }
+                : undefined,
+              createdAt: new Date(variant.created_on),
+              description: variant.description,
+              images: (variant.images ?? []).map((image) => image.full_path),
+              sku: variant.sku,
+              unit: variant.unit ?? null,
+            },
+          })),
+        },
       }
 
       await transaction.add(
@@ -313,7 +357,7 @@ export class Sapo {
       getPaginationOptions(options),
     )
 
-    const transaction = createChunkTransactions<Order>({
+    const transaction = createChunkTransactions<Order | OrderLineItem>({
       size: TRANSACTION_SIZE,
       log: this.log,
     })
@@ -381,7 +425,90 @@ export class Sapo {
         tags: order.tags,
         totalTax: order.total_tax,
         updatedAt: new Date(order.modified_on),
+        lineItems: {
+          connectOrCreate: order.order_line_items.map((lineItem) => ({
+            where: { id: toString(lineItem.id) },
+            create: {
+              id: toString(lineItem.id),
+              price: lineItem.price,
+              tenant: SAPO_TENANT[this.tenant],
+              createdAt: new Date(lineItem.created_on),
+              updatedAt: new Date(lineItem.modified_on),
+              discountAmount: lineItem.discount_amount,
+              discountReason: lineItem.discount_reason,
+              discountValue: lineItem.discount_value,
+              distributedDiscountAmount: lineItem.distributed_discount_amount,
+              lineAmount: lineItem.line_amount,
+              note: lineItem.note,
+              quantity: lineItem.quantity,
+              // productId: toString(lineItem.product_id),
+              // productVariantId: toString(lineItem.variant_id),
+              taxAmount: lineItem.tax_amount,
+              taxRate: lineItem.tax_rate,
+              product: {
+                connectOrCreate: {
+                  where: { id: toString(lineItem.product_id) },
+                  create: {
+                    id: toString(lineItem.product_id),
+                    name: lineItem.product_name ?? '',
+                    tenant: SAPO_TENANT[this.tenant],
+                  },
+                },
+              },
+              variant: {
+                connectOrCreate: {
+                  where: { id: toString(lineItem.variant_id) },
+                  create: {
+                    id: toString(lineItem.variant_id),
+                    name: lineItem.variant_name ?? '',
+                    tenant: SAPO_TENANT[this.tenant],
+                    product: {
+                      connectOrCreate: {
+                        where: { id: toString(lineItem.product_id) },
+                        create: {
+                          id: toString(lineItem.product_id),
+                          name: lineItem.product_name ?? '',
+                          tenant: SAPO_TENANT[this.tenant],
+                        },
+                      },
+                    },
+                  },
+                },
+              },
+            },
+          })),
+        },
       }
+
+      // const lineItems = order.order_line_items.map((lineItem) => {
+      //   const data = {
+      //     id: toString(lineItem.id),
+      //     price: lineItem.price,
+      //     tenant: SAPO_TENANT[this.tenant],
+      //     createdAt: new Date(lineItem.created_on),
+      //     updatedAt: new Date(lineItem.modified_on),
+      //     discountAmount: lineItem.discount_amount,
+      //     discountReason: lineItem.discount_reason,
+      //     discountValue: lineItem.discount_value,
+      //     distributedDiscountAmount: lineItem.distributed_discount_amount,
+      //     lineAmount: lineItem.line_amount,
+      //     note: lineItem.note,
+      //     quantity: lineItem.quantity,
+      //     // productId: toString(lineItem.product_id),
+      //     // productVariantId: toString(lineItem.variant_id),
+      //     product: { connect: { id: toString(lineItem.product_id) } },
+      //     variant: { connect: { id: toString(lineItem.variant_id) } },
+
+      //     taxAmount: lineItem.tax_amount,
+      //     taxRate: lineItem.tax_rate,
+      //   }
+
+      //   return prisma.orderLineItem.upsert({
+      //     where: { id: toString(lineItem.id) },
+      //     create: data,
+      //     update: data,
+      //   })
+      // })
 
       await transaction.add(
         prisma.order.upsert({
@@ -389,6 +516,7 @@ export class Sapo {
           create: orderData,
           update: orderData,
         }),
+        // ...lineItems,
       )
     }
 

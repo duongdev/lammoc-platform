@@ -588,10 +588,10 @@ __export(index_exports3, {
   loader: () => loader4,
   meta: () => meta3
 });
-var import_core5 = require("@mantine/core"), import_react11 = require("@remix-run/react");
+var import_react11 = require("react"), import_core5 = require("@mantine/core"), import_client2 = require("@prisma/client"), import_react12 = require("@remix-run/react");
 
 // app/components/order-item.tsx
-var import_react8 = require("react"), import_core4 = require("@mantine/core"), import_react9 = require("@remix-run/react"), import_date_fns2 = require("date-fns");
+var import_react8 = require("react"), import_core4 = require("@mantine/core"), import_hooks2 = require("@mantine/hooks"), import_react9 = require("@remix-run/react"), import_icons_react = require("@tabler/icons-react"), import_date_fns2 = require("date-fns"), import_lodash2 = require("lodash");
 
 // app/utils/format.ts
 var import_date_fns = require("date-fns"), import_locale = require("date-fns/locale"), import_numeral = __toESM(require("numeral"));
@@ -600,7 +600,7 @@ var fVND = (amount = 0, noSign = !1) => `${(0, import_numeral.default)(amount).f
 
 // app/components/order-item.tsx
 var import_jsx_dev_runtime8 = require("react/jsx-dev-runtime"), OrderItem = ({ order }) => {
-  let createdAt = (0, import_react8.useMemo)(() => (0, import_date_fns2.differenceInDays)(order.createdAt, Date.now()) <= 7 ? (0, import_date_fns2.format)(order.createdAt, "HH:mm dd/MM/yyyy") : (0, import_date_fns2.formatDistanceToNowStrict)(order.createdAt, { addSuffix: !0 }), [order.createdAt]);
+  let isMobile = (0, import_hooks2.useMediaQuery)("(max-width: 800px)"), createdAt = (0, import_react8.useMemo)(() => (0, import_date_fns2.differenceInDays)(order.createdAt, Date.now()) <= 7 ? (0, import_date_fns2.format)(order.createdAt, "HH:mm dd/MM/yyyy") : (0, import_date_fns2.formatDistanceToNowStrict)(order.createdAt, { addSuffix: !0 }), [order.createdAt]);
   return /* @__PURE__ */ (0, import_jsx_dev_runtime8.jsxDEV)(
     import_core4.Card,
     {
@@ -622,69 +622,167 @@ var import_jsx_dev_runtime8 = require("react/jsx-dev-runtime"), OrderItem = ({ o
         /* @__PURE__ */ (0, import_jsx_dev_runtime8.jsxDEV)(import_core4.Group, { position: "apart", children: [
           /* @__PURE__ */ (0, import_jsx_dev_runtime8.jsxDEV)(import_core4.Stack, { children: [
             /* @__PURE__ */ (0, import_jsx_dev_runtime8.jsxDEV)(import_core4.Group, { children: [
-              /* @__PURE__ */ (0, import_jsx_dev_runtime8.jsxDEV)(import_core4.Text, { children: order.code }, void 0, !1, {
+              /* @__PURE__ */ (0, import_jsx_dev_runtime8.jsxDEV)(import_core4.Text, { weight: "bold", children: order.code }, void 0, !1, {
                 fileName: "app/components/order-item.tsx",
-                lineNumber: 44,
+                lineNumber: 72,
                 columnNumber: 15
               }, this),
-              /* @__PURE__ */ (0, import_jsx_dev_runtime8.jsxDEV)(import_core4.Text, { color: "dimmed", children: createdAt }, void 0, !1, {
+              /* @__PURE__ */ (0, import_jsx_dev_runtime8.jsxDEV)(import_core4.Text, { color: "dimmed", size: "sm", children: createdAt }, void 0, !1, {
                 fileName: "app/components/order-item.tsx",
-                lineNumber: 45,
+                lineNumber: 73,
                 columnNumber: 15
               }, this)
             ] }, void 0, !0, {
               fileName: "app/components/order-item.tsx",
-              lineNumber: 43,
+              lineNumber: 71,
               columnNumber: 13
             }, this),
             /* @__PURE__ */ (0, import_jsx_dev_runtime8.jsxDEV)(import_core4.Group, { spacing: "xs", children: [
               /* @__PURE__ */ (0, import_jsx_dev_runtime8.jsxDEV)(import_core4.Badge, { children: order.tenant }, void 0, !1, {
                 fileName: "app/components/order-item.tsx",
-                lineNumber: 48,
+                lineNumber: 76,
                 columnNumber: 15
               }, this),
               /* @__PURE__ */ (0, import_jsx_dev_runtime8.jsxDEV)(import_core4.Badge, { children: order.status }, void 0, !1, {
                 fileName: "app/components/order-item.tsx",
-                lineNumber: 49,
+                lineNumber: 77,
                 columnNumber: 15
               }, this)
             ] }, void 0, !0, {
               fileName: "app/components/order-item.tsx",
-              lineNumber: 47,
+              lineNumber: 75,
               columnNumber: 13
             }, this)
           ] }, void 0, !0, {
             fileName: "app/components/order-item.tsx",
-            lineNumber: 42,
+            lineNumber: 70,
             columnNumber: 11
           }, this),
           /* @__PURE__ */ (0, import_jsx_dev_runtime8.jsxDEV)(import_core4.Text, { children: fVND(order.total) }, void 0, !1, {
             fileName: "app/components/order-item.tsx",
-            lineNumber: 52,
+            lineNumber: 80,
             columnNumber: 11
           }, this)
         ] }, void 0, !0, {
           fileName: "app/components/order-item.tsx",
-          lineNumber: 41,
+          lineNumber: 69,
           columnNumber: 9
         }, this),
         /* @__PURE__ */ (0, import_jsx_dev_runtime8.jsxDEV)(import_core4.Card.Section, { children: /* @__PURE__ */ (0, import_jsx_dev_runtime8.jsxDEV)(import_core4.Divider, {}, void 0, !1, {
           fileName: "app/components/order-item.tsx",
-          lineNumber: 55,
+          lineNumber: 83,
           columnNumber: 11
         }, this) }, void 0, !1, {
           fileName: "app/components/order-item.tsx",
-          lineNumber: 54,
+          lineNumber: 82,
           columnNumber: 9
         }, this),
-        /* @__PURE__ */ (0, import_jsx_dev_runtime8.jsxDEV)(import_core4.Text, { children: "Content" }, void 0, !1, {
+        /* @__PURE__ */ (0, import_jsx_dev_runtime8.jsxDEV)(import_core4.Stack, { spacing: "xs", children: order.lineItems.map((item) => /* @__PURE__ */ (0, import_jsx_dev_runtime8.jsxDEV)(import_core4.Group, { noWrap: !0, spacing: isMobile ? "xs" : "md", children: [
+          /* @__PURE__ */ (0, import_jsx_dev_runtime8.jsxDEV)(import_core4.Text, { color: "dimmed", children: item.quantity }, void 0, !1, {
+            fileName: "app/components/order-item.tsx",
+            lineNumber: 88,
+            columnNumber: 15
+          }, this),
+          /* @__PURE__ */ (0, import_jsx_dev_runtime8.jsxDEV)(import_icons_react.IconX, { size: 16, style: { flexShrink: 0 } }, void 0, !1, {
+            fileName: "app/components/order-item.tsx",
+            lineNumber: 89,
+            columnNumber: 15
+          }, this),
+          /* @__PURE__ */ (0, import_jsx_dev_runtime8.jsxDEV)(import_core4.MediaQuery, { smallerThan: "sm", styles: { display: "none" }, children: /* @__PURE__ */ (0, import_jsx_dev_runtime8.jsxDEV)(
+            import_core4.Box,
+            {
+              sx: (theme2) => ({
+                boxShadow: theme2.shadows.md,
+                overflow: "hidden",
+                borderRadius: theme2.radius.md,
+                flexShrink: 0
+              }),
+              children: /* @__PURE__ */ (0, import_jsx_dev_runtime8.jsxDEV)(
+                import_core4.Image,
+                {
+                  withPlaceholder: !0,
+                  alt: item.variant.product.name,
+                  fit: "cover",
+                  height: 44,
+                  radius: "md",
+                  width: 44,
+                  src: (0, import_lodash2.first)([
+                    ...item.variant.images,
+                    ...item.variant.product.images
+                  ])
+                },
+                void 0,
+                !1,
+                {
+                  fileName: "app/components/order-item.tsx",
+                  lineNumber: 99,
+                  columnNumber: 19
+                },
+                this
+              )
+            },
+            void 0,
+            !1,
+            {
+              fileName: "app/components/order-item.tsx",
+              lineNumber: 91,
+              columnNumber: 17
+            },
+            this
+          ) }, void 0, !1, {
+            fileName: "app/components/order-item.tsx",
+            lineNumber: 90,
+            columnNumber: 15
+          }, this),
+          /* @__PURE__ */ (0, import_jsx_dev_runtime8.jsxDEV)(import_core4.Box, { sx: { flexGrow: 1 }, children: [
+            /* @__PURE__ */ (0, import_jsx_dev_runtime8.jsxDEV)(
+              import_core4.Text,
+              {
+                color: "dark",
+                lineClamp: 1,
+                title: item.variant.product.name,
+                children: item.variant.product.name
+              },
+              void 0,
+              !1,
+              {
+                fileName: "app/components/order-item.tsx",
+                lineNumber: 114,
+                columnNumber: 17
+              },
+              this
+            ),
+            item.variant.name !== item.variant.product.name && /* @__PURE__ */ (0, import_jsx_dev_runtime8.jsxDEV)(import_core4.Text, { color: "dimmed", lineClamp: 1, title: item.variant.name, children: item.variant.name }, void 0, !1, {
+              fileName: "app/components/order-item.tsx",
+              lineNumber: 122,
+              columnNumber: 19
+            }, this)
+          ] }, void 0, !0, {
+            fileName: "app/components/order-item.tsx",
+            lineNumber: 113,
+            columnNumber: 15
+          }, this),
+          /* @__PURE__ */ (0, import_jsx_dev_runtime8.jsxDEV)(import_core4.MediaQuery, { smallerThan: "sm", styles: { display: "none" }, children: /* @__PURE__ */ (0, import_jsx_dev_runtime8.jsxDEV)(import_core4.Text, { lineClamp: 1, sx: { flexShrink: 0 }, children: fVND(item.price) }, void 0, !1, {
+            fileName: "app/components/order-item.tsx",
+            lineNumber: 128,
+            columnNumber: 17
+          }, this) }, void 0, !1, {
+            fileName: "app/components/order-item.tsx",
+            lineNumber: 127,
+            columnNumber: 15
+          }, this)
+        ] }, item.id, !0, {
           fileName: "app/components/order-item.tsx",
-          lineNumber: 57,
+          lineNumber: 87,
+          columnNumber: 13
+        }, this)) }, void 0, !1, {
+          fileName: "app/components/order-item.tsx",
+          lineNumber: 85,
           columnNumber: 9
         }, this)
       ] }, void 0, !0, {
         fileName: "app/components/order-item.tsx",
-        lineNumber: 40,
+        lineNumber: 68,
         columnNumber: 7
       }, this)
     },
@@ -692,7 +790,7 @@ var import_jsx_dev_runtime8 = require("react/jsx-dev-runtime"), OrderItem = ({ o
     !1,
     {
       fileName: "app/components/order-item.tsx",
-      lineNumber: 24,
+      lineNumber: 52,
       columnNumber: 5
     },
     this
@@ -713,7 +811,10 @@ var getCustomerOrders = async (customerPhones, {
       where,
       include: {
         customer: !0,
-        deliveryFee: !0
+        deliveryFee: !0,
+        lineItems: {
+          include: { variant: { include: { product: !0 } } }
+        }
       },
       orderBy: { createdAt: "desc" },
       take: getMaxTake(take),
@@ -751,7 +852,7 @@ async function loader4({ request }) {
     {
       skip: (page - 1) * PER_PAGE,
       take: PER_PAGE,
-      status
+      status: status === "all" ? void 0 : status
     }
   );
   return superjson({
@@ -763,11 +864,42 @@ async function loader4({ request }) {
   });
 }
 var OrdersIndex = () => {
-  let navigate = (0, import_react11.useNavigate)(), [params] = (0, import_react11.useSearchParams)(), { orders, totalPages, page } = useSuperLoaderData(), status = params.get("status") ?? "all";
+  let [params, setParams] = (0, import_react12.useSearchParams)(), { orders, totalPages, page } = useSuperLoaderData(), status = params.get("status") ?? "all", tenant = params.get("tenant") ?? "all", handleFilterChange = (0, import_react11.useCallback)(
+    (name, action6) => (value) => {
+      action6 === "reset_page" && params.delete("page"), value === "all" ? params.delete(name) : params.set(name, value), setParams(params);
+    },
+    [params, setParams]
+  );
   return /* @__PURE__ */ (0, import_jsx_dev_runtime9.jsxDEV)(import_jsx_dev_runtime9.Fragment, { children: [
-    /* @__PURE__ */ (0, import_jsx_dev_runtime9.jsxDEV)(import_core5.Title, { children: "\u0110\u01A1n h\xE0ng c\u1EE7a b\u1EA1n" }, void 0, !1, {
+    /* @__PURE__ */ (0, import_jsx_dev_runtime9.jsxDEV)(import_core5.Group, { position: "apart", children: [
+      /* @__PURE__ */ (0, import_jsx_dev_runtime9.jsxDEV)(import_core5.Title, { children: "\u0110\u01A1n h\xE0ng c\u1EE7a b\u1EA1n" }, void 0, !1, {
+        fileName: "app/routes/app/orders/_index/index.tsx",
+        lineNumber: 83,
+        columnNumber: 9
+      }, this),
+      /* @__PURE__ */ (0, import_jsx_dev_runtime9.jsxDEV)(
+        import_core5.SegmentedControl,
+        {
+          onChange: handleFilterChange("tenant", "reset_page"),
+          value: tenant,
+          data: [
+            { label: "T\u1EA5t c\u1EA3", value: "all" },
+            { label: "Store L\xE0m M\u1ED9c", value: import_client2.Tenant.STORE_LAM_MOC },
+            { label: "Th\xEDch T\u1EF1 L\xE0m", value: import_client2.Tenant.THICH_TU_LAM }
+          ]
+        },
+        void 0,
+        !1,
+        {
+          fileName: "app/routes/app/orders/_index/index.tsx",
+          lineNumber: 84,
+          columnNumber: 9
+        },
+        this
+      )
+    ] }, void 0, !0, {
       fileName: "app/routes/app/orders/_index/index.tsx",
-      lineNumber: 54,
+      lineNumber: 82,
       columnNumber: 7
     }, this),
     /* @__PURE__ */ (0, import_jsx_dev_runtime9.jsxDEV)(import_core5.Box, { mt: 24, children: [
@@ -775,37 +907,37 @@ var OrdersIndex = () => {
         import_core5.Tabs,
         {
           defaultValue: "all",
-          onTabChange: (value) => navigate(`.?status=${value}`),
+          onTabChange: handleFilterChange("status", "reset_page"),
           value: status,
           children: /* @__PURE__ */ (0, import_jsx_dev_runtime9.jsxDEV)(import_core5.Tabs.List, { children: [
             /* @__PURE__ */ (0, import_jsx_dev_runtime9.jsxDEV)(import_core5.Tabs.Tab, { value: "all", children: "T\u1EA5t c\u1EA3" }, void 0, !1, {
               fileName: "app/routes/app/orders/_index/index.tsx",
-              lineNumber: 63,
+              lineNumber: 102,
               columnNumber: 13
             }, this),
             /* @__PURE__ */ (0, import_jsx_dev_runtime9.jsxDEV)(import_core5.Tabs.Tab, { value: "new", children: "\u0110\u01A1n m\u1EDBi" }, void 0, !1, {
               fileName: "app/routes/app/orders/_index/index.tsx",
-              lineNumber: 64,
+              lineNumber: 103,
               columnNumber: 13
             }, this),
             /* @__PURE__ */ (0, import_jsx_dev_runtime9.jsxDEV)(import_core5.Tabs.Tab, { value: "processing", children: "\u0110ang x\u1EED l\xFD" }, void 0, !1, {
               fileName: "app/routes/app/orders/_index/index.tsx",
-              lineNumber: 65,
+              lineNumber: 104,
               columnNumber: 13
             }, this),
             /* @__PURE__ */ (0, import_jsx_dev_runtime9.jsxDEV)(import_core5.Tabs.Tab, { value: "completed", children: "Ho\xE0n th\xE0nh" }, void 0, !1, {
               fileName: "app/routes/app/orders/_index/index.tsx",
-              lineNumber: 66,
+              lineNumber: 105,
               columnNumber: 13
             }, this),
-            /* @__PURE__ */ (0, import_jsx_dev_runtime9.jsxDEV)(import_core5.Tabs.Tab, { value: "canceled", children: "\u0110\xE3 hu\u1EF7" }, void 0, !1, {
+            /* @__PURE__ */ (0, import_jsx_dev_runtime9.jsxDEV)(import_core5.Tabs.Tab, { value: "cancelled", children: "\u0110\xE3 hu\u1EF7" }, void 0, !1, {
               fileName: "app/routes/app/orders/_index/index.tsx",
-              lineNumber: 67,
+              lineNumber: 106,
               columnNumber: 13
             }, this)
           ] }, void 0, !0, {
             fileName: "app/routes/app/orders/_index/index.tsx",
-            lineNumber: 62,
+            lineNumber: 101,
             columnNumber: 11
           }, this)
         },
@@ -813,7 +945,7 @@ var OrdersIndex = () => {
         !1,
         {
           fileName: "app/routes/app/orders/_index/index.tsx",
-          lineNumber: 57,
+          lineNumber: 96,
           columnNumber: 9
         },
         this
@@ -821,18 +953,18 @@ var OrdersIndex = () => {
       /* @__PURE__ */ (0, import_jsx_dev_runtime9.jsxDEV)(import_core5.Stack, { mt: "lg", spacing: "md", children: [
         orders.map((order) => /* @__PURE__ */ (0, import_jsx_dev_runtime9.jsxDEV)(order_item_default, { order }, order.id, !1, {
           fileName: "app/routes/app/orders/_index/index.tsx",
-          lineNumber: 73,
+          lineNumber: 112,
           columnNumber: 13
         }, this)),
         /* @__PURE__ */ (0, import_jsx_dev_runtime9.jsxDEV)(import_core5.Space, {}, void 0, !1, {
           fileName: "app/routes/app/orders/_index/index.tsx",
-          lineNumber: 76,
+          lineNumber: 115,
           columnNumber: 11
         }, this),
         /* @__PURE__ */ (0, import_jsx_dev_runtime9.jsxDEV)(
           import_core5.Pagination,
           {
-            onChange: (page2) => navigate(`?page=${page2}`),
+            onChange: handleFilterChange("page"),
             page,
             total: totalPages
           },
@@ -840,24 +972,24 @@ var OrdersIndex = () => {
           !1,
           {
             fileName: "app/routes/app/orders/_index/index.tsx",
-            lineNumber: 78,
+            lineNumber: 117,
             columnNumber: 11
           },
           this
         )
       ] }, void 0, !0, {
         fileName: "app/routes/app/orders/_index/index.tsx",
-        lineNumber: 71,
+        lineNumber: 110,
         columnNumber: 9
       }, this)
     ] }, void 0, !0, {
       fileName: "app/routes/app/orders/_index/index.tsx",
-      lineNumber: 56,
+      lineNumber: 95,
       columnNumber: 7
     }, this)
   ] }, void 0, !0, {
     fileName: "app/routes/app/orders/_index/index.tsx",
-    lineNumber: 53,
+    lineNumber: 81,
     columnNumber: 5
   }, this);
 }, index_default = OrdersIndex;
@@ -883,7 +1015,7 @@ __export(auth_exports, {
   default: () => AuthLayout,
   meta: () => meta4
 });
-var import_core6 = require("@mantine/core"), import_react12 = require("@remix-run/react");
+var import_core6 = require("@mantine/core"), import_react13 = require("@remix-run/react");
 var import_jsx_dev_runtime11 = require("react/jsx-dev-runtime"), meta4 = () => [{ title: getTitle("\u0110\u0103ng nh\u1EADp") }];
 function AuthLayout() {
   return /* @__PURE__ */ (0, import_jsx_dev_runtime11.jsxDEV)(import_core6.Container, { py: 60, size: "xs", children: /* @__PURE__ */ (0, import_jsx_dev_runtime11.jsxDEV)(import_core6.Stack, { children: [
@@ -953,7 +1085,7 @@ function AuthLayout() {
       lineNumber: 31,
       columnNumber: 9
     }, this),
-    /* @__PURE__ */ (0, import_jsx_dev_runtime11.jsxDEV)(import_react12.Outlet, {}, void 0, !1, {
+    /* @__PURE__ */ (0, import_jsx_dev_runtime11.jsxDEV)(import_react13.Outlet, {}, void 0, !1, {
       fileName: "app/routes/auth.tsx",
       lineNumber: 37,
       columnNumber: 9
@@ -983,7 +1115,7 @@ __export(auth_sign_in_index_exports, {
   default: () => SignIn,
   meta: () => meta5
 });
-var import_react13 = require("react"), import_core7 = require("@mantine/core"), import_node6 = require("@remix-run/node"), import_react14 = require("@remix-run/react"), import_auth2 = require("firebase/auth"), import_firebase = __toESM(require_firebase());
+var import_react14 = require("react"), import_core7 = require("@mantine/core"), import_node6 = require("@remix-run/node"), import_react15 = require("@remix-run/react"), import_auth2 = require("firebase/auth"), import_firebase = __toESM(require_firebase());
 
 // app/utils/forms.ts
 var getFormData = async (request) => Object.fromEntries(await request.formData());
@@ -1019,17 +1151,17 @@ async function action({ request }) {
   );
 }
 function SignIn() {
-  let navigate = (0, import_react14.useNavigate)(), transition = (0, import_react14.useTransition)(), actionData = (0, import_react14.useActionData)(), recaptchaVerifierRef = (0, import_react13.useRef)(), authRef = (0, import_react13.useRef)(), [isAuthenticating, setIsAuthenticating] = (0, import_react13.useState)(!1), [phone, setPhone] = (0, import_react13.useState)(""), [errorMessage, setErrorMessage] = (0, import_react13.useState)(
+  let navigate = (0, import_react15.useNavigate)(), transition = (0, import_react15.useTransition)(), actionData = (0, import_react15.useActionData)(), recaptchaVerifierRef = (0, import_react14.useRef)(), authRef = (0, import_react14.useRef)(), [isAuthenticating, setIsAuthenticating] = (0, import_react14.useState)(!1), [phone, setPhone] = (0, import_react14.useState)(""), [errorMessage, setErrorMessage] = (0, import_react14.useState)(
     (actionData == null ? void 0 : actionData.errorMessage) ?? null
-  ), phoneRef = (0, import_react13.useRef)(null), isSubmitting = (0, import_react13.useMemo)(
+  ), phoneRef = (0, import_react14.useRef)(null), isSubmitting = (0, import_react14.useMemo)(
     () => transition.type !== "idle" || isAuthenticating,
     [isAuthenticating, transition.type]
-  ), handlePhoneChange = (0, import_react13.useCallback)(
+  ), handlePhoneChange = (0, import_react14.useCallback)(
     (event) => {
       setPhone(event.target.value), setErrorMessage(null);
     },
     []
-  ), handleSendSms = (0, import_react13.useCallback)(
+  ), handleSendSms = (0, import_react14.useCallback)(
     async (phoneNumber) => {
       let auth = authRef.current, verifier = recaptchaVerifierRef.current;
       if (!!(auth && verifier)) {
@@ -1051,12 +1183,12 @@ function SignIn() {
     },
     [navigate]
   );
-  return (0, import_react13.useEffect)(() => {
+  return (0, import_react14.useEffect)(() => {
     var _a;
     setErrorMessage((actionData == null ? void 0 : actionData.errorMessage) ?? null), actionData != null && actionData.errorMessage && ((_a = phoneRef.current) == null || _a.focus());
-  }, [actionData == null ? void 0 : actionData.errorMessage]), (0, import_react13.useEffect)(() => {
+  }, [actionData == null ? void 0 : actionData.errorMessage]), (0, import_react14.useEffect)(() => {
     actionData != null && actionData.success && handleSendSms(actionData.phone);
-  }, [actionData == null ? void 0 : actionData.success, handleSendSms, actionData == null ? void 0 : actionData.phone]), (0, import_react13.useEffect)(() => {
+  }, [actionData == null ? void 0 : actionData.success, handleSendSms, actionData == null ? void 0 : actionData.phone]), (0, import_react14.useEffect)(() => {
     setTimeout(() => {
       authRef.current = (0, import_auth2.getAuth)(import_firebase.firebaseClient), authRef.current.useDeviceLanguage(), recaptchaVerifierRef.current = new import_auth2.RecaptchaVerifier(
         "sign-in-button",
@@ -1068,7 +1200,7 @@ function SignIn() {
         authRef == null ? void 0 : authRef.current
       );
     }, 100);
-  }, []), /* @__PURE__ */ (0, import_jsx_dev_runtime12.jsxDEV)(import_react14.Form, { method: "post", children: /* @__PURE__ */ (0, import_jsx_dev_runtime12.jsxDEV)(import_core7.Stack, { children: [
+  }, []), /* @__PURE__ */ (0, import_jsx_dev_runtime12.jsxDEV)(import_react15.Form, { method: "post", children: /* @__PURE__ */ (0, import_jsx_dev_runtime12.jsxDEV)(import_core7.Stack, { children: [
     /* @__PURE__ */ (0, import_jsx_dev_runtime12.jsxDEV)(
       import_core7.TextInput,
       {
@@ -1137,10 +1269,10 @@ __export(auth_sign_in_onboard_exports, {
   default: () => AuthSignInOnboard,
   loader: () => loader6
 });
-var import_react16 = require("react"), import_core9 = require("@mantine/core"), import_node7 = require("@remix-run/node"), import_react17 = require("@remix-run/react"), import_auth3 = require("firebase/auth");
+var import_react17 = require("react"), import_core9 = require("@mantine/core"), import_node7 = require("@remix-run/node"), import_react18 = require("@remix-run/react"), import_auth3 = require("firebase/auth");
 
 // app/components/locked-auth-phone.tsx
-var import_core8 = require("@mantine/core"), import_react15 = require("@remix-run/react"), import_icons_react = require("@tabler/icons-react"), import_jsx_dev_runtime13 = require("react/jsx-dev-runtime");
+var import_core8 = require("@mantine/core"), import_react16 = require("@remix-run/react"), import_icons_react2 = require("@tabler/icons-react"), import_jsx_dev_runtime13 = require("react/jsx-dev-runtime");
 function LockedAuthPhoneInput({
   phone,
   editTo
@@ -1159,11 +1291,11 @@ function LockedAuthPhoneInput({
       rightSection: /* @__PURE__ */ (0, import_jsx_dev_runtime13.jsxDEV)(
         import_core8.ActionIcon,
         {
-          component: import_react15.Link,
+          component: import_react16.Link,
           sx: { height: 26, width: 26 },
           to: editTo,
           variant: "light",
-          children: /* @__PURE__ */ (0, import_jsx_dev_runtime13.jsxDEV)(import_icons_react.IconPencil, { size: 16 }, void 0, !1, {
+          children: /* @__PURE__ */ (0, import_jsx_dev_runtime13.jsxDEV)(import_icons_react2.IconPencil, { size: 16 }, void 0, !1, {
             fileName: "app/components/locked-auth-phone.tsx",
             lineNumber: 29,
             columnNumber: 11
@@ -1200,7 +1332,7 @@ var loader6 = async ({ request }) => {
   return phone && verificationId ? { phone } : (0, import_node7.redirect)("..");
 };
 function AuthSignInOnboard() {
-  let navigate = (0, import_react17.useNavigate)(), location = (0, import_react17.useLocation)(), [searchParams] = (0, import_react17.useSearchParams)(), submit = (0, import_react17.useSubmit)(), phone = searchParams.get("phone"), verificationId = searchParams.get("verificationId"), [errorMessage, setErrorMessage] = (0, import_react16.useState)(""), [isLoading, setIsLoading] = (0, import_react16.useState)(!1), handleVerifyOtp = (0, import_react16.useCallback)(
+  let navigate = (0, import_react18.useNavigate)(), location = (0, import_react18.useLocation)(), [searchParams] = (0, import_react18.useSearchParams)(), submit = (0, import_react18.useSubmit)(), phone = searchParams.get("phone"), verificationId = searchParams.get("verificationId"), [errorMessage, setErrorMessage] = (0, import_react17.useState)(""), [isLoading, setIsLoading] = (0, import_react17.useState)(!1), handleVerifyOtp = (0, import_react17.useCallback)(
     async (event) => {
       var _a;
       event.preventDefault();
@@ -1220,7 +1352,7 @@ function AuthSignInOnboard() {
       }
     },
     [navigate, phone, verificationId]
-  ), handleSubmit = (0, import_react16.useCallback)(
+  ), handleSubmit = (0, import_react17.useCallback)(
     async (event) => {
       var _a;
       if ((_a = event.target.otp) == null ? void 0 : _a.value)
@@ -1232,13 +1364,13 @@ function AuthSignInOnboard() {
     },
     [handleVerifyOtp, location.pathname, location.search, submit]
   );
-  return /* @__PURE__ */ (0, import_jsx_dev_runtime14.jsxDEV)(import_react17.Form, { method: "post", onSubmit: handleSubmit, children: /* @__PURE__ */ (0, import_jsx_dev_runtime14.jsxDEV)(import_core9.Stack, { children: [
+  return /* @__PURE__ */ (0, import_jsx_dev_runtime14.jsxDEV)(import_react18.Form, { method: "post", onSubmit: handleSubmit, children: /* @__PURE__ */ (0, import_jsx_dev_runtime14.jsxDEV)(import_core9.Stack, { children: [
     /* @__PURE__ */ (0, import_jsx_dev_runtime14.jsxDEV)(LockedAuthPhoneInput, { editTo: "..", phone: phone ?? "" }, void 0, !1, {
       fileName: "app/routes/auth.sign-in.onboard.tsx",
       lineNumber: 98,
       columnNumber: 9
     }, this),
-    /* @__PURE__ */ (0, import_jsx_dev_runtime14.jsxDEV)(import_react17.Outlet, { context: { isLoading, errorMessage } }, void 0, !1, {
+    /* @__PURE__ */ (0, import_jsx_dev_runtime14.jsxDEV)(import_react18.Outlet, { context: { isLoading, errorMessage } }, void 0, !1, {
       fileName: "app/routes/auth.sign-in.onboard.tsx",
       lineNumber: 99,
       columnNumber: 9
@@ -1259,9 +1391,9 @@ var auth_sign_in_onboard_index_exports = {};
 __export(auth_sign_in_onboard_index_exports, {
   default: () => AuthSignInOnboardOTP
 });
-var import_core10 = require("@mantine/core"), import_react18 = require("@remix-run/react"), import_jsx_dev_runtime15 = require("react/jsx-dev-runtime");
+var import_core10 = require("@mantine/core"), import_react19 = require("@remix-run/react"), import_jsx_dev_runtime15 = require("react/jsx-dev-runtime");
 function AuthSignInOnboardOTP() {
-  let { errorMessage, isLoading = !1 } = (0, import_react18.useOutletContext)();
+  let { errorMessage, isLoading = !1 } = (0, import_react19.useOutletContext)();
   return /* @__PURE__ */ (0, import_jsx_dev_runtime15.jsxDEV)(import_jsx_dev_runtime15.Fragment, { children: [
     /* @__PURE__ */ (0, import_jsx_dev_runtime15.jsxDEV)(import_core10.Alert, { children: "T\xE0i kho\u1EA3n c\u1EE7a b\u1EA1n ch\u01B0a \u0111\u01B0\u1EE3c thi\u1EBFt l\u1EADp. Vui l\xF2ng x\xE1c nh\u1EADn s\u1ED1 \u0111i\u1EC7n tho\u1EA1i \u0111\u1EC3 ti\u1EBFp t\u1EE5c." }, void 0, !1, {
       fileName: "app/routes/auth.sign-in.onboard._index.tsx",
@@ -1321,7 +1453,7 @@ __export(auth_sign_in_onboard_password_exports, {
   action: () => action3,
   default: () => AuthSignInOnboardPassword
 });
-var import_react19 = require("react"), import_core11 = require("@mantine/core"), import_node8 = require("@remix-run/node"), import_react20 = require("@remix-run/react");
+var import_react20 = require("react"), import_core11 = require("@mantine/core"), import_node8 = require("@remix-run/node"), import_react21 = require("@remix-run/react");
 
 // app/libs/bcrypt.server.ts
 var bcrypt_server_exports = {};
@@ -1412,8 +1544,8 @@ async function action3({ request }) {
   }
 }
 function AuthSignInOnboardPassword() {
-  let { errorMessage } = (0, import_react20.useActionData)() ?? {}, transition = (0, import_react20.useTransition)(), passwordRef = (0, import_react19.useRef)(null), isLoading = transition.type !== "idle";
-  return (0, import_react19.useEffect)(() => {
+  let { errorMessage } = (0, import_react21.useActionData)() ?? {}, transition = (0, import_react21.useTransition)(), passwordRef = (0, import_react20.useRef)(null), isLoading = transition.type !== "idle";
+  return (0, import_react20.useEffect)(() => {
     errorMessage && setTimeout(() => {
       var _a;
       return (_a = passwordRef.current) == null ? void 0 : _a.focus();
@@ -1479,7 +1611,7 @@ __export(auth_sign_in_password_exports, {
   default: () => AuthSignInPassword,
   loader: () => loader7
 });
-var import_core12 = require("@mantine/core"), import_node9 = require("@remix-run/node"), import_react21 = require("@remix-run/react");
+var import_core12 = require("@mantine/core"), import_node9 = require("@remix-run/node"), import_react22 = require("@remix-run/react");
 var import_jsx_dev_runtime17 = require("react/jsx-dev-runtime"), loader7 = async ({ request }) => {
   let phone = new URL(request.url).searchParams.get("phone");
   return phone ? { phone } : (0, import_node9.redirect)("..");
@@ -1492,8 +1624,8 @@ async function action4({ request }) {
   return account ? createAuthSession({ accountId: account.id, redirectTo: "/app" }) : (0, import_node9.json)({ errorMessage: INVALID_AUTH_CREDENTIALS }, { status: 400 });
 }
 function AuthSignInPassword() {
-  let actionData = (0, import_react21.useActionData)(), { state } = (0, import_react21.useTransition)(), [searchParams] = (0, import_react21.useSearchParams)(), phone = searchParams.get("phone"), isSubmitting = state === "submitting";
-  return /* @__PURE__ */ (0, import_jsx_dev_runtime17.jsxDEV)(import_react21.Form, { method: "post", children: /* @__PURE__ */ (0, import_jsx_dev_runtime17.jsxDEV)(import_core12.Stack, { children: [
+  let actionData = (0, import_react22.useActionData)(), { state } = (0, import_react22.useTransition)(), [searchParams] = (0, import_react22.useSearchParams)(), phone = searchParams.get("phone"), isSubmitting = state === "submitting";
+  return /* @__PURE__ */ (0, import_jsx_dev_runtime17.jsxDEV)(import_react22.Form, { method: "post", children: /* @__PURE__ */ (0, import_jsx_dev_runtime17.jsxDEV)(import_core12.Stack, { children: [
     /* @__PURE__ */ (0, import_jsx_dev_runtime17.jsxDEV)(LockedAuthPhoneInput, { editTo: "..", phone }, void 0, !1, {
       fileName: "app/routes/auth.sign-in.password.tsx",
       lineNumber: 66,
@@ -1559,15 +1691,15 @@ __export(admin_exports, {
   default: () => admin_default,
   loader: () => loader8
 });
-var import_node10 = require("@remix-run/node"), import_react22 = require("@remix-run/react");
+var import_node10 = require("@remix-run/node"), import_react23 = require("@remix-run/react");
 var import_jsx_dev_runtime18 = require("react/jsx-dev-runtime");
 async function loader8({ request }) {
   let account = await getAuthAccount(request);
   return account != null && account.roles.some((role) => ADMIN_ROLES.includes(role)) ? { account } : (0, import_node10.redirect)("/auth");
 }
 var Admin = () => {
-  let data = (0, import_react22.useLoaderData)();
-  return data.account ? /* @__PURE__ */ (0, import_jsx_dev_runtime18.jsxDEV)(AuthProvider, { account: data.account, roles: data.account.roles, children: /* @__PURE__ */ (0, import_jsx_dev_runtime18.jsxDEV)(import_react22.Outlet, {}, void 0, !1, {
+  let data = (0, import_react23.useLoaderData)();
+  return data.account ? /* @__PURE__ */ (0, import_jsx_dev_runtime18.jsxDEV)(AuthProvider, { account: data.account, roles: data.account.roles, children: /* @__PURE__ */ (0, import_jsx_dev_runtime18.jsxDEV)(import_react23.Outlet, {}, void 0, !1, {
     fileName: "app/routes/admin/index.tsx",
     lineNumber: 33,
     columnNumber: 7
@@ -1584,13 +1716,13 @@ __export(accounts_exports, {
   default: () => accounts_default,
   loader: () => loader9
 });
-var import_core13 = require("@mantine/core"), import_react23 = require("@remix-run/react");
+var import_core13 = require("@mantine/core"), import_react24 = require("@remix-run/react");
 var import_jsx_dev_runtime19 = require("react/jsx-dev-runtime");
 async function loader9() {
   return { accounts: await prisma_server_default.account.findMany() };
 }
 var Accounts = () => {
-  let { accounts } = (0, import_react23.useLoaderData)();
+  let { accounts } = (0, import_react24.useLoaderData)();
   return /* @__PURE__ */ (0, import_jsx_dev_runtime19.jsxDEV)(import_core13.Stack, { spacing: "md", children: accounts.map((account) => /* @__PURE__ */ (0, import_jsx_dev_runtime19.jsxDEV)(import_core13.Box, { children: account.name }, account.id, !1, {
     fileName: "app/routes/admin/accounts/index.tsx",
     lineNumber: 22,
@@ -1609,7 +1741,7 @@ __export(customers_exports, {
   default: () => customers_default,
   loader: () => loader10
 });
-var import_core14 = require("@mantine/core"), import_react24 = require("@remix-run/react");
+var import_core14 = require("@mantine/core"), import_react25 = require("@remix-run/react");
 var import_jsx_dev_runtime20 = require("react/jsx-dev-runtime"), PER_PAGE2 = 20, loader10 = async ({ request }) => {
   let page = +(getSearchParams(request).get("page") ?? 1), customers = await prisma_server_default.customer.findMany({
     orderBy: { orders: { _count: "desc" } },
@@ -1628,7 +1760,7 @@ var import_jsx_dev_runtime20 = require("react/jsx-dev-runtime"), PER_PAGE2 = 20,
     redirectTo: "/app"
   }) : null;
 }, CustomerList = () => {
-  let { customers, totalCount } = (0, import_react24.useLoaderData)(), fetcher = (0, import_react24.useFetcher)(), [search] = (0, import_react24.useSearchParams)(), navigate = (0, import_react24.useNavigate)(), page = +(search.get("page") ?? 1), handleSignInAsCustomer = (customerId) => fetcher.submit({ customerId }, { method: "post" });
+  let { customers, totalCount } = (0, import_react25.useLoaderData)(), fetcher = (0, import_react25.useFetcher)(), [search] = (0, import_react25.useSearchParams)(), navigate = (0, import_react25.useNavigate)(), page = +(search.get("page") ?? 1), handleSignInAsCustomer = (customerId) => fetcher.submit({ customerId }, { method: "post" });
   return /* @__PURE__ */ (0, import_jsx_dev_runtime20.jsxDEV)(import_core14.Container, { sx: { marginTop: 40, marginBottom: 40 }, children: [
     /* @__PURE__ */ (0, import_jsx_dev_runtime20.jsxDEV)(import_core14.Title, { mb: 40, children: [
       "Kh\xE1ch h\xE0ng (",
@@ -1698,7 +1830,7 @@ var import_jsx_dev_runtime20 = require("react/jsx-dev-runtime"), PER_PAGE2 = 20,
 }, customers_default = CustomerList;
 
 // server-assets-manifest:@remix-run/dev/assets-manifest
-var assets_manifest_default = { version: "43c20c28", entry: { module: "/build/entry.client-7RQF46V5.js", imports: ["/build/_shared/chunk-VS3WUCEB.js", "/build/_shared/chunk-YIY4GP4A.js", "/build/_shared/chunk-FDGIW4RJ.js", "/build/_shared/chunk-VIPVJV6J.js", "/build/_shared/chunk-5KL4PAQL.js"] }, routes: { root: { id: "root", parentId: void 0, path: "", index: void 0, caseSensitive: void 0, module: "/build/root-NVQEB3YJ.js", imports: void 0, hasAction: !1, hasLoader: !1, hasCatchBoundary: !1, hasErrorBoundary: !0 }, "routes/_index": { id: "routes/_index", parentId: "root", path: void 0, index: !0, caseSensitive: void 0, module: "/build/routes/_index-FD5GBRGY.js", imports: void 0, hasAction: !1, hasLoader: !0, hasCatchBoundary: !1, hasErrorBoundary: !1 }, "routes/about": { id: "routes/about", parentId: "root", path: "about", index: void 0, caseSensitive: void 0, module: "/build/routes/about-5LWV4GCJ.js", imports: void 0, hasAction: !1, hasLoader: !1, hasCatchBoundary: !1, hasErrorBoundary: !1 }, "routes/admin": { id: "routes/admin", parentId: "root", path: "admin", index: void 0, caseSensitive: void 0, module: "/build/routes/admin-XOY5MVOF.js", imports: ["/build/_shared/chunk-GSWHPMDN.js", "/build/_shared/chunk-AZN7CLWY.js", "/build/_shared/chunk-PMBYIPUD.js"], hasAction: !1, hasLoader: !0, hasCatchBoundary: !1, hasErrorBoundary: !1 }, "routes/admin/accounts": { id: "routes/admin/accounts", parentId: "routes/admin", path: "accounts", index: void 0, caseSensitive: void 0, module: "/build/routes/admin/accounts-JXUPSBPB.js", imports: ["/build/_shared/chunk-W4EJMWRT.js"], hasAction: !1, hasLoader: !0, hasCatchBoundary: !1, hasErrorBoundary: !1 }, "routes/admin/customers": { id: "routes/admin/customers", parentId: "routes/admin", path: "customers", index: void 0, caseSensitive: void 0, module: "/build/routes/admin/customers-LGFT6LVD.js", imports: ["/build/_shared/chunk-W4EJMWRT.js"], hasAction: !0, hasLoader: !0, hasCatchBoundary: !1, hasErrorBoundary: !1 }, "routes/app": { id: "routes/app", parentId: "root", path: "app", index: void 0, caseSensitive: void 0, module: "/build/routes/app-DLZW35U6.js", imports: ["/build/_shared/chunk-GSWHPMDN.js", "/build/_shared/chunk-AZN7CLWY.js", "/build/_shared/chunk-PMBYIPUD.js"], hasAction: !1, hasLoader: !0, hasCatchBoundary: !1, hasErrorBoundary: !1 }, "routes/app/_index": { id: "routes/app/_index", parentId: "routes/app", path: void 0, index: !0, caseSensitive: void 0, module: "/build/routes/app/_index-YY4APH5K.js", imports: void 0, hasAction: !1, hasLoader: !0, hasCatchBoundary: !1, hasErrorBoundary: !1 }, "routes/app/orders": { id: "routes/app/orders", parentId: "routes/app", path: "orders", index: void 0, caseSensitive: void 0, module: "/build/routes/app/orders-RYOUWCP2.js", imports: void 0, hasAction: !1, hasLoader: !1, hasCatchBoundary: !1, hasErrorBoundary: !1 }, "routes/app/orders/_index": { id: "routes/app/orders/_index", parentId: "routes/app/orders", path: void 0, index: !0, caseSensitive: void 0, module: "/build/routes/app/orders/_index-BOGWOKAK.js", imports: ["/build/_shared/chunk-JYVC523Y.js", "/build/_shared/chunk-AZN7CLWY.js", "/build/_shared/chunk-PMBYIPUD.js"], hasAction: !1, hasLoader: !0, hasCatchBoundary: !1, hasErrorBoundary: !1 }, "routes/app/user": { id: "routes/app/user", parentId: "routes/app", path: "user", index: void 0, caseSensitive: void 0, module: "/build/routes/app/user-SCFIBYOE.js", imports: void 0, hasAction: !1, hasLoader: !1, hasCatchBoundary: !1, hasErrorBoundary: !1 }, "routes/auth": { id: "routes/auth", parentId: "root", path: "auth", index: void 0, caseSensitive: void 0, module: "/build/routes/auth-YV55O6S3.js", imports: ["/build/_shared/chunk-JYVC523Y.js", "/build/_shared/chunk-AZN7CLWY.js"], hasAction: !1, hasLoader: !1, hasCatchBoundary: !1, hasErrorBoundary: !1 }, "routes/auth._index": { id: "routes/auth._index", parentId: "routes/auth", path: void 0, index: !0, caseSensitive: void 0, module: "/build/routes/auth._index-GKPGSVA5.js", imports: void 0, hasAction: !1, hasLoader: !0, hasCatchBoundary: !1, hasErrorBoundary: !1 }, "routes/auth.sign-in._index": { id: "routes/auth.sign-in._index", parentId: "routes/auth", path: "sign-in", index: !0, caseSensitive: void 0, module: "/build/routes/auth.sign-in._index-GHO7L62U.js", imports: ["/build/_shared/chunk-SOJZ3V3V.js", "/build/_shared/chunk-W4EJMWRT.js"], hasAction: !0, hasLoader: !1, hasCatchBoundary: !1, hasErrorBoundary: !1 }, "routes/auth.sign-in.onboard": { id: "routes/auth.sign-in.onboard", parentId: "routes/auth", path: "sign-in/onboard", index: void 0, caseSensitive: void 0, module: "/build/routes/auth.sign-in.onboard-BJ6V2QFR.js", imports: ["/build/_shared/chunk-SOJZ3V3V.js", "/build/_shared/chunk-U7XJ7QCC.js"], hasAction: !0, hasLoader: !0, hasCatchBoundary: !1, hasErrorBoundary: !1 }, "routes/auth.sign-in.onboard._index": { id: "routes/auth.sign-in.onboard._index", parentId: "routes/auth.sign-in.onboard", path: void 0, index: !0, caseSensitive: void 0, module: "/build/routes/auth.sign-in.onboard._index-QJQOOPYQ.js", imports: void 0, hasAction: !1, hasLoader: !1, hasCatchBoundary: !1, hasErrorBoundary: !1 }, "routes/auth.sign-in.onboard.password": { id: "routes/auth.sign-in.onboard.password", parentId: "routes/auth.sign-in.onboard", path: "password", index: void 0, caseSensitive: void 0, module: "/build/routes/auth.sign-in.onboard.password-MYSVYICD.js", imports: ["/build/_shared/chunk-W4EJMWRT.js", "/build/_shared/chunk-AZN7CLWY.js", "/build/_shared/chunk-PMBYIPUD.js"], hasAction: !0, hasLoader: !1, hasCatchBoundary: !1, hasErrorBoundary: !1 }, "routes/auth.sign-in.password": { id: "routes/auth.sign-in.password", parentId: "routes/auth", path: "sign-in/password", index: void 0, caseSensitive: void 0, module: "/build/routes/auth.sign-in.password-7QHR6YZR.js", imports: ["/build/_shared/chunk-U7XJ7QCC.js", "/build/_shared/chunk-PMBYIPUD.js"], hasAction: !0, hasLoader: !0, hasCatchBoundary: !1, hasErrorBoundary: !1 } }, cssBundleHref: void 0, url: "/build/manifest-43C20C28.js" };
+var assets_manifest_default = { version: "afa9287f", entry: { module: "/build/entry.client-RSU7JOM7.js", imports: ["/build/_shared/chunk-WKFYPEZL.js", "/build/_shared/chunk-GJZ3O5LS.js", "/build/_shared/chunk-FDGIW4RJ.js", "/build/_shared/chunk-VIPVJV6J.js", "/build/_shared/chunk-5KL4PAQL.js"] }, routes: { root: { id: "root", parentId: void 0, path: "", index: void 0, caseSensitive: void 0, module: "/build/root-IQ3GN5GF.js", imports: void 0, hasAction: !1, hasLoader: !1, hasCatchBoundary: !1, hasErrorBoundary: !0 }, "routes/_index": { id: "routes/_index", parentId: "root", path: void 0, index: !0, caseSensitive: void 0, module: "/build/routes/_index-FD5GBRGY.js", imports: void 0, hasAction: !1, hasLoader: !0, hasCatchBoundary: !1, hasErrorBoundary: !1 }, "routes/about": { id: "routes/about", parentId: "root", path: "about", index: void 0, caseSensitive: void 0, module: "/build/routes/about-5LWV4GCJ.js", imports: void 0, hasAction: !1, hasLoader: !1, hasCatchBoundary: !1, hasErrorBoundary: !1 }, "routes/admin": { id: "routes/admin", parentId: "root", path: "admin", index: void 0, caseSensitive: void 0, module: "/build/routes/admin-XOY5MVOF.js", imports: ["/build/_shared/chunk-GSWHPMDN.js", "/build/_shared/chunk-AZN7CLWY.js", "/build/_shared/chunk-PMBYIPUD.js"], hasAction: !1, hasLoader: !0, hasCatchBoundary: !1, hasErrorBoundary: !1 }, "routes/admin/accounts": { id: "routes/admin/accounts", parentId: "routes/admin", path: "accounts", index: void 0, caseSensitive: void 0, module: "/build/routes/admin/accounts-O76HLV7R.js", imports: ["/build/_shared/chunk-W4EJMWRT.js"], hasAction: !1, hasLoader: !0, hasCatchBoundary: !1, hasErrorBoundary: !1 }, "routes/admin/customers": { id: "routes/admin/customers", parentId: "routes/admin", path: "customers", index: void 0, caseSensitive: void 0, module: "/build/routes/admin/customers-7IKWJKEL.js", imports: ["/build/_shared/chunk-W4EJMWRT.js"], hasAction: !0, hasLoader: !0, hasCatchBoundary: !1, hasErrorBoundary: !1 }, "routes/app": { id: "routes/app", parentId: "root", path: "app", index: void 0, caseSensitive: void 0, module: "/build/routes/app-Z4BDCFQT.js", imports: ["/build/_shared/chunk-GSWHPMDN.js", "/build/_shared/chunk-AZN7CLWY.js", "/build/_shared/chunk-PMBYIPUD.js"], hasAction: !1, hasLoader: !0, hasCatchBoundary: !1, hasErrorBoundary: !1 }, "routes/app/_index": { id: "routes/app/_index", parentId: "routes/app", path: void 0, index: !0, caseSensitive: void 0, module: "/build/routes/app/_index-YY4APH5K.js", imports: void 0, hasAction: !1, hasLoader: !0, hasCatchBoundary: !1, hasErrorBoundary: !1 }, "routes/app/orders": { id: "routes/app/orders", parentId: "routes/app", path: "orders", index: void 0, caseSensitive: void 0, module: "/build/routes/app/orders-RYOUWCP2.js", imports: void 0, hasAction: !1, hasLoader: !1, hasCatchBoundary: !1, hasErrorBoundary: !1 }, "routes/app/orders/_index": { id: "routes/app/orders/_index", parentId: "routes/app/orders", path: void 0, index: !0, caseSensitive: void 0, module: "/build/routes/app/orders/_index-GDE2GDAY.js", imports: ["/build/_shared/chunk-JYVC523Y.js", "/build/_shared/chunk-RZAGVPUC.js", "/build/_shared/chunk-AZN7CLWY.js", "/build/_shared/chunk-PMBYIPUD.js"], hasAction: !1, hasLoader: !0, hasCatchBoundary: !1, hasErrorBoundary: !1 }, "routes/app/user": { id: "routes/app/user", parentId: "routes/app", path: "user", index: void 0, caseSensitive: void 0, module: "/build/routes/app/user-SCFIBYOE.js", imports: void 0, hasAction: !1, hasLoader: !1, hasCatchBoundary: !1, hasErrorBoundary: !1 }, "routes/auth": { id: "routes/auth", parentId: "root", path: "auth", index: void 0, caseSensitive: void 0, module: "/build/routes/auth-ZD2XSAM7.js", imports: ["/build/_shared/chunk-JYVC523Y.js", "/build/_shared/chunk-AZN7CLWY.js"], hasAction: !1, hasLoader: !1, hasCatchBoundary: !1, hasErrorBoundary: !1 }, "routes/auth._index": { id: "routes/auth._index", parentId: "routes/auth", path: void 0, index: !0, caseSensitive: void 0, module: "/build/routes/auth._index-GKPGSVA5.js", imports: void 0, hasAction: !1, hasLoader: !0, hasCatchBoundary: !1, hasErrorBoundary: !1 }, "routes/auth.sign-in._index": { id: "routes/auth.sign-in._index", parentId: "routes/auth", path: "sign-in", index: !0, caseSensitive: void 0, module: "/build/routes/auth.sign-in._index-MAPCN4CL.js", imports: ["/build/_shared/chunk-SOJZ3V3V.js", "/build/_shared/chunk-W4EJMWRT.js"], hasAction: !0, hasLoader: !1, hasCatchBoundary: !1, hasErrorBoundary: !1 }, "routes/auth.sign-in.onboard": { id: "routes/auth.sign-in.onboard", parentId: "routes/auth", path: "sign-in/onboard", index: void 0, caseSensitive: void 0, module: "/build/routes/auth.sign-in.onboard-JTNCTJFF.js", imports: ["/build/_shared/chunk-SOJZ3V3V.js", "/build/_shared/chunk-I5LELAYC.js", "/build/_shared/chunk-RZAGVPUC.js"], hasAction: !0, hasLoader: !0, hasCatchBoundary: !1, hasErrorBoundary: !1 }, "routes/auth.sign-in.onboard._index": { id: "routes/auth.sign-in.onboard._index", parentId: "routes/auth.sign-in.onboard", path: void 0, index: !0, caseSensitive: void 0, module: "/build/routes/auth.sign-in.onboard._index-HSV7JS6U.js", imports: void 0, hasAction: !1, hasLoader: !1, hasCatchBoundary: !1, hasErrorBoundary: !1 }, "routes/auth.sign-in.onboard.password": { id: "routes/auth.sign-in.onboard.password", parentId: "routes/auth.sign-in.onboard", path: "password", index: void 0, caseSensitive: void 0, module: "/build/routes/auth.sign-in.onboard.password-BF4XFU5H.js", imports: ["/build/_shared/chunk-W4EJMWRT.js", "/build/_shared/chunk-AZN7CLWY.js", "/build/_shared/chunk-PMBYIPUD.js"], hasAction: !0, hasLoader: !1, hasCatchBoundary: !1, hasErrorBoundary: !1 }, "routes/auth.sign-in.password": { id: "routes/auth.sign-in.password", parentId: "routes/auth", path: "sign-in/password", index: void 0, caseSensitive: void 0, module: "/build/routes/auth.sign-in.password-7RHKRUFQ.js", imports: ["/build/_shared/chunk-I5LELAYC.js", "/build/_shared/chunk-RZAGVPUC.js", "/build/_shared/chunk-PMBYIPUD.js"], hasAction: !0, hasLoader: !0, hasCatchBoundary: !1, hasErrorBoundary: !1 } }, cssBundleHref: void 0, url: "/build/manifest-AFA9287F.js" };
 
 // server-entry-module:@remix-run/dev/server-build
 var assetsBuildDirectory = "public/build", future = { unstable_cssModules: !1, unstable_cssSideEffectImports: !1, unstable_dev: !1, unstable_postcss: !1, unstable_tailwind: !1, unstable_vanillaExtract: !1, v2_errorBoundary: !1, v2_meta: !0, v2_routeConvention: !0 }, publicPath = "/build/", entry = { module: entry_server_exports }, routes = {
