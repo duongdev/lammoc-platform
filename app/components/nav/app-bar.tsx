@@ -1,4 +1,4 @@
-import type { FC} from 'react';
+import type { FC } from 'react'
 import { useEffect } from 'react'
 
 import {
@@ -13,6 +13,9 @@ import {
 } from '@mantine/core'
 import { useDisclosure } from '@mantine/hooks'
 import { Link, NavLink, useLocation } from '@remix-run/react'
+import { IconX } from '@tabler/icons-react'
+
+import { APP_NAME } from '~/config/app-config'
 
 const HEADER_HEIGHT = 56
 
@@ -52,8 +55,17 @@ const AppBar: FC<HeaderProps> = ({ links, logoLink = '/' }) => {
   return (
     <Header className={classes.root} height={HEADER_HEIGHT}>
       <Container className={classes.header}>
-        <Link title="Store Làm Mộc" to={logoLink}>
-          <Image height={36} src="/img/slm-logo.png" width="auto" />
+        <Link title={APP_NAME} to={logoLink}>
+          <Group spacing="xs">
+            <Image height={36} src="/img/slm-logo.png" width="auto" />
+            <IconX
+              size={16}
+              style={{
+                color: '#0000005d !important',
+              }}
+            />
+            <Image height={32} src="/img/ttl-logo.png" width="auto" />
+          </Group>
         </Link>
 
         <Group className={classes.links} spacing={5}>
