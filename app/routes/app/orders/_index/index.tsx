@@ -129,11 +129,13 @@ const OrdersIndex: FC<OrdersIndexProps> = () => {
             {orderList}
             <Space />
 
-            <Pagination
-              onChange={handleFilterChange('page')}
-              page={page}
-              total={totalPages}
-            />
+            <Center>
+              <Pagination
+                onChange={handleFilterChange('page')}
+                page={page}
+                total={totalPages}
+              />
+            </Center>
           </Stack>
         )}
       </Box>
