@@ -5,6 +5,7 @@ import {
   Badge,
   Box,
   Card,
+  Center,
   Divider,
   Group,
   Image,
@@ -24,8 +25,9 @@ import type {
 import { Link } from '@remix-run/react'
 import { IconX } from '@tabler/icons-react'
 import { differenceInDays, format, formatDistanceToNowStrict } from 'date-fns'
-import { first } from 'lodash'
+import { first, take } from 'lodash'
 
+import { ORDER_LIST_MAX_ITEMS } from '~/config/app-config'
 import { fVND } from '~/utils/format'
 
 export type OrderItemProps = {
@@ -47,6 +49,11 @@ const OrderItem: FC<OrderItemProps> = ({ order }) => {
     }
     return formatDistanceToNowStrict(order.createdAt, { addSuffix: true })
   }, [order.createdAt])
+
+  const lineItems = useMemo(
+    () => take(order.lineItems, ORDER_LIST_MAX_ITEMS),
+    [order.lineItems],
+  )
 
   return (
     <Card
@@ -70,7 +77,9 @@ const OrderItem: FC<OrderItemProps> = ({ order }) => {
           <Stack>
             <Group>
               <Text weight="bold">{order.code}</Text>
-              <Text color="dimmed" size="sm">{createdAt}</Text>
+              <Text color="dimmed" size="sm">
+                {createdAt}
+              </Text>
             </Group>
             <Group spacing="xs">
               <Badge>{order.tenant}</Badge>
@@ -83,9 +92,11 @@ const OrderItem: FC<OrderItemProps> = ({ order }) => {
           <Divider />
         </Card.Section>
         <Stack spacing="xs">
-          {order.lineItems.map((item) => (
+          {lineItems.map((item) => (
             <Group noWrap key={item.id} spacing={isMobile ? 'xs' : 'md'}>
-              <Text color="dimmed">{item.quantity}</Text>
+              <Text align="right" color="dimmed" sx={{ minWidth: 32 }}>
+                {item.quantity}
+              </Text>
               <IconX size={16} style={{ flexShrink: 0 }} />
               <MediaQuery smallerThan="sm" styles={{ display: 'none' }}>
                 <Box
@@ -132,6 +143,14 @@ const OrderItem: FC<OrderItemProps> = ({ order }) => {
             </Group>
           ))}
         </Stack>
+
+        {order.lineItems.length > ORDER_LIST_MAX_ITEMS && (
+          <Center>
+            <Text color="dimmed" size="sm">
+              +{order.lineItems.length - ORDER_LIST_MAX_ITEMS} sản phẩm
+            </Text>
+          </Center>
+        )}
       </Stack>
     </Card>
   )
