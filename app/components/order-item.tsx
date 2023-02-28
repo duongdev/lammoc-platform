@@ -27,7 +27,8 @@ import { differenceInDays, format, formatDistanceToNowStrict } from 'date-fns'
 import { first, take } from 'lodash'
 
 import { ORDER_LIST_MAX_ITEMS } from '~/config/app-config'
-import { fVND } from '~/utils/format'
+import { ORDER_STATUS, TENANT_LABEL } from '~/utils/constants'
+import { fOrderCode, fVND } from '~/utils/format'
 import { useIsMobile } from '~/utils/hooks'
 
 export type OrderItemProps = {
@@ -58,6 +59,8 @@ const OrderItem: FC<OrderItemProps> = ({ order }) => {
     [order.lineItems],
   )
 
+  const status = order.status && ORDER_STATUS[order.status]
+
   return (
     <Card
       withBorder
@@ -79,15 +82,15 @@ const OrderItem: FC<OrderItemProps> = ({ order }) => {
         <Group position="apart">
           <Stack>
             <Group>
-              <Text weight="bold">#{order.code.replace(/^SON/, '')}</Text>
+              <Text weight="bold">{fOrderCode(order.code)}</Text>
               <Text color="dimmed" size="sm">
                 {createdAt}
               </Text>
             </Group>
             <MediaQuery smallerThan="sm" styles={{ display: 'none' }}>
               <Group spacing="xs">
-                <Badge>{order.tenant}</Badge>
-                <Badge>{order.status}</Badge>
+                <Badge variant="gradient">{TENANT_LABEL[order.tenant]}</Badge>
+                {status && <Badge color={status.color}>{status.label}</Badge>}
               </Group>
             </MediaQuery>
           </Stack>

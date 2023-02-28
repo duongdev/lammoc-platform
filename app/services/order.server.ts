@@ -1,4 +1,4 @@
-import type { Tenant } from '@prisma/client'
+import type { Prisma, Tenant } from '@prisma/client'
 
 import prisma from '~/libs/prisma.server'
 
@@ -11,17 +11,40 @@ export const getCustomerOrders = async (
     status,
     take = 20,
     tenant,
+    searchText,
   }: {
     take?: number
     skip?: number
     status?: string
     tenant?: Tenant
+    searchText?: string
   },
 ) => {
-  const where = {
+  const search = searchText?.toLowerCase().replace(/\s/g, '&')
+
+  const where: Prisma.OrderWhereInput = {
     customer: { phone: { hasSome: customerPhones } },
     status,
     tenant,
+    ...(search
+      ? {
+          OR: [
+            {
+              code: { contains: search },
+            },
+            {
+              lineItems: {
+                some: {
+                  OR: [
+                    { variant: { name: { search } } },
+                    { product: { name: { search } } },
+                  ],
+                },
+              },
+            },
+          ],
+        }
+      : {}),
   }
 
   const [orders, totalCount] = await prisma.$transaction([
