@@ -13,7 +13,6 @@ import {
   Stack,
   Text,
 } from '@mantine/core'
-import { useMediaQuery } from '@mantine/hooks'
 import type {
   Customer,
   Order,
@@ -29,6 +28,7 @@ import { first, take } from 'lodash'
 
 import { ORDER_LIST_MAX_ITEMS } from '~/config/app-config'
 import { fVND } from '~/utils/format'
+import { useIsMobile } from '~/utils/hooks'
 
 export type OrderItemProps = {
   order: Order & {
@@ -41,14 +41,17 @@ export type OrderItemProps = {
 }
 
 const OrderItem: FC<OrderItemProps> = ({ order }) => {
-  const isMobile = useMediaQuery('(max-width: 800px)')
+  const isMobile = useIsMobile()
 
   const createdAt = useMemo(() => {
     if (differenceInDays(order.createdAt, Date.now()) <= 7) {
-      return format(order.createdAt, 'HH:mm dd/MM/yyyy')
+      return format(
+        order.createdAt,
+        isMobile ? 'dd/MM/yyyy' : 'HH:mm dd/MM/yyyy',
+      )
     }
     return formatDistanceToNowStrict(order.createdAt, { addSuffix: true })
-  }, [order.createdAt])
+  }, [isMobile, order.createdAt])
 
   const lineItems = useMemo(
     () => take(order.lineItems, ORDER_LIST_MAX_ITEMS),
@@ -76,18 +79,26 @@ const OrderItem: FC<OrderItemProps> = ({ order }) => {
         <Group position="apart">
           <Stack>
             <Group>
-              <Text weight="bold">{order.code}</Text>
+              <Text weight="bold">#{order.code.replace(/^SON/, '')}</Text>
               <Text color="dimmed" size="sm">
                 {createdAt}
               </Text>
             </Group>
-            <Group spacing="xs">
-              <Badge>{order.tenant}</Badge>
-              <Badge>{order.status}</Badge>
-            </Group>
+            <MediaQuery smallerThan="sm" styles={{ display: 'none' }}>
+              <Group spacing="xs">
+                <Badge>{order.tenant}</Badge>
+                <Badge>{order.status}</Badge>
+              </Group>
+            </MediaQuery>
           </Stack>
           <Text>{fVND(order.total)}</Text>
         </Group>
+        <MediaQuery largerThan="sm" styles={{ display: 'none' }}>
+          <Group spacing="xs">
+            <Badge>{order.tenant}</Badge>
+            <Badge>{order.status}</Badge>
+          </Group>
+        </MediaQuery>
         <Card.Section>
           <Divider />
         </Card.Section>
@@ -121,7 +132,7 @@ const OrderItem: FC<OrderItemProps> = ({ order }) => {
                   />
                 </Box>
               </MediaQuery>
-              <Box sx={{ flexGrow: 1 }}>
+              <Box sx={{ flexGrow: '1 !important' as any }}>
                 <Text
                   color="dark"
                   title={item.variant.product.name}

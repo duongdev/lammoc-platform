@@ -23,6 +23,7 @@ import { getCustomerOrders } from '~/services/order.server'
 import { getAuthSession } from '~/services/session.server'
 import { getSearchParams } from '~/utils/common'
 import { superjson, useSuperLoaderData } from '~/utils/data'
+import { useIsMobile } from '~/utils/hooks'
 import { getTitle } from '~/utils/meta'
 
 const PER_PAGE = 20
@@ -62,6 +63,7 @@ const OrdersIndex: FC<OrdersIndexProps> = () => {
   const [params, setParams] = useSearchParams()
   const { orders, totalPages, page } = useSuperLoaderData<typeof loader>()
   const transition = useTransition()
+  const isMobile = useIsMobile()
 
   const status = params.get('status') ?? 'all'
   const tenant = params.get('tenant') ?? 'all'
@@ -131,8 +133,10 @@ const OrdersIndex: FC<OrdersIndexProps> = () => {
 
             <Center>
               <Pagination
+                boundaries={1}
                 onChange={handleFilterChange('page')}
                 page={page}
+                siblings={isMobile ? 0 : 1}
                 total={totalPages}
               />
             </Center>
