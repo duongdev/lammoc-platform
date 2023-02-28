@@ -387,31 +387,34 @@ export class Sapo {
         id: toString(order.id),
         tenant: SAPO_TENANT[this.tenant],
         code: order.code,
-        customer: {
-          connectOrCreate: {
-            where: { id: toString(order.customer_id) },
-            create: {
-              tenant: SAPO_TENANT[this.tenant],
-              code: order.customer_data.code,
-              name: order.customer_data.name,
-              updatedAt: new Date(order.customer_data.modified_on),
-              createdAt: new Date(order.customer_data.created_on),
-              email: order.customer_data.email ?? undefined,
-              phone: order.customer_data.phone_number
-                ? flatten(
-                    (order.customer_data.phone_number ?? '')
-                      .split(' / ')
-                      .map((phone) =>
-                        phone
-                          .split(' - ')
-                          .filter((p) => !!p)
-                          .map((phone) => normalizePhoneNumber(phone)),
-                      ),
-                  )
-                : undefined,
-            },
-          },
-        },
+        customer: order.customer_data
+          ? {
+              connectOrCreate: {
+                where: { id: toString(order.customer_id) },
+                create: {
+                  id: toString(order.customer_id),
+                  tenant: SAPO_TENANT[this.tenant],
+                  code: order.customer_data.code,
+                  name: order.customer_data.name,
+                  updatedAt: new Date(order.customer_data.modified_on),
+                  createdAt: new Date(order.customer_data.created_on),
+                  email: order.customer_data.email ?? undefined,
+                  phone: order.customer_data.phone_number
+                    ? flatten(
+                        (order.customer_data.phone_number ?? '')
+                          .split(' / ')
+                          .map((phone) =>
+                            phone
+                              .split(' - ')
+                              .filter((p) => !!p)
+                              .map((phone) => normalizePhoneNumber(phone)),
+                          ),
+                      )
+                    : undefined,
+                },
+              },
+            }
+          : undefined,
         total: order.total ?? 0,
         totalDiscount: order.total_discount ?? 0,
         canceledAt: order.cancelled_on && new Date(order.cancelled_on),
@@ -498,37 +501,115 @@ export class Sapo {
             },
           })),
         },
+        completedOn: order.completed_on && new Date(order.completed_on),
+        createInvoice: !!order.create_invoice,
+        finalizedOn: order.finalized_on && new Date(order.finalized_on),
+        finishedOn: order.finished_on && new Date(order.finished_on),
+        fulfillments: {
+          connectOrCreate: (order.fulfillments ?? []).map((f) => ({
+            where: { id: toString(f.id) },
+            create: {
+              id: toString(f.id),
+              accountId: toString(f.account_id ?? ''),
+              code: f.code,
+              deliveryType: f.delivery_type,
+              paymentStatus: f.payment_status,
+              tenant: SAPO_TENANT[this.tenant],
+              total: f.total,
+              totalDiscount: f.total_discount,
+              totalTax: f.total_tax,
+              cancelDate: f.cancel_date && new Date(f.cancel_date),
+              createdAt: new Date(f.created_on),
+              discountAmount: f.discount_amount,
+              discountRate: f.discount_rate,
+              discountValue: f.discount_value,
+              notes: f.notes,
+              packedOn: f.packed_on,
+              partnerId: toString(f.partner_id),
+              receivedOn: f.received_on,
+              shippedOn: f.shipped_on,
+              shippingAddress: f.shipping_address,
+              status: f.status,
+              stockLocationId: toString(f.stock_location_id),
+              updatedAt: f.modified_on,
+              shipment: !f.shipment
+                ? undefined
+                : {
+                    connectOrCreate: {
+                      where: { id: toString(f.shipment.id) },
+                      create: {
+                        id: toString(f.shipment.id),
+                        tenant: SAPO_TENANT[this.tenant],
+                        deliveryServiceProviderId: toString(
+                          f.shipment.delivery_service_provider_id,
+                        ),
+                        serviceName: f.shipment.service_name,
+                        codAmount: f.shipment.cod_amount,
+                        collationStatus: f.shipment.collation_status,
+                        createdAt: new Date(f.shipment.created_on),
+                        deliveryFee: f.shipment.delivery_fee,
+                        detail: f.shipment.detail,
+                        estimatedDeliveryTime:
+                          f.shipment.estimated_delivery_time,
+                        freightAmount: f.shipment.freight_amount,
+                        freightPayer: f.shipment.freight_payer,
+                        height: f.shipment.height,
+                        length: f.shipment.length,
+                        note: f.shipment.note,
+                        partnerOrderId: f.shipment.partner_order_id,
+                        pushingNote: f.shipment.pushing_note,
+                        pushingStatus: f.shipment.pushing_status,
+                        referenceStatus: f.shipment.reference_status,
+                        referenceStatusExplanation:
+                          f.shipment.reference_status_explanation,
+                        shippingAddress: !f.shipment.shipping_address
+                          ? undefined
+                          : {
+                              connectOrCreate: {
+                                where: {
+                                  id: toString(f.shipment.shipping_address.id),
+                                },
+                                create: {
+                                  id: toString(f.shipment.shipping_address.id),
+                                  tenant: SAPO_TENANT[this.tenant],
+                                  address1:
+                                    f.shipment.shipping_address.address1,
+                                  address2:
+                                    f.shipment.shipping_address.address2,
+                                  city: f.shipment.shipping_address.city,
+                                  country: f.shipment.shipping_address.country,
+                                  district:
+                                    f.shipment.shipping_address.district,
+                                  email: f.shipment.shipping_address.email,
+                                  label: f.shipment.shipping_address.label,
+                                  ward: f.shipment.shipping_address.ward,
+                                  firstName:
+                                    f.shipment.shipping_address.first_name,
+                                  lastName:
+                                    f.shipment.shipping_address.last_name,
+                                  fullAddress:
+                                    f.shipment.shipping_address.full_address,
+                                  fullName:
+                                    f.shipment.shipping_address.full_name,
+                                  phoneNumber:
+                                    f.shipment.shipping_address.phone_number,
+                                  zipCode: f.shipment.shipping_address.zip_code,
+                                },
+                              },
+                            },
+                        sortingCode: f.shipment.sorting_code,
+                        trackingCode: f.shipment.tracking_code,
+                        trackingUrl: f.shipment.tracking_url,
+                        updatedAt: f.shipment.modified_on,
+                        weight: f.shipment.weight,
+                        width: f.shipment.width,
+                      },
+                    },
+                  },
+            },
+          })),
+        },
       }
-
-      // const lineItems = order.order_line_items.map((lineItem) => {
-      //   const data = {
-      //     id: toString(lineItem.id),
-      //     price: lineItem.price,
-      //     tenant: SAPO_TENANT[this.tenant],
-      //     createdAt: new Date(lineItem.created_on),
-      //     updatedAt: new Date(lineItem.modified_on),
-      //     discountAmount: lineItem.discount_amount,
-      //     discountReason: lineItem.discount_reason,
-      //     discountValue: lineItem.discount_value,
-      //     distributedDiscountAmount: lineItem.distributed_discount_amount,
-      //     lineAmount: lineItem.line_amount,
-      //     note: lineItem.note,
-      //     quantity: lineItem.quantity,
-      //     // productId: toString(lineItem.product_id),
-      //     // productVariantId: toString(lineItem.variant_id),
-      //     product: { connect: { id: toString(lineItem.product_id) } },
-      //     variant: { connect: { id: toString(lineItem.variant_id) } },
-
-      //     taxAmount: lineItem.tax_amount,
-      //     taxRate: lineItem.tax_rate,
-      //   }
-
-      //   return prisma.orderLineItem.upsert({
-      //     where: { id: toString(lineItem.id) },
-      //     create: data,
-      //     update: data,
-      //   })
-      // })
 
       await transaction.add(
         prisma.order.upsert({

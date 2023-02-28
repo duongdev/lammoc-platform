@@ -2,7 +2,7 @@
 // learn more about it in the docs: https://pris.ly/d/prisma-schema
 
 generator client {
-  provider = "prisma-client-js"
+  provider        = "prisma-client-js"
   previewFeatures = ["fullTextSearch"]
 }
 
@@ -87,12 +87,17 @@ model Order {
   note              String?
   tags              String[]
   channel           String?
+  finalizedOn       DateTime?
+  finishedOn        DateTime?
+  completedOn       DateTime?
+  createInvoice     Boolean   @default(false)
 
-  customer           Customer          @relation(fields: [customerId], references: [id], onUpdate: Cascade, onDelete: Cascade)
-  customerId         String
-  deliveryFee        OrderDeliveryFee? @relation(fields: [orderDeliveryFeeId], references: [id], onUpdate: Cascade, onDelete: Cascade)
+  customer           Customer?          @relation(fields: [customerId], references: [id], onUpdate: Cascade, onDelete: Cascade)
+  customerId         String?
+  deliveryFee        OrderDeliveryFee?  @relation(fields: [orderDeliveryFeeId], references: [id], onUpdate: Cascade, onDelete: Cascade)
   orderDeliveryFeeId String?
   lineItems          OrderLineItem[]
+  fulfillments       OrderFulfillment[]
 }
 
 model OrderLineItem {
@@ -201,4 +206,97 @@ model OrderDeliveryFee {
   shippingCostName String?
   fee              Float   @default(0)
   orders           Order[]
+}
+
+model OrderFulfillment {
+  id        String   @id
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now())
+  syncedAt  DateTime @updatedAt
+  tenant    Tenant
+
+  stockLocationId String?
+  code            String
+  accountId       String
+  partnerId       String?
+  shippingAddress String?
+  deliveryType    String?
+  discountRate    Float     @default(0)
+  discountValue   Float     @default(0)
+  discountAmount  Float     @default(0)
+  total           Float
+  totalTax        Float
+  totalDiscount   Float
+  notes           String?
+  packedOn        DateTime?
+  receivedOn      DateTime?
+  shippedOn       DateTime?
+  cancelDate      DateTime?
+  status          String?
+  paymentStatus   String
+
+  order                      Order                     @relation(fields: [orderId], references: [id])
+  orderId                    String
+  shipment                   OrderFulfillmentShipment? @relation(fields: [orderFulfillmentShipmentId], references: [id])
+  orderFulfillmentShipmentId String?
+}
+
+model OrderFulfillmentShipment {
+  id        String   @id
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now())
+  syncedAt  DateTime @updatedAt
+  tenant    Tenant
+
+  deliveryServiceProviderId  String?
+  serviceName                String?
+  codAmount                  Float     @default(0)
+  freightAmount              Float     @default(0)
+  deliveryFee                Float     @default(0)
+  trackingCode               String?
+  trackingUrl                String?
+  detail                     String?
+  note                       String?
+  pushingStatus              String?
+  referenceStatus            String?
+  referenceStatusExplanation String?
+  pushingNote                String?
+  collationStatus            String?
+  partnerOrderId             String?
+  freightPayer               String?
+  estimatedDeliveryTime      String?
+  sortingCode                String?
+  weight                     Float     @default(0)
+  length                     Float     @default(0)
+  height                     Float     @default(0)
+  width                      Float     @default(0)
+
+  shippingAddress   ShippingAddress?   @relation(fields: [shippingAddressId], references: [id])
+  shippingAddressId String?
+  orderFulfillments OrderFulfillment[]
+}
+
+model ShippingAddress {
+  id        String   @id
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now())
+  syncedAt  DateTime @updatedAt
+  tenant    Tenant
+
+  label       String?
+  firstName   String?
+  lastName    String?
+  fullName    String?
+  address1    String?
+  address2    String?
+  email       String?
+  phoneNumber String?
+  country     String?
+  city        String?
+  district    String?
+  ward        String?
+  zipCode     String?
+  fullAddress String?
+
+  orderFulfillmentShipments OrderFulfillmentShipment[]
 }
