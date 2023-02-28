@@ -124,8 +124,10 @@ const OrderItem: FC<OrderItemProps> = ({ order }) => {
               <Box sx={{ flexGrow: 1 }}>
                 <Text
                   color="dark"
-                  lineClamp={1}
                   title={item.variant.product.name}
+                  lineClamp={
+                    item.variant.name === item.variant.product.name ? 2 : 1
+                  }
                 >
                   {item.variant.product.name}
                 </Text>

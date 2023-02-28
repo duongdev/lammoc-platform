@@ -1,9 +1,11 @@
 import type { FC } from 'react'
-import { useCallback } from 'react'
+import { useMemo, useCallback } from 'react'
 
 import {
   Box,
+  Center,
   Group,
+  Loader,
   Pagination,
   SegmentedControl,
   Space,
@@ -13,8 +15,9 @@ import {
 } from '@mantine/core'
 import { Tenant } from '@prisma/client'
 import type { LoaderArgs, V2_MetaFunction } from '@remix-run/node'
-import { useSearchParams } from '@remix-run/react'
+import { useSearchParams, useTransition } from '@remix-run/react'
 
+import EmptyState from '~/components/empty-state'
 import OrderItem from '~/components/order-item'
 import { getCustomerOrders } from '~/services/order.server'
 import { getAuthSession } from '~/services/session.server'
@@ -58,6 +61,7 @@ export type OrdersIndexProps = {}
 const OrdersIndex: FC<OrdersIndexProps> = () => {
   const [params, setParams] = useSearchParams()
   const { orders, totalPages, page } = useSuperLoaderData<typeof loader>()
+  const transition = useTransition()
 
   const status = params.get('status') ?? 'all'
   const tenant = params.get('tenant') ?? 'all'
@@ -78,6 +82,13 @@ const OrdersIndex: FC<OrdersIndexProps> = () => {
     },
     [params, setParams],
   )
+
+  const orderList = useMemo(() => {
+    if (!orders.length) {
+      return <EmptyState message="Không có đơn hàng nào" />
+    }
+    return orders.map((order) => <OrderItem key={order.id} order={order} />)
+  }, [orders])
 
   return (
     <>
@@ -109,19 +120,22 @@ const OrdersIndex: FC<OrdersIndexProps> = () => {
           </Tabs.List>
         </Tabs>
 
-        <Stack mt="lg" spacing="md">
-          {orders.map((order) => (
-            <OrderItem key={order.id} order={order} />
-          ))}
+        {transition.state === 'loading' ? (
+          <Center mt="lg">
+            <Loader />
+          </Center>
+        ) : (
+          <Stack mt="lg" spacing="md">
+            {orderList}
+            <Space />
 
-          <Space />
-
-          <Pagination
-            onChange={handleFilterChange('page')}
-            page={page}
-            total={totalPages}
-          />
-        </Stack>
+            <Pagination
+              onChange={handleFilterChange('page')}
+              page={page}
+              total={totalPages}
+            />
+          </Stack>
+        )}
       </Box>
     </>
   )
