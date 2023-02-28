@@ -12,17 +12,19 @@ export const sync = async (tenant: SapoTenant) => {
   const { account } = await sapo.profiles()
   log(`Signed in as [${account.id}] ${account.full_name}`)
 
-  // log(`Sync customers`)
-  // await sapo.syncCustomers()
+  log(`Sync customers`)
+  await sapo.syncCustomers()
 
-  // log('Sync product categories')
-  // await sapo.syncProductCategories()
+  log('Sync product categories')
+  await sapo.syncProductCategories()
 
-  // log('Sync products')
-  // await sapo.syncProducts()
+  log('Sync products')
+  await sapo.syncProducts()
 
   log('Sync orders')
   await sapo.syncOrders()
 }
 
-sync('store-lam-moc').then(() => sync('thichtulam'))
+sync('store-lam-moc')
+  .then(() => sync('thichtulam'))
+  .then(() => process.exit(0))
