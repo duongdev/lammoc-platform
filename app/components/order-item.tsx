@@ -32,7 +32,7 @@ import {
   ORDER_STATUS,
   TENANT_LABEL,
 } from '~/utils/constants'
-import { fOrderCode, fVND } from '~/utils/format'
+import { fVND } from '~/utils/format'
 import { useIsMobile } from '~/utils/hooks'
 
 export type OrderItemProps = {
@@ -98,7 +98,7 @@ const OrderItem: FC<OrderItemProps> = ({ order }) => {
         <Group position="apart">
           <Stack>
             <Group>
-              <Text weight="bold">{fOrderCode(order.code)}</Text>
+              <Text weight="bold">{order.code}</Text>
               <Text color="dimmed" size="sm">
                 {createdAt}
               </Text>

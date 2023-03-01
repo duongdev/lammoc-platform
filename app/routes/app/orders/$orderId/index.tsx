@@ -353,7 +353,7 @@ const OrderSummary: FC<{ order: Order }> = ({ order }) => {
 
   return (
     <Stack spacing={4}>
-      <SI content={['Tổng tiền', fVND(subtotal)]} size="lg" />
+      <SI content={['Tổng tiền', fVND(subtotal)]} />
       <SI d content={['Giảm giá', fVND(-order.totalDiscount)]} />
       <SI d content={['Phí vận chuyển', fVND(order.deliveryFee?.fee ?? 0)]} />
       <SI
