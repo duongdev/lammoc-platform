@@ -1,12 +1,10 @@
 import type { FC } from 'react'
 
-import { Box, Group, Paper, Text } from '@mantine/core'
+import { Box, Group, MediaQuery, Paper, Text } from '@mantine/core'
 import type { Icon } from '@tabler/icons-react'
 import { IconCash, IconShoppingCart } from '@tabler/icons-react'
 
 import { fVND } from '~/utils/format'
-
-const CARD_WIDTH = 200
 
 export type OrderStatsProps = {
   expenses: number
@@ -14,10 +12,15 @@ export type OrderStatsProps = {
 }
 
 const OrderStats: FC<OrderStatsProps> = ({ expenses, orders }) => {
-  console.log({ expenses, orders })
-
   return (
-    <Group>
+    <Group
+      sx={{
+        '@media (max-width: 640px)': {
+          width: '100%',
+          flexWrap: 'nowrap',
+        },
+      }}
+    >
       <StatItem icon={IconShoppingCart} label="đơn hàng" value={orders} />
       <StatItem icon={IconCash} label="chi tiêu" value={fVND(expenses)} />
     </Group>
@@ -32,13 +35,14 @@ const StatItem: FC<{ label: string; value: string | number; icon: Icon }> = ({
   return (
     <Paper
       withBorder
-      miw={CARD_WIDTH}
       p="xs"
       radius="md"
-      sx={{ borderWidth: 2 }}
+      sx={{ borderWidth: 2, flexGrow: 1, flexShrink: 0 }}
     >
       <Group>
-        <IconComponent />
+        <MediaQuery smallerThan="xs" styles={{ display: 'none' }}>
+          <IconComponent />
+        </MediaQuery>
         <Box>
           <Text color="dimmed" size="xs" transform="uppercase" weight={700}>
             {label}

@@ -77,11 +77,15 @@ const OrderItem: FC<OrderItemProps> = ({ order }) => {
       shadow="sm"
       to={`./${order.id}`}
       sx={(theme) => ({
-        transition: 'outline-color 0.2s',
+        transition: 'all 0.2s',
         outline: 'solid 2px transparent !important',
         cursor: 'pointer',
         '&:hover': {
-          outlineColor: `${theme.colors.orange[5]} !important`,
+          outlineColor: `${theme.black} !important`,
+          borderColor: theme.black,
+        },
+        '&:active': {
+          transform: 'scale(0.995)',
         },
       })}
     >
