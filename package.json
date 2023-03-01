@@ -6,7 +6,7 @@
     "build": "remix build",
     "dev": "remix dev",
     "start": "remix-serve build",
-    "sync-sapo-db": "DEBUG=Sapo:* tsnd -r dotenv/config -r tsconfig-paths/register --exit-child tasks/sapo/sync-sapo-db.ts",
+    "sync-sapo-db": "DEBUG=Sapo:* ts-node -r dotenv/config -r tsconfig-paths/register tasks/sapo/sync-sapo-db.ts",
     "seed": "DEBUG=Sapo:* tsnd -r dotenv/config -r tsconfig-paths/register tasks/common/seed.ts"
   },
   "dependencies": {
@@ -46,6 +46,7 @@
     "remix-island": "0.1.2",
     "superjson": "1.12.2",
     "tough-cookie": "4.1.2",
+    "ts-node": "^10.9.1",
     "yup": "1.0.2"
   },
   "devDependencies": {
