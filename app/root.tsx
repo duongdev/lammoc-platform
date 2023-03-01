@@ -12,6 +12,7 @@ import {
 } from '@remix-run/react'
 
 import ErrorHandler from './components/error-handler'
+import NProgress from './components/nprogress'
 import { theme } from './theme'
 import { emotionCache } from './utils/emotion-cache'
 import { getTitle } from './utils/meta'
@@ -58,6 +59,7 @@ export default function App() {
           <ScrollRestoration />
           <Scripts />
           <LiveReload />
+          <NProgress />
         </body>
       </html>
     </MantineProvider>

@@ -2146,6 +2146,13 @@
   resolved "https://registry.yarnpkg.com/@mantine/hooks/-/hooks-5.10.5.tgz#568586a0fa649be46f057ddc920bf98761017ffb"
   integrity sha512-hFQp71QZDfivPzfIUOQZfMKLiOL/Cn2EnzacRlbUr55myteTfzYN8YMt+nzniE/6c4IRopFHEAdbKEtfyQc6kg==
 
+"@mantine/nprogress@5.10.5":
+  version "5.10.5"
+  resolved "https://registry.yarnpkg.com/@mantine/nprogress/-/nprogress-5.10.5.tgz#05eec3191d38a178434435e23e12ecbf4d66b6b9"
+  integrity sha512-zvETS7NKQCwCBL/e6hvZF4HoA2SqNomRyozSY5S1Tvlyd4g89nA5ZClMeTHOWcy+EWaS6DaY7Mobjh7mYrAVsg==
+  dependencies:
+    "@mantine/utils" "5.10.5"
+
 "@mantine/remix@5.10.5":
   version "5.10.5"
   resolved "https://registry.yarnpkg.com/@mantine/remix/-/remix-5.10.5.tgz#557dd0beb3a4d8ed509eff2f73d70a87ce461ebb"
