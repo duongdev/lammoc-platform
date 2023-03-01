@@ -108,6 +108,7 @@ const breadcrumbs = [
     color="dimmed"
     component={Link}
     key={item.to}
+    size="sm"
     to={item.to}
     sx={{
       textDecoration: 'none',
@@ -139,10 +140,10 @@ const OrderView: FC<OrderViewProps> = () => {
       <Stack>
         <Breadcrumbs separator={<IconChevronRight size={16} />}>
           {breadcrumbs}
-          <Text>{order.code}</Text>
+          <Text size="sm">{order.code}</Text>
         </Breadcrumbs>
 
-        <Title>Đơn hàng {order.code}</Title>
+        <Title order={2}>Đơn hàng {order.code}</Title>
 
         <Group color="dimmed" spacing="xs">
           <Text color="dimmed" size="sm">

@@ -106,7 +106,7 @@ const OrdersIndex: FC<OrdersIndexProps> = () => {
   return (
     <>
       <Group position="apart">
-        <Title>Đơn hàng của bạn</Title>
+        <Title order={2}>Đơn hàng của bạn</Title>
         <OrderStats expenses={totalExpense} orders={totalCount} />
       </Group>
 
