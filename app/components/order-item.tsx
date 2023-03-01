@@ -148,18 +148,24 @@ const OrderItem: FC<OrderItemProps> = ({ order }) => {
               <Box sx={{ flexGrow: '1 !important' as any }}>
                 <Text
                   lineClamp={item.variant.name === item.product.name ? 2 : 1}
+                  size="sm"
                   title={item.product.name}
                 >
                   {item.product.name || NOT_FOUND_PRODUCT_NAME}
                 </Text>
                 {item.variant.name !== item.product.name && (
-                  <Text color="dimmed" lineClamp={1} title={item.variant.name}>
+                  <Text
+                    color="dimmed"
+                    lineClamp={1}
+                    size="sm"
+                    title={item.variant.name}
+                  >
                     {item.variant.name}
                   </Text>
                 )}
               </Box>
               <MediaQuery smallerThan="sm" styles={{ display: 'none' }}>
-                <Text lineClamp={1} sx={{ flexShrink: 0 }}>
+                <Text lineClamp={1} size="sm" sx={{ flexShrink: 0 }}>
                   {fVND(item.price)}
                 </Text>
               </MediaQuery>

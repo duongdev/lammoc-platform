@@ -34,7 +34,6 @@ import {
 import type { UseDataFunctionReturn } from '~/utils/data'
 import { superjson, useSuperLoaderData } from '~/utils/data'
 import { fVND } from '~/utils/format'
-import { useIsMobile } from '~/utils/hooks'
 import { getTitle } from '~/utils/meta'
 import type { ArrayElement } from '~/utils/types'
 
@@ -101,7 +100,7 @@ export const meta: V2_MetaFunction<typeof loader> = ({ data }) => {
 export type OrderViewProps = {}
 
 const breadcrumbs = [
-  { title: <IconHome size={18} />, to: '/app' },
+  { title: <IconHome size={16} />, to: '/app' },
   { title: 'Đơn hàng', to: '/app/orders' },
 ].map((item) => (
   <Text
@@ -138,17 +137,19 @@ const OrderView: FC<OrderViewProps> = () => {
   return (
     <>
       <Stack>
-        <Breadcrumbs separator={<IconChevronRight size={16} />}>
-          {breadcrumbs}
-          <Text size="sm">{order.code}</Text>
-        </Breadcrumbs>
+        <Box>
+          <Breadcrumbs separator={<IconChevronRight size={16} />}>
+            {breadcrumbs}
+            {/* <Text size="sm">Đơn hàng {order.code}</Text> */}
+          </Breadcrumbs>
 
-        <Title order={2}>Đơn hàng {order.code}</Title>
+          <Title order={2}>Đơn hàng {order.code}</Title>
+        </Box>
 
         <Group color="dimmed" spacing="xs">
           <Text color="dimmed" size="sm">
             Đặt hàng lúc <b>{format(order.createdAt, 'HH:mm')}</b> ngày{' '}
-            <b>{format(order.createdAt, 'dd/MM/yyyy')}</b> tại
+            <b>{format(order.createdAt, 'dd/MM/yyyy')}</b>
           </Text>
           <Badge variant="gradient">{TENANT_LABEL[order.tenant]}</Badge>
 
@@ -203,14 +204,13 @@ const LineItem: FC<{
     variant: ProductVariant
   }
 }> = ({ lineItem }) => {
-  const isMobile = useIsMobile()
   const image = first([...lineItem.variant.images, ...lineItem.product.images])
   const shouldShowVariant = lineItem.variant.name !== lineItem.product.name
-  const imageSize = isMobile ? 48 : 64
+  const imageSize = 48
 
   return (
     <Box>
-      <Group noWrap spacing={isMobile ? 'xs' : 'md'}>
+      <Group noWrap>
         <Box
           sx={(theme) => ({
             boxShadow: theme.shadows.md,
@@ -230,18 +230,18 @@ const LineItem: FC<{
           />
         </Box>
         <Box sx={{ flexGrow: '1 !important' as any }}>
-          <Text lineClamp={shouldShowVariant ? 1 : 2}>
+          <Text lineClamp={shouldShowVariant ? 1 : 2} size="sm">
             {lineItem.product.name || NOT_FOUND_PRODUCT_NAME}
           </Text>
           {shouldShowVariant && (
-            <Text color="dimmed" lineClamp={2}>
+            <Text color="dimmed" lineClamp={2} size="sm">
               {lineItem.variant.name}
             </Text>
           )}
         </Box>
         <MediaQuery smallerThan="sm" styles={{ display: 'none' }}>
           <Box sx={{ textAlign: 'right', flexShrink: 0 }}>
-            <Text>{fVND(lineItem.price)}</Text>
+            <Text size="sm">{fVND(lineItem.price)}</Text>
             <Text color="dimmed" size="sm">
               SL: {lineItem.quantity}
             </Text>
@@ -267,7 +267,7 @@ const PaymentDetails: FC<{ order: Order; fulfillment?: Fulfillment }> = ({
   return (
     <Stack spacing="sm">
       <Title order={4}>Thanh toán</Title>
-      <Text>
+      <Text size="sm">
         {(paymentStatus && PAYMENT_STATUS[paymentStatus]) ?? 'Chưa xác định'}
       </Text>
     </Stack>
@@ -291,7 +291,7 @@ const DeliveryDetails: FC<{ order: Order; fulfillment?: Fulfillment }> = ({
         <Text color="dimmed" size="sm">
           Giao hàng
         </Text>
-        <Text>{deliveryService.name}</Text>
+        <Text size="sm">{deliveryService.name}</Text>
         {fulfillment.shipment?.trackingUrl && (
           <Text
             underline
@@ -311,7 +311,7 @@ const DeliveryDetails: FC<{ order: Order; fulfillment?: Fulfillment }> = ({
 
   const content = useMemo(() => {
     if (!address) {
-      return <Text>Nhận tại cửa hàng</Text>
+      return <Text size="sm">Nhận tại cửa hàng</Text>
     }
 
     return (
@@ -320,12 +320,13 @@ const DeliveryDetails: FC<{ order: Order; fulfillment?: Fulfillment }> = ({
           <Text color="dimmed" size="sm">
             Địa chỉ
           </Text>
-          <Text>
+          <Text size="sm">
             {address.fullName || order.customer?.name || '[Không tên]'}{' '}
             {address.phoneNumber ? ` - ${address.phoneNumber}` : ''}
             <br />
-            {address.address1}, {address.ward}, {address.district},{' '}
-            {address.city}
+            {address.address1}, {address.ward}
+            <br />
+            {address.district}, {address.city}
           </Text>
         </Box>
         {deliveryMethod}
@@ -354,11 +355,16 @@ const OrderSummary: FC<{ order: Order }> = ({ order }) => {
   return (
     <Stack spacing={4}>
       <SI content={['Tổng tiền', fVND(subtotal)]} />
-      <SI d content={['Giảm giá', fVND(-order.totalDiscount)]} />
-      <SI d content={['Phí vận chuyển', fVND(order.deliveryFee?.fee ?? 0)]} />
+      <SI d content={['Giảm giá', fVND(-order.totalDiscount)]} size="sm" />
+      <SI
+        d
+        content={['Phí vận chuyển', fVND(order.deliveryFee?.fee ?? 0)]}
+        size="sm"
+      />
       <SI
         d
         content={['Thuế', fVND(order.totalTax ?? 0)]}
+        size="sm"
         strike={!order.createInvoice}
       />
       <Divider my="sm" variant="dashed" />
