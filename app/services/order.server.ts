@@ -60,7 +60,7 @@ export const getCustomerOrders = async (
         customer: true,
         deliveryFee: true,
         lineItems: {
-          include: { variant: { include: { product: true } } },
+          include: { variant: true, product: true },
         },
       },
       orderBy: { createdAt: 'desc' },

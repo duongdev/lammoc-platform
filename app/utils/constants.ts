@@ -1,6 +1,8 @@
 import type { DefaultMantineColor } from '@mantine/core'
 import type { Tenant } from '@prisma/client'
 
+export const NOT_FOUND_PRODUCT_NAME = '[Sản phẩm dừng kinh doanh]'
+
 export const ORDER_STATUS: Record<
   string,
   { label: string; color?: DefaultMantineColor }

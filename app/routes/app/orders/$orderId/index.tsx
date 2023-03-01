@@ -16,7 +16,7 @@ import {
   Title,
 } from '@mantine/core'
 import type { OrderLineItem, Product, ProductVariant } from '@prisma/client'
-import type { LoaderArgs } from '@remix-run/node'
+import type { LoaderArgs, V2_MetaFunction } from '@remix-run/node'
 import { Response } from '@remix-run/node'
 import { Link } from '@remix-run/react'
 import { IconChevronRight, IconHome, IconX } from '@tabler/icons-react'
@@ -25,11 +25,12 @@ import { first, orderBy } from 'lodash'
 
 import prisma from '~/libs/prisma.server'
 import { getAuthSession } from '~/services/session.server'
-import { ORDER_STATUS, PAYMENT_STATUS, TENANT_LABEL } from '~/utils/constants'
+import { NOT_FOUND_PRODUCT_NAME, ORDER_STATUS, PAYMENT_STATUS, TENANT_LABEL } from '~/utils/constants'
 import type { UseDataFunctionReturn } from '~/utils/data'
 import { superjson, useSuperLoaderData } from '~/utils/data'
 import { fVND } from '~/utils/format'
 import { useIsMobile } from '~/utils/hooks'
+import { getTitle } from '~/utils/meta'
 import type { ArrayElement } from '~/utils/types'
 
 export async function loader({ params, request }: LoaderArgs) {
@@ -88,6 +89,12 @@ export async function loader({ params, request }: LoaderArgs) {
   return superjson(order)
 }
 
+export const meta: V2_MetaFunction<typeof loader> = ({
+  data,
+}) => {
+  return [{ title: getTitle(`Đơn hàng ${data.json.code}`) }];
+};
+
 export type OrderViewProps = {}
 
 const breadcrumbs = [
@@ -129,10 +136,10 @@ const OrderView: FC<OrderViewProps> = () => {
       <Stack>
         <Breadcrumbs separator={<IconChevronRight size={16} />}>
           {breadcrumbs}
-          <Text>SON3213</Text>
+          <Text>{order.code}</Text>
         </Breadcrumbs>
 
-        <Title>Đơn hàng SON3212</Title>
+        <Title>Đơn hàng {order.code}</Title>
 
         <Group color="dimmed" spacing="xs">
           <Text color="dimmed" size="sm">
@@ -220,7 +227,7 @@ const LineItem: FC<{
         </Box>
         <Box sx={{ flexGrow: '1 !important' as any }}>
           <Text lineClamp={shouldShowVariant ? 1 : 2}>
-            {lineItem.product.name}
+            {lineItem.product.name || NOT_FOUND_PRODUCT_NAME}
           </Text>
           {shouldShowVariant && (
             <Text color="dimmed" lineClamp={2}>

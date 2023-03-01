@@ -27,7 +27,11 @@ import { differenceInDays, format, formatDistanceToNowStrict } from 'date-fns'
 import { first, take } from 'lodash'
 
 import { ORDER_LIST_MAX_ITEMS } from '~/config/app-config'
-import { ORDER_STATUS, TENANT_LABEL } from '~/utils/constants'
+import {
+  NOT_FOUND_PRODUCT_NAME,
+  ORDER_STATUS,
+  TENANT_LABEL,
+} from '~/utils/constants'
 import { fOrderCode, fVND } from '~/utils/format'
 import { useIsMobile } from '~/utils/hooks'
 
@@ -36,7 +40,8 @@ export type OrderItemProps = {
     customer: Customer | null
     deliveryFee: OrderDeliveryFee | null
     lineItems: (OrderLineItem & {
-      variant: ProductVariant & { product: Product }
+      variant: ProductVariant
+      product: Product
     })[]
   }
 }
@@ -128,28 +133,26 @@ const OrderItem: FC<OrderItemProps> = ({ order }) => {
                 >
                   <Image
                     withPlaceholder
-                    alt={item.variant.product.name}
+                    alt={item.product.name || NOT_FOUND_PRODUCT_NAME}
                     fit="cover"
                     height={44}
                     radius="md"
                     width={44}
                     src={first([
                       ...item.variant.images,
-                      ...item.variant.product.images,
+                      ...item.product.images,
                     ])}
                   />
                 </Box>
               </MediaQuery>
               <Box sx={{ flexGrow: '1 !important' as any }}>
                 <Text
-                  title={item.variant.product.name}
-                  lineClamp={
-                    item.variant.name === item.variant.product.name ? 2 : 1
-                  }
+                  lineClamp={item.variant.name === item.product.name ? 2 : 1}
+                  title={item.product.name}
                 >
-                  {item.variant.product.name}
+                  {item.product.name}
                 </Text>
-                {item.variant.name !== item.variant.product.name && (
+                {item.variant.name !== item.product.name && (
                   <Text color="dimmed" lineClamp={1} title={item.variant.name}>
                     {item.variant.name}
                   </Text>
