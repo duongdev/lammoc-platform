@@ -150,7 +150,7 @@ const OrderItem: FC<OrderItemProps> = ({ order }) => {
                   lineClamp={item.variant.name === item.product.name ? 2 : 1}
                   title={item.product.name}
                 >
-                  {item.product.name}
+                  {item.product.name || NOT_FOUND_PRODUCT_NAME}
                 </Text>
                 {item.variant.name !== item.product.name && (
                   <Text color="dimmed" lineClamp={1} title={item.variant.name}>
