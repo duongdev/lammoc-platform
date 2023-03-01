@@ -2,6 +2,7 @@ import type { FC } from 'react'
 import { useEffect } from 'react'
 
 import {
+  Box,
   Burger,
   Container,
   createStyles,
@@ -55,7 +56,14 @@ const AppBar: FC<HeaderProps> = ({ links, logoLink = '/' }) => {
   return (
     <Header className={classes.root} height={HEADER_HEIGHT}>
       <Container className={classes.header}>
-        <Link title={APP_NAME} to={logoLink}>
+        <Box
+          component={Link}
+          title={APP_NAME}
+          to={logoLink}
+          sx={{
+            color: '#0000005d !important' as any,
+          }}
+        >
           <Group spacing="xs">
             <Image height={36} src="/img/slm-logo.png" width="auto" />
             <IconX
@@ -66,7 +74,7 @@ const AppBar: FC<HeaderProps> = ({ links, logoLink = '/' }) => {
             />
             <Image height={32} src="/img/ttl-logo.png" width="auto" />
           </Group>
-        </Link>
+        </Box>
 
         <Group className={classes.links} spacing={5}>
           {items}

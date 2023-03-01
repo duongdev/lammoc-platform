@@ -13,6 +13,7 @@ import {
 
 import ErrorHandler from './components/error-handler'
 import { theme } from './theme'
+import { emotionCache } from './utils/emotion-cache'
 import { getTitle } from './utils/meta'
 
 export const meta: V2_MetaFunction = () => [
@@ -28,7 +29,12 @@ export const links: LinksFunction = () => {
 
 export default function App() {
   return (
-    <MantineProvider withGlobalStyles withNormalizeCSS theme={theme}>
+    <MantineProvider
+      withGlobalStyles
+      withNormalizeCSS
+      emotionCache={emotionCache}
+      theme={theme}
+    >
       <html lang="en">
         <head>
           <StylesPlaceholder />
