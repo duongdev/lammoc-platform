@@ -24,6 +24,7 @@ import { format } from 'date-fns'
 import { first, orderBy } from 'lodash'
 
 import prisma from '~/libs/prisma.server'
+import { getAuthSession } from '~/services/session.server'
 import { ORDER_STATUS, PAYMENT_STATUS, TENANT_LABEL } from '~/utils/constants'
 import type { UseDataFunctionReturn } from '~/utils/data'
 import { superjson, useSuperLoaderData } from '~/utils/data'
@@ -31,16 +32,32 @@ import { fVND } from '~/utils/format'
 import { useIsMobile } from '~/utils/hooks'
 import type { ArrayElement } from '~/utils/types'
 
-export async function loader({ params }: LoaderArgs) {
+export async function loader({ params, request }: LoaderArgs) {
+  const { customerPhones } = await getAuthSession(request)
   const { orderId } = params
 
   if (!orderId) {
     throw new Response('Không tìm thấy đơn hàng', { status: 404 })
   }
 
-  // TODO: Prevent wrong customer access
   const order = await prisma.order.findFirst({
-    where: { OR: [{ id: orderId }, { code: orderId }] },
+    where: {
+      OR: [
+        {
+          id: orderId,
+          customer:
+            // Can view any order in development
+            process.env.NODE_ENV === 'production'
+              ? {
+                  OR: customerPhones.map((phone) => ({
+                    phone: { has: phone },
+                  })),
+                }
+              : undefined,
+        },
+        { code: orderId },
+      ],
+    },
     include: {
       customer: true,
       deliveryFee: true,
@@ -155,7 +172,10 @@ const OrderView: FC<OrderViewProps> = () => {
 
         <Grid grow>
           <MediaQuery smallerThan="sm" styles={{ display: 'none' }}>
-            <Grid.Col xs={6} />
+            <Grid.Col xs={6}>
+              {/* <Title order={4}>Theo dõi đơn hàng</Title>
+              <OrderTimeline order={order} /> */}
+            </Grid.Col>
           </MediaQuery>
           <Grid.Col xs={6}>
             <OrderSummary order={order} />
@@ -218,7 +238,7 @@ const LineItem: FC<{
         </MediaQuery>
       </Group>
       <MediaQuery largerThan="sm" styles={{ display: 'none' }}>
-        <Group position="right" spacing={4} sx={{ opacity: 0.6}}>
+        <Group position="right" spacing={4} sx={{ opacity: 0.6 }}>
           <Text size="sm">{lineItem.quantity}</Text>
           <IconX size={14} />
           <Text size="sm">{fVND(lineItem.price)}</Text>
@@ -325,7 +345,11 @@ const OrderSummary: FC<{ order: Order }> = ({ order }) => {
       <SI content={['Tổng tiền', fVND(subtotal)]} size="lg" />
       <SI d content={['Giảm giá', fVND(-order.totalDiscount)]} />
       <SI d content={['Phí vận chuyển', fVND(order.deliveryFee?.fee ?? 0)]} />
-      <SI d content={['Thuế', fVND(order.totalTax ?? 0)]} />
+      <SI
+        d
+        content={['Thuế', fVND(order.totalTax ?? 0)]}
+        strike={!order.createInvoice}
+      />
       <Divider my="sm" variant="dashed" />
       <SI b content={['Tổng cộng', fVND(order.total ?? 0)]} size="lg" />
     </Stack>
@@ -337,7 +361,8 @@ const SI: FC<{
   size?: MantineNumberSize
   d?: boolean
   b?: boolean
-}> = ({ content, size, d: dimmed, b: bold }) => {
+  strike?: boolean
+}> = ({ content, size, d: dimmed, b: bold, strike }) => {
   return (
     <Group position="apart">
       <Text color={dimmed ? 'dimmed' : undefined} size={size}>
@@ -346,6 +371,7 @@ const SI: FC<{
       <Text
         color={dimmed ? 'dimmed' : undefined}
         size={size}
+        strikethrough={strike}
         weight={bold ? 600 : undefined}
       >
         {content[1]}

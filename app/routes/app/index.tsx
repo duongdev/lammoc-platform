@@ -1,8 +1,9 @@
 import { Container } from '@mantine/core'
 import type { LoaderArgs, V2_MetaFunction } from '@remix-run/node'
 import { redirect } from '@remix-run/node'
-import { Outlet, useLoaderData } from '@remix-run/react'
+import { Outlet, useCatch, useLoaderData } from '@remix-run/react'
 
+import ErrorHandler from '~/components/error-handler'
 import AppBar from '~/components/nav/app-bar'
 import { APP_NAME } from '~/config/app-config'
 import { AuthProvider } from '~/contexts/auth-context'
@@ -42,5 +43,17 @@ export default function App() {
         <Outlet />
       </Container>
     </AuthProvider>
+  )
+}
+
+export function CatchBoundary() {
+  const caught = useCatch()
+  console.log('app/index.tsx')
+  return (
+    <Container
+      sx={{ minHeight: '100vh', display: 'grid', placeItems: 'center' }}
+    >
+      <ErrorHandler caught={caught} />
+    </Container>
   )
 }

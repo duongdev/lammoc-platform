@@ -29,7 +29,11 @@ const Admin: FC<AdminProps> = () => {
   }
 
   return (
-    <AuthProvider account={data.account as Account} roles={data.account.roles}>
+    <AuthProvider
+      account={data.account as Account}
+      customerPhones={data.account.phone}
+      roles={data.account.roles}
+    >
       <Outlet />
     </AuthProvider>
   )
