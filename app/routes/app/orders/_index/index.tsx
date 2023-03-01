@@ -30,6 +30,8 @@ import { superjson, useSuperLoaderData } from '~/utils/data'
 import { useIsMobile } from '~/utils/hooks'
 import { getTitle } from '~/utils/meta'
 
+import OrderStats from './stats'
+
 const PER_PAGE = 20
 
 export const meta: V2_MetaFunction = () => [{ title: getTitle('Đơn hàng') }]
@@ -43,16 +45,14 @@ export async function loader({ request }: LoaderArgs) {
   const searchText = searchParams.get('searchText') ?? undefined
   const tenant: any = searchParams.get('tenant') ?? undefined
 
-  const { orders, totalCount, totalPages } = await getCustomerOrders(
-    customerPhones,
-    {
+  const { orders, totalCount, totalPages, totalExpense } =
+    await getCustomerOrders(customerPhones, {
       skip: (page - 1) * PER_PAGE,
       take: PER_PAGE,
       status: status === 'all' ? undefined : status,
       tenant: tenant === 'all' ? undefined : tenant,
       searchText,
-    },
-  )
+    })
 
   return superjson({
     orders,
@@ -60,6 +60,7 @@ export async function loader({ request }: LoaderArgs) {
     page,
     perPage: PER_PAGE,
     totalPages,
+    totalExpense,
   })
 }
 
@@ -67,7 +68,8 @@ export type OrdersIndexProps = {}
 
 const OrdersIndex: FC<OrdersIndexProps> = () => {
   const [params, setParams] = useSearchParams()
-  const { orders, totalPages, page } = useSuperLoaderData<typeof loader>()
+  const { orders, totalPages, page, totalCount, totalExpense } =
+    useSuperLoaderData<typeof loader>()
   const transition = useTransition()
   const isMobile = useIsMobile()
 
@@ -105,6 +107,7 @@ const OrdersIndex: FC<OrdersIndexProps> = () => {
     <>
       <Group position="apart">
         <Title>Đơn hàng của bạn</Title>
+        <OrderStats expenses={totalExpense} orders={totalCount} />
       </Group>
 
       <Space h={24} />

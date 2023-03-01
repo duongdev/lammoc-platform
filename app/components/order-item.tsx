@@ -138,7 +138,6 @@ const OrderItem: FC<OrderItemProps> = ({ order }) => {
               </MediaQuery>
               <Box sx={{ flexGrow: '1 !important' as any }}>
                 <Text
-                  color="dark"
                   title={item.variant.product.name}
                   lineClamp={
                     item.variant.name === item.variant.product.name ? 2 : 1

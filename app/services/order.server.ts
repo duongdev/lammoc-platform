@@ -47,7 +47,13 @@ export const getCustomerOrders = async (
       : {}),
   }
 
-  const [orders, totalCount] = await prisma.$transaction([
+  const [
+    orders,
+    {
+      _count: { _all: totalCount },
+      _sum: { total: totalExpense },
+    },
+  ] = await prisma.$transaction([
     prisma.order.findMany({
       where,
       include: {
@@ -61,8 +67,17 @@ export const getCustomerOrders = async (
       take: getMaxTake(take),
       skip,
     }),
-    prisma.order.count({ where }),
+    prisma.order.aggregate({
+      _sum: { total: true },
+      _count: { _all: true },
+      where,
+    }),
   ])
 
-  return { orders, totalCount, totalPages: Math.ceil(totalCount / take) }
+  return {
+    orders,
+    totalCount,
+    totalPages: Math.ceil(totalCount / take),
+    totalExpense: totalExpense ?? 0,
+  }
 }
