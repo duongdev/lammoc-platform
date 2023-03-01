@@ -5,7 +5,7 @@ import type { SapoTenant } from './sapo.type'
 
 const log = Debug('Sapo:sync-sapo')
 
-export const sync = async (tenant: SapoTenant) => {
+const sync = async (tenant: SapoTenant) => {
   log('Sync sapo data...')
   const sapo = new Sapo(tenant)
 
@@ -25,6 +25,9 @@ export const sync = async (tenant: SapoTenant) => {
   await sapo.syncOrders()
 }
 
-sync('thichtulam')
-  .then(() => sync('store-lam-moc'))
-  .then(() => process.exit(0))
+const syncAll = async (): Promise<void> => {
+  await Promise.all([sync('thichtulam'), sync('store-lam-moc')])
+  return syncAll()
+}
+
+syncAll()
