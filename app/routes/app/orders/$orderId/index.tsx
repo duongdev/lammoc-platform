@@ -25,7 +25,12 @@ import { first, orderBy } from 'lodash'
 
 import prisma from '~/libs/prisma.server'
 import { getAuthSession } from '~/services/session.server'
-import { NOT_FOUND_PRODUCT_NAME, ORDER_STATUS, PAYMENT_STATUS, TENANT_LABEL } from '~/utils/constants'
+import {
+  NOT_FOUND_PRODUCT_NAME,
+  ORDER_STATUS,
+  PAYMENT_STATUS,
+  TENANT_LABEL,
+} from '~/utils/constants'
 import type { UseDataFunctionReturn } from '~/utils/data'
 import { superjson, useSuperLoaderData } from '~/utils/data'
 import { fVND } from '~/utils/format'
@@ -89,11 +94,9 @@ export async function loader({ params, request }: LoaderArgs) {
   return superjson(order)
 }
 
-export const meta: V2_MetaFunction<typeof loader> = ({
-  data,
-}) => {
-  return [{ title: getTitle(`Đơn hàng ${data.json.code}`) }];
-};
+export const meta: V2_MetaFunction<typeof loader> = ({ data }) => {
+  return [{ title: getTitle(`Đơn hàng ${data.json.code}`) }]
+}
 
 export type OrderViewProps = {}
 
@@ -317,7 +320,7 @@ const DeliveryDetails: FC<{ order: Order; fulfillment?: Fulfillment }> = ({
             Địa chỉ
           </Text>
           <Text>
-            {address.fullName}{' '}
+            {address.fullName || order.customer?.name || '[Không tên]'}{' '}
             {address.phoneNumber ? ` - ${address.phoneNumber}` : ''}
             <br />
             {address.address1}, {address.ward}, {address.district},{' '}
@@ -327,7 +330,7 @@ const DeliveryDetails: FC<{ order: Order; fulfillment?: Fulfillment }> = ({
         {deliveryMethod}
       </Stack>
     )
-  }, [address, deliveryMethod])
+  }, [address, deliveryMethod, order.customer?.name])
 
   return (
     <Stack spacing="sm">
