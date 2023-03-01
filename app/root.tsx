@@ -1,4 +1,4 @@
-import { createEmotionCache, MantineProvider } from '@mantine/core'
+import { MantineProvider } from '@mantine/core'
 import { StylesPlaceholder } from '@mantine/remix'
 import type { LinksFunction, V2_MetaFunction } from '@remix-run/node'
 import {
@@ -24,35 +24,34 @@ export const links: LinksFunction = () => {
 }
 
 export default function App() {
-  createEmotionCache({ key: 'mantine' })
   return (
-    <html lang="en">
-      <head>
-        <StylesPlaceholder />
-        <meta charSet="utf-8" />
-        <meta content="width=device-width,initial-scale=1" name="viewport" />
-        <Meta />
-        <Links />
-        <link href="https://fonts.googleapis.com" rel="preconnect" />
-        <link
-          crossOrigin=""
-          href="https://fonts.gstatic.com"
-          rel="preconnect"
-        />
-        <link
-          href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:ital,wght@0,200;0,300;0,400;0,500;0,600;1,200;1,300;1,400;1,500;1,600&display=swap"
-          rel="stylesheet"
-        />
-      </head>
-      <body>
-        <MantineProvider withGlobalStyles withNormalizeCSS theme={theme}>
+    <MantineProvider withGlobalStyles withNormalizeCSS theme={theme}>
+      <html lang="en">
+        <head>
+          <StylesPlaceholder />
+          <meta charSet="utf-8" />
+          <meta content="width=device-width,initial-scale=1" name="viewport" />
+          <Meta />
+          <Links />
+          <link href="https://fonts.googleapis.com" rel="preconnect" />
+          <link
+            crossOrigin=""
+            href="https://fonts.gstatic.com"
+            rel="preconnect"
+          />
+          <link
+            href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:ital,wght@0,200;0,300;0,400;0,500;0,600;1,200;1,300;1,400;1,500;1,600&display=swap"
+            rel="stylesheet"
+          />
+        </head>
+        <body>
           <Outlet />
-        </MantineProvider>
-        <ScrollRestoration />
-        <Scripts />
-        <LiveReload />
-      </body>
-    </html>
+          <ScrollRestoration />
+          <Scripts />
+          <LiveReload />
+        </body>
+      </html>
+    </MantineProvider>
   )
 }
 export function ErrorBoundary({ error }: any) {
