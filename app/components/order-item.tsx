@@ -61,6 +61,13 @@ const OrderItem: FC<OrderItemProps> = ({ order }) => {
 
   const status = order.status && ORDER_STATUS[order.status]
 
+  const badges = (
+    <>
+      <Badge variant="gradient">{TENANT_LABEL[order.tenant]}</Badge>
+      {status && <Badge color={status.color}>{status.label}</Badge>}
+    </>
+  )
+
   return (
     <Card
       withBorder
@@ -88,19 +95,13 @@ const OrderItem: FC<OrderItemProps> = ({ order }) => {
               </Text>
             </Group>
             <MediaQuery smallerThan="sm" styles={{ display: 'none' }}>
-              <Group spacing="xs">
-                <Badge variant="gradient">{TENANT_LABEL[order.tenant]}</Badge>
-                {status && <Badge color={status.color}>{status.label}</Badge>}
-              </Group>
+              <Group spacing="xs">{badges}</Group>
             </MediaQuery>
           </Stack>
           <Text>{fVND(order.total)}</Text>
         </Group>
         <MediaQuery largerThan="sm" styles={{ display: 'none' }}>
-          <Group spacing="xs">
-            <Badge>{order.tenant}</Badge>
-            <Badge>{order.status}</Badge>
-          </Group>
+          <Group spacing="xs">{badges}</Group>
         </MediaQuery>
         <Card.Section>
           <Divider />

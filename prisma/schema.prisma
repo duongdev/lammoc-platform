@@ -98,6 +98,8 @@ model Order {
   orderDeliveryFeeId String?
   lineItems          OrderLineItem[]
   fulfillments       OrderFulfillment[]
+  shippingAddress    ShippingAddress?   @relation(fields: [shippingAddressId], references: [id])
+  shippingAddressId  String?
 }
 
 model OrderLineItem {
@@ -248,11 +250,10 @@ model OrderFulfillmentShipment {
   syncedAt  DateTime @updatedAt
   tenant    Tenant
 
-  deliveryServiceProviderId  String?
   serviceName                String?
-  codAmount                  Float     @default(0)
-  freightAmount              Float     @default(0)
-  deliveryFee                Float     @default(0)
+  codAmount                  Float   @default(0)
+  freightAmount              Float   @default(0)
+  deliveryFee                Float   @default(0)
   trackingCode               String?
   trackingUrl                String?
   detail                     String?
@@ -266,14 +267,16 @@ model OrderFulfillmentShipment {
   freightPayer               String?
   estimatedDeliveryTime      String?
   sortingCode                String?
-  weight                     Float     @default(0)
-  length                     Float     @default(0)
-  height                     Float     @default(0)
-  width                      Float     @default(0)
+  weight                     Float   @default(0)
+  length                     Float   @default(0)
+  height                     Float   @default(0)
+  width                      Float   @default(0)
 
-  shippingAddress   ShippingAddress?   @relation(fields: [shippingAddressId], references: [id])
-  shippingAddressId String?
-  orderFulfillments OrderFulfillment[]
+  shippingAddress           ShippingAddress?         @relation(fields: [shippingAddressId], references: [id])
+  shippingAddressId         String?
+  orderFulfillments         OrderFulfillment[]
+  deliveryServiceProvider   DeliveryServiceProvider? @relation(fields: [deliveryServiceProviderId], references: [id])
+  deliveryServiceProviderId String?
 }
 
 model ShippingAddress {
@@ -299,4 +302,28 @@ model ShippingAddress {
   fullAddress String?
 
   orderFulfillmentShipments OrderFulfillmentShipment[]
+  orders                    Order[]
+}
+
+model DeliveryServiceProvider {
+  id        String   @id
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now())
+  syncedAt  DateTime @updatedAt
+  tenant    Tenant
+
+  code                       String
+  name                       String
+  type                       String
+  phoneNumber                String?
+  email                      String?
+  groupName                  String?
+  status                     String
+  note                       String?
+  shipmentCount              Int                        @default(0)
+  totalFreightAmount         Float                      @default(0)
+  debt                       Float                      @default(0)
+  fulfillmentProcessingCount Int                        @default(0)
+  freightPayer               String?
+  orderFulfillmentShipments  OrderFulfillmentShipment[]
 }

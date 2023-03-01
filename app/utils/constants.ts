@@ -27,3 +27,8 @@ export const TENANT_LABEL: Record<Tenant, string> = {
   STORE_LAM_MOC: 'Store Làm Mộc',
   THICH_TU_LAM: 'Thích Tự Làm',
 }
+
+export const PAYMENT_STATUS: Record<string, string> = {
+  unpaid: 'Chờ thanh toán',
+  paid: 'Đã thanh toán',
+}

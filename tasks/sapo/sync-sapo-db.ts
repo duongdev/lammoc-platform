@@ -25,6 +25,6 @@ export const sync = async (tenant: SapoTenant) => {
   await sapo.syncOrders()
 }
 
-sync('store-lam-moc')
-  .then(() => sync('thichtulam'))
+sync('thichtulam')
+  .then(() => sync('store-lam-moc'))
   .then(() => process.exit(0))

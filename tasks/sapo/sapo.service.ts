@@ -1,4 +1,10 @@
-import type { Order, OrderLineItem, Prisma, Product } from '@prisma/client'
+import type {
+  DeliveryServiceProvider,
+  Order,
+  OrderLineItem,
+  Prisma,
+  Product,
+} from '@prisma/client'
 import type { Debugger } from 'debug'
 import Debug from 'debug'
 import type { Got } from 'got-cjs'
@@ -14,6 +20,7 @@ import { SAPO_TENANT } from './sapo.const'
 import type {
   SapoAccount,
   SapoCustomer,
+  SapoDeliveryServiceProviderItem,
   SapoOrderItem,
   SapoProductCategory,
   SapoProductItem,
@@ -349,6 +356,54 @@ export class Sapo {
     this.log(`Synced ${transaction.proceeded()} products`)
   }
 
+  async syncDeliveryServiceProviders(options?: PaginationInput) {
+    this.log('syncDeliveryServiceProviders', options)
+
+    const paginate = this.sapo.paginate<SapoDeliveryServiceProviderItem>(
+      'delivery_service_providers.json',
+      getPaginationOptions(options),
+    )
+
+    const transaction = createChunkTransactions<DeliveryServiceProvider>({
+      size: TRANSACTION_SIZE,
+      log: this.log,
+    })
+
+    for await (const provider of paginate) {
+      const serviceData: Prisma.DeliveryServiceProviderCreateInput = {
+        id: toString(provider.id),
+        code: provider.code,
+        name: provider.name,
+        status: provider.status,
+        tenant: SAPO_TENANT[this.tenant],
+        type: provider.type,
+        createdAt: provider.created_on && new Date(provider.created_on),
+        debt: provider.debt,
+        email: provider.email,
+        freightPayer: provider.freight_payer,
+        fulfillmentProcessingCount: provider.fulfillment_processing_count,
+        groupName: provider.group_name,
+        note: provider.note,
+        phoneNumber: provider.phone_number,
+        shipmentCount: provider.shipment_count,
+        totalFreightAmount: provider.total_freight_amount,
+        updatedAt: provider.modified_on && new Date(provider.modified_on),
+      }
+
+      await transaction.add(
+        prisma.deliveryServiceProvider.upsert({
+          where: { id: serviceData.id },
+          create: serviceData,
+          update: serviceData,
+        }),
+      )
+    }
+
+    await transaction.close()
+
+    this.log(`Synced ${transaction.proceeded()} delivery service providers`)
+  }
+
   async syncOrders({
     onlyModified,
     ...options
@@ -362,6 +417,8 @@ export class Sapo {
     )?.syncedAt
 
     this.log(`Last sync:`, lastSync)
+
+    await this.syncDeliveryServiceProviders()
 
     const paginate = this.sapo.paginate<SapoOrderItem>(
       'orders.json',
@@ -411,6 +468,31 @@ export class Sapo {
                           ),
                       )
                     : undefined,
+                },
+              },
+            }
+          : undefined,
+        shippingAddress: order.shipping_address
+          ? {
+              connectOrCreate: {
+                where: { id: toString(order.shipping_address.id) },
+                create: {
+                  id: toString(order.shipping_address.id),
+                  tenant: SAPO_TENANT[this.tenant],
+                  address1: order.shipping_address.address1,
+                  address2: order.shipping_address.address2,
+                  city: order.shipping_address.city,
+                  country: order.shipping_address.country,
+                  district: order.shipping_address.district,
+                  email: order.shipping_address.email,
+                  label: order.shipping_address.label,
+                  ward: order.shipping_address.ward,
+                  firstName: order.shipping_address.first_name,
+                  lastName: order.shipping_address.last_name,
+                  fullAddress: order.shipping_address.full_address,
+                  fullName: order.shipping_address.full_name,
+                  phoneNumber: order.shipping_address.phone_number,
+                  zipCode: order.shipping_address.zip_code,
                 },
               },
             }
@@ -540,15 +622,22 @@ export class Sapo {
                       create: {
                         id: toString(f.shipment.id),
                         tenant: SAPO_TENANT[this.tenant],
-                        deliveryServiceProviderId: toString(
-                          f.shipment.delivery_service_provider_id,
-                        ),
+                        // deliveryServiceProviderId: toString(
+                        //   f.shipment.delivery_service_provider_id,
+                        // ),
+                        deliveryServiceProvider: {
+                          connect: {
+                            id: toString(
+                              f.shipment.delivery_service_provider_id,
+                            ),
+                          },
+                        },
                         serviceName: f.shipment.service_name,
                         codAmount: f.shipment.cod_amount,
                         collationStatus: f.shipment.collation_status,
                         createdAt: new Date(f.shipment.created_on),
                         deliveryFee: f.shipment.delivery_fee,
-                        // detail: f.shipment.detail,
+                        detail: f.shipment.detail,
                         estimatedDeliveryTime:
                           f.shipment.estimated_delivery_time,
                         freightAmount: f.shipment.freight_amount,

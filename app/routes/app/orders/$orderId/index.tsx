@@ -1,15 +1,14 @@
 import type { FC } from 'react'
+import { useMemo } from 'react'
 
 import {
   Badge,
   Box,
   Breadcrumbs,
-  Chip,
   Divider,
   Grid,
   Group,
   Image,
-  Space,
   Stack,
   Text,
   Title,
@@ -20,12 +19,14 @@ import { Response } from '@remix-run/node'
 import { Link } from '@remix-run/react'
 import { IconChevronRight, IconHome } from '@tabler/icons-react'
 import { format } from 'date-fns'
-import { first } from 'lodash'
+import { first, orderBy } from 'lodash'
 
 import prisma from '~/libs/prisma.server'
-import { ORDER_STATUS, TENANT_LABEL } from '~/utils/constants'
+import { ORDER_STATUS, PAYMENT_STATUS, TENANT_LABEL } from '~/utils/constants'
+import type { UseDataFunctionReturn } from '~/utils/data'
 import { superjson, useSuperLoaderData } from '~/utils/data'
 import { fVND } from '~/utils/format'
+import type { ArrayElement } from '~/utils/types'
 
 export async function loader({ params }: LoaderArgs) {
   const { orderId } = params
@@ -34,15 +35,27 @@ export async function loader({ params }: LoaderArgs) {
     throw new Response('Không tìm thấy đơn hàng', { status: 404 })
   }
 
+  // TODO: Prevent wrong customer access
   const order = await prisma.order.findFirst({
     where: { OR: [{ id: orderId }, { code: orderId }] },
     include: {
       customer: true,
       deliveryFee: true,
+      shippingAddress: true,
       lineItems: {
         include: {
           product: true,
           variant: true,
+        },
+      },
+      fulfillments: {
+        include: {
+          shipment: {
+            include: {
+              shippingAddress: true,
+              deliveryServiceProvider: true,
+            },
+          },
         },
       },
     },
@@ -77,9 +90,19 @@ const breadcrumbs = [
   </Text>
 ))
 
+type Order = UseDataFunctionReturn<typeof loader>
+type Fulfillment = ArrayElement<Order['fulfillments']>
+
 const OrderView: FC<OrderViewProps> = () => {
   const order = useSuperLoaderData<typeof loader>()
   const orderStatus = order.status && ORDER_STATUS[order.status]
+  const fulfillment = first(
+    orderBy(
+      order.fulfillments.filter((f) => f.status !== 'cancelled'),
+      'updatedAt',
+      'desc',
+    ),
+  )
 
   return (
     <>
@@ -123,9 +146,11 @@ const OrderView: FC<OrderViewProps> = () => {
         <Divider />
 
         <Grid>
-          <Grid.Col md={6} xs={12}>
-            <Title order={4}>Thanh toán</Title>
-            <Text>{order.paymentStatus}</Text>
+          <Grid.Col xs={6}>
+            <PaymentDetails fulfillment={fulfillment} order={order} />
+          </Grid.Col>
+          <Grid.Col xs={6}>
+            <DeliveryDetails fulfillment={fulfillment} order={order} />
           </Grid.Col>
         </Grid>
       </Stack>
@@ -149,9 +174,11 @@ const LineItem: FC<{
           boxShadow: theme.shadows.md,
           overflow: 'hidden',
           borderRadius: theme.radius.md,
+          height: 64,
+          width: 64,
         })}
       >
-        <Image withPlaceholder fit="cover" src={image} width={64} />
+        <Image withPlaceholder fit="cover" height={64} src={image} width={64} />
       </Box>
       <Box sx={{ flexGrow: 1 }}>
         <Text lineClamp={shouldShowVariant ? 1 : 2}>
@@ -170,6 +197,90 @@ const LineItem: FC<{
         </Text>
       </Box>
     </Group>
+  )
+}
+
+const PaymentDetails: FC<{ order: Order; fulfillment?: Fulfillment }> = ({
+  order,
+  fulfillment,
+}) => {
+  const paymentStatus = order.paymentStatus || fulfillment?.paymentStatus
+  return (
+    <Stack spacing="sm">
+      <Title order={4}>Thanh toán</Title>
+      <Text>
+        {(paymentStatus && PAYMENT_STATUS[paymentStatus]) ?? 'Chưa xác định'}
+      </Text>
+    </Stack>
+  )
+}
+
+const DeliveryDetails: FC<{ order: Order; fulfillment?: Fulfillment }> = ({
+  order,
+  fulfillment,
+}) => {
+  const { shippingAddress: address } = order
+  const deliveryService = fulfillment?.shipment?.deliveryServiceProvider
+
+  console.log(fulfillment)
+
+  const deliveryMethod = useMemo(() => {
+    if (!deliveryService) {
+      return null
+    }
+
+    return (
+      <Box>
+        <Text color="dimmed" size="sm">
+          Giao hàng
+        </Text>
+        <Text>{deliveryService.name}</Text>
+        {fulfillment.shipment?.trackingUrl && (
+          <Text
+            underline
+            color="cyan"
+            component="a"
+            href={fulfillment.shipment.trackingUrl}
+            rel="noreferrer"
+            size="sm"
+            target="_blank"
+          >
+            Theo dõi đơn hàng
+          </Text>
+        )}
+      </Box>
+    )
+  }, [deliveryService, fulfillment?.shipment?.trackingUrl])
+
+  const content = useMemo(() => {
+    if (!address) {
+      return <Text>Nhận tại cửa hàng</Text>
+    }
+
+    return (
+      <Stack spacing="xs">
+        <Box>
+          <Text color="dimmed" size="sm">
+            Địa chỉ
+          </Text>
+          <Text>
+            {address.fullName}{' '}
+            {address.phoneNumber ? ` - ${address.phoneNumber}` : ''}
+            <br />
+            {address.address1}, {address.ward}, {address.district},{' '}
+            {address.city}
+          </Text>
+        </Box>
+        {deliveryMethod}
+      </Stack>
+    )
+  }, [address, deliveryMethod])
+
+  return (
+    <Stack spacing="sm">
+      <Title order={4}>Giao hàng</Title>
+      {content}
+    </Stack>
   )
 }
 
