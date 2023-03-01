@@ -29,6 +29,6 @@ export const TENANT_LABEL: Record<Tenant, string> = {
 }
 
 export const PAYMENT_STATUS: Record<string, string> = {
-  unpaid: 'Chờ thanh toán',
+  unpaid: 'Chưa thanh toán',
   paid: 'Đã thanh toán',
 }

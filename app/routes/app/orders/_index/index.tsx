@@ -7,6 +7,7 @@ import {
   Group,
   Loader,
   Pagination,
+  ScrollArea,
   SegmentedControl,
   Space,
   Stack,
@@ -118,8 +119,10 @@ const OrdersIndex: FC<OrdersIndexProps> = () => {
             sx={{ '& input': { height: 42 } }}
           />
         </Form>
+
         <SegmentedControl
           onChange={handleFilterChange('tenant', 'reset_page')}
+          style={{ flexWrap: 'nowrap !important' as any }}
           value={tenant}
           data={[
             { label: 'Tất cả', value: 'all' },
@@ -130,6 +133,9 @@ const OrdersIndex: FC<OrdersIndexProps> = () => {
             height: 42,
             border: 'solid 1px',
             borderColor: theme.colors.gray[4],
+            '@media (max-width: 640px)': {
+              width: '100%',
+            },
           })}
         />
       </Group>
@@ -137,20 +143,26 @@ const OrdersIndex: FC<OrdersIndexProps> = () => {
       <Space h={24} />
 
       <Box>
-        <Tabs
-          defaultValue="all"
-          onTabChange={handleFilterChange('status', 'reset_page')}
-          value={status}
+        <ScrollArea
+          scrollbarSize={0}
+          style={{ width: '100%', paddingRight: 0 }}
         >
-          <Tabs.List>
-            <Tabs.Tab value="all">Tất cả</Tabs.Tab>
-            {Object.entries(ORDER_STATUS).map(([value, { label, color }]) => (
-              <Tabs.Tab color={color} key={value} value={value}>
-                {label}
-              </Tabs.Tab>
-            ))}
-          </Tabs.List>
-        </Tabs>
+          <Tabs
+            defaultValue="all"
+            onTabChange={handleFilterChange('status', 'reset_page')}
+            sx={{ '& > div': { flexWrap: 'nowrap !important' as any } }}
+            value={status}
+          >
+            <Tabs.List>
+              <Tabs.Tab value="all">Tất cả</Tabs.Tab>
+              {Object.entries(ORDER_STATUS).map(([value, { label, color }]) => (
+                <Tabs.Tab color={color} key={value} value={value}>
+                  {label}
+                </Tabs.Tab>
+              ))}
+            </Tabs.List>
+          </Tabs>
+        </ScrollArea>
 
         {fetching ? (
           <Center mt="lg">

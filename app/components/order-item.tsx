@@ -33,7 +33,7 @@ import { useIsMobile } from '~/utils/hooks'
 
 export type OrderItemProps = {
   order: Order & {
-    customer: Customer
+    customer: Customer | null
     deliveryFee: OrderDeliveryFee | null
     lineItems: (OrderLineItem & {
       variant: ProductVariant & { product: Product }

@@ -1,6 +1,7 @@
 import type { FC } from 'react'
 import { useMemo } from 'react'
 
+import type { MantineNumberSize } from '@mantine/core'
 import {
   Badge,
   Box,
@@ -9,6 +10,7 @@ import {
   Grid,
   Group,
   Image,
+  MediaQuery,
   Stack,
   Text,
   Title,
@@ -17,7 +19,7 @@ import type { OrderLineItem, Product, ProductVariant } from '@prisma/client'
 import type { LoaderArgs } from '@remix-run/node'
 import { Response } from '@remix-run/node'
 import { Link } from '@remix-run/react'
-import { IconChevronRight, IconHome } from '@tabler/icons-react'
+import { IconChevronRight, IconHome, IconX } from '@tabler/icons-react'
 import { format } from 'date-fns'
 import { first, orderBy } from 'lodash'
 
@@ -26,6 +28,7 @@ import { ORDER_STATUS, PAYMENT_STATUS, TENANT_LABEL } from '~/utils/constants'
 import type { UseDataFunctionReturn } from '~/utils/data'
 import { superjson, useSuperLoaderData } from '~/utils/data'
 import { fVND } from '~/utils/format'
+import { useIsMobile } from '~/utils/hooks'
 import type { ArrayElement } from '~/utils/types'
 
 export async function loader({ params }: LoaderArgs) {
@@ -115,16 +118,9 @@ const OrderView: FC<OrderViewProps> = () => {
         <Title>Đơn hàng SON3212</Title>
 
         <Group color="dimmed" spacing="xs">
-          <Text color="dimmed">
-            Đặt hàng lúc{' '}
-            <span style={{ fontWeight: 500 }}>
-              {format(order.createdAt, 'HH:mm')}
-            </span>{' '}
-            ngày{' '}
-            <span style={{ fontWeight: 500 }}>
-              {format(order.createdAt, 'dd/MM/yyyy')}
-            </span>{' '}
-            tại
+          <Text color="dimmed" size="sm">
+            Đặt hàng lúc <b>{format(order.createdAt, 'HH:mm')}</b> ngày{' '}
+            <b>{format(order.createdAt, 'dd/MM/yyyy')}</b> tại
           </Text>
           <Badge variant="gradient">{TENANT_LABEL[order.tenant]}</Badge>
 
@@ -145,12 +141,24 @@ const OrderView: FC<OrderViewProps> = () => {
 
         <Divider />
 
-        <Grid>
+        <Grid grow>
           <Grid.Col xs={6}>
             <PaymentDetails fulfillment={fulfillment} order={order} />
           </Grid.Col>
+
           <Grid.Col xs={6}>
             <DeliveryDetails fulfillment={fulfillment} order={order} />
+          </Grid.Col>
+        </Grid>
+
+        <Divider />
+
+        <Grid grow>
+          <MediaQuery smallerThan="sm" styles={{ display: 'none' }}>
+            <Grid.Col xs={6} />
+          </MediaQuery>
+          <Grid.Col xs={6}>
+            <OrderSummary order={order} />
           </Grid.Col>
         </Grid>
       </Stack>
@@ -164,39 +172,59 @@ const LineItem: FC<{
     variant: ProductVariant
   }
 }> = ({ lineItem }) => {
+  const isMobile = useIsMobile()
   const image = first([...lineItem.variant.images, ...lineItem.product.images])
   const shouldShowVariant = lineItem.variant.name !== lineItem.product.name
+  const imageSize = isMobile ? 48 : 64
 
   return (
-    <Group>
-      <Box
-        sx={(theme) => ({
-          boxShadow: theme.shadows.md,
-          overflow: 'hidden',
-          borderRadius: theme.radius.md,
-          height: 64,
-          width: 64,
-        })}
-      >
-        <Image withPlaceholder fit="cover" height={64} src={image} width={64} />
-      </Box>
-      <Box sx={{ flexGrow: 1 }}>
-        <Text lineClamp={shouldShowVariant ? 1 : 2}>
-          {lineItem.product.name}
-        </Text>
-        {shouldShowVariant && (
-          <Text color="dimmed" lineClamp={2}>
-            {lineItem.variant.name}
+    <Box>
+      <Group noWrap spacing={isMobile ? 'xs' : 'md'}>
+        <Box
+          sx={(theme) => ({
+            boxShadow: theme.shadows.md,
+            overflow: 'hidden',
+            borderRadius: theme.radius.md,
+            height: imageSize,
+            width: imageSize,
+            flexShrink: 0,
+          })}
+        >
+          <Image
+            withPlaceholder
+            fit="cover"
+            height={imageSize}
+            src={image}
+            width={imageSize}
+          />
+        </Box>
+        <Box sx={{ flexGrow: '1 !important' as any }}>
+          <Text lineClamp={shouldShowVariant ? 1 : 2}>
+            {lineItem.product.name}
           </Text>
-        )}
-      </Box>
-      <Box sx={{ textAlign: 'right' }}>
-        <Text>{fVND(lineItem.price)}</Text>
-        <Text color="dimmed" size="sm">
-          SL: {lineItem.quantity}
-        </Text>
-      </Box>
-    </Group>
+          {shouldShowVariant && (
+            <Text color="dimmed" lineClamp={2}>
+              {lineItem.variant.name}
+            </Text>
+          )}
+        </Box>
+        <MediaQuery smallerThan="sm" styles={{ display: 'none' }}>
+          <Box sx={{ textAlign: 'right', flexShrink: 0 }}>
+            <Text>{fVND(lineItem.price)}</Text>
+            <Text color="dimmed" size="sm">
+              SL: {lineItem.quantity}
+            </Text>
+          </Box>
+        </MediaQuery>
+      </Group>
+      <MediaQuery largerThan="sm" styles={{ display: 'none' }}>
+        <Group position="right" spacing={4} sx={{ opacity: 0.6}}>
+          <Text size="sm">{lineItem.quantity}</Text>
+          <IconX size={14} />
+          <Text size="sm">{fVND(lineItem.price)}</Text>
+        </Group>
+      </MediaQuery>
+    </Box>
   )
 }
 
@@ -221,8 +249,6 @@ const DeliveryDetails: FC<{ order: Order; fulfillment?: Fulfillment }> = ({
 }) => {
   const { shippingAddress: address } = order
   const deliveryService = fulfillment?.shipment?.deliveryServiceProvider
-
-  console.log(fulfillment)
 
   const deliveryMethod = useMemo(() => {
     if (!deliveryService) {
@@ -281,6 +307,50 @@ const DeliveryDetails: FC<{ order: Order; fulfillment?: Fulfillment }> = ({
       <Title order={4}>Giao hàng</Title>
       {content}
     </Stack>
+  )
+}
+
+const OrderSummary: FC<{ order: Order }> = ({ order }) => {
+  const subtotal = useMemo(
+    () =>
+      order.lineItems.reduce(
+        (total, item) => total + item.price * (item.quantity ?? 1),
+        0,
+      ),
+    [order.lineItems],
+  )
+
+  return (
+    <Stack spacing={4}>
+      <SI content={['Tổng tiền', fVND(subtotal)]} size="lg" />
+      <SI d content={['Giảm giá', fVND(-order.totalDiscount)]} />
+      <SI d content={['Phí vận chuyển', fVND(order.deliveryFee?.fee ?? 0)]} />
+      <SI d content={['Thuế', fVND(order.totalTax ?? 0)]} />
+      <Divider my="sm" variant="dashed" />
+      <SI b content={['Tổng cộng', fVND(order.total ?? 0)]} size="lg" />
+    </Stack>
+  )
+}
+
+const SI: FC<{
+  content: [string, string]
+  size?: MantineNumberSize
+  d?: boolean
+  b?: boolean
+}> = ({ content, size, d: dimmed, b: bold }) => {
+  return (
+    <Group position="apart">
+      <Text color={dimmed ? 'dimmed' : undefined} size={size}>
+        {content[0]}
+      </Text>
+      <Text
+        color={dimmed ? 'dimmed' : undefined}
+        size={size}
+        weight={bold ? 600 : undefined}
+      >
+        {content[1]}
+      </Text>
+    </Group>
   )
 }
 
