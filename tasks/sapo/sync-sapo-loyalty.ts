@@ -1,11 +1,13 @@
 import debug from 'debug'
 
+import { wait } from '~/utils/common'
+
 import { SapoLoyalty } from './sapo-loyalty.service'
 import type { SapoTenant } from './sapo.type'
 
 const _log = debug('Sapo:sync-loyalty')
 
-const syncLoyalty = async (tenant: SapoTenant) => {
+export const syncLoyalty = async (tenant: SapoTenant) => {
   const log = _log.extend(`syncLoyalty:${tenant}`)
 
   log('Sync sapo loyalty...')
@@ -13,8 +15,10 @@ const syncLoyalty = async (tenant: SapoTenant) => {
   const sapo = new SapoLoyalty(tenant, log)
 
   await sapo.syncTiers()
-  // await sapo.syncLoyaltyMembers()
+  await sapo.syncLoyaltyMembers()
   await sapo.syncLoyaltyPointEvents()
-}
 
-syncLoyalty('store-lam-moc')
+  await wait(60_000)
+
+  syncLoyalty(tenant)
+}

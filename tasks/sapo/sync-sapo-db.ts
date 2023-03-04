@@ -7,7 +7,7 @@ import type { SapoTenant } from './sapo.type'
 
 const _log = Debug('Sapo:sync-sapo')
 
-const syncAll = async (tenant: SapoTenant) => {
+export const syncAllDb = async (tenant: SapoTenant) => {
   const log = _log.extend(`syncAll:${tenant}`)
 
   try {
@@ -25,15 +25,18 @@ const syncAll = async (tenant: SapoTenant) => {
 
     log('Sync products')
     await sapo.syncProducts()
+
+    log('Sync orders')
+    await sapo.syncOrders()
   } catch (error) {
     log('ERROR!', error)
   }
 
   await wait(60_000)
-  await syncAll(tenant)
+  await syncAllDb(tenant)
 }
 
-const syncNewOrders = async (tenant: SapoTenant): Promise<void> => {
+export const syncNewOrders = async (tenant: SapoTenant): Promise<void> => {
   const log = _log.extend(`syncNewOrders:${tenant}`)
 
   try {
@@ -53,9 +56,3 @@ const syncNewOrders = async (tenant: SapoTenant): Promise<void> => {
 
   syncNewOrders(tenant)
 }
-
-syncNewOrders('store-lam-moc')
-syncNewOrders('thichtulam')
-
-syncAll('store-lam-moc')
-syncAll('thichtulam')

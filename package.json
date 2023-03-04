@@ -10,7 +10,7 @@
     "start": "cross-env NODE_ENV=production node ./server.js",
     "seed": "DEBUG=Sapo:* tsnd -r dotenv/config -r tsconfig-paths/register tasks/common/seed.ts",
     "prod": "sh ./scripts/deploy.sh",
-    "sync-sapo-db": "DEBUG=Sapo:* ts-node -r dotenv/config -r tsconfig-paths/register --transpileOnly tasks/sapo/sync-sapo-db.ts",
+    "sync-sapo-db": "DEBUG=Sapo:* ts-node -r dotenv/config -r tsconfig-paths/register --transpileOnly tasks/sapo/sync-sapo.ts",
     "sync-sapo-loyalty": "DEBUG=Sapo:* ts-node -r dotenv/config -r tsconfig-paths/register --transpileOnly tasks/sapo/sync-sapo-loyalty.ts"
   },
   "dependencies": {
