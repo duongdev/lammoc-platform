@@ -8,36 +8,41 @@ const _log = Debug('Sapo:sync-sapo')
 const syncAll = async (tenant: SapoTenant) => {
   const log = _log.extend(`syncAll:${tenant}`)
 
-  log('Sync sapo data...')
-  const sapo = new Sapo(tenant)
+  try {
+    log('Sync sapo data...')
+    const sapo = new Sapo(tenant)
 
-  const { account } = await sapo.profiles()
-  log(`Signed in as [${account.id}] ${account.full_name}`)
+    const { account } = await sapo.profiles()
+    log(`Signed in as [${account.id}] ${account.full_name}`)
 
-  log(`Sync customers`)
-  await sapo.syncCustomers()
+    log(`Sync customers`)
+    await sapo.syncCustomers()
 
-  log('Sync product categories')
-  await sapo.syncProductCategories()
+    log('Sync product categories')
+    await sapo.syncProductCategories()
 
-  log('Sync products')
-  await sapo.syncProducts()
-
-  // log('Sync orders')
-  // await sapo.syncOrders()
+    log('Sync products')
+    await sapo.syncProducts()
+  } catch (error) {
+    log('ERROR!', error)
+  }
 }
 
 const syncNewOrders = async (tenant: SapoTenant): Promise<void> => {
   const log = _log.extend(`syncAll:${tenant}`)
 
-  log('Sync new orders...')
-  const sapo = new Sapo(tenant)
+  try {
+    log('Sync new orders...')
+    const sapo = new Sapo(tenant)
 
-  const { account } = await sapo.profiles()
-  log(`Signed in as [${account.id}] ${account.full_name}`)
+    const { account } = await sapo.profiles()
+    log(`Signed in as [${account.id}] ${account.full_name}`)
 
-  log('Sync orders')
-  await sapo.syncOrders({ onlyModified: true })
+    log('Sync orders')
+    await sapo.syncOrders({ onlyModified: true })
+  } catch (error) {
+    log('ERROR!', error)
+  }
 
   syncNewOrders(tenant)
 }
