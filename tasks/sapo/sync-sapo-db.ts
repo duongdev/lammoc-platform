@@ -1,5 +1,7 @@
 import Debug from 'debug'
 
+import { wait } from '~/utils/common'
+
 import { Sapo } from './sapo.service'
 import type { SapoTenant } from './sapo.type'
 
@@ -26,10 +28,13 @@ const syncAll = async (tenant: SapoTenant) => {
   } catch (error) {
     log('ERROR!', error)
   }
+
+  await wait(60_000)
+  await syncAll(tenant)
 }
 
 const syncNewOrders = async (tenant: SapoTenant): Promise<void> => {
-  const log = _log.extend(`syncAll:${tenant}`)
+  const log = _log.extend(`syncNewOrders:${tenant}`)
 
   try {
     log('Sync new orders...')
@@ -43,6 +48,8 @@ const syncNewOrders = async (tenant: SapoTenant): Promise<void> => {
   } catch (error) {
     log('ERROR!', error)
   }
+
+  await wait(60_000)
 
   syncNewOrders(tenant)
 }
