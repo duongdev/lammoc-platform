@@ -2,6 +2,8 @@
  * @type {import('@remix-run/dev').AppConfig}
  */
 
+const { flatRoutes } = require('remix-flat-routes')
+
 module.exports = {
   serverBuildTarget: process.env.VERCEL ? 'vercel' : undefined,
   server:
@@ -13,6 +15,9 @@ module.exports = {
     v2_routeConvention: true,
     v2_meta: true,
     v2_errorBoundary: false,
+  },
+  routes: (defineRoutes) => {
+    return flatRoutes('routes', defineRoutes)
   },
   // appDirectory: "app",
   // assetsBuildDirectory: "public/build",

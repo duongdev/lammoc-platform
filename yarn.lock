@@ -7497,7 +7497,7 @@ minimatch@^3.0.4, minimatch@^3.0.5, minimatch@^3.1.1, minimatch@^3.1.2:
   dependencies:
     brace-expansion "^1.1.7"
 
-minimatch@^5.0.1:
+minimatch@^5.0.1, minimatch@^5.1.0:
   version "5.1.6"
   resolved "https://registry.yarnpkg.com/minimatch/-/minimatch-5.1.6.tgz#1cfcb8cf5522ea69952cd2af95ae09477f122a96"
   integrity sha512-lKwV/1brpG6mBUFHtb7NUmtABCb2WZZmm2wNiOA5hAb8VdCS4B3dtMWyvcoViccwAW/COERjXLt0zP1zXUN26g==
@@ -8689,6 +8689,13 @@ remark-rehype@^9.0.0:
     "@types/mdast" "^3.0.0"
     mdast-util-to-hast "^11.0.0"
     unified "^10.0.0"
+
+remix-flat-routes@^0.5.7:
+  version "0.5.7"
+  resolved "https://registry.yarnpkg.com/remix-flat-routes/-/remix-flat-routes-0.5.7.tgz#1085cf2cbc27cb0683d194ddba60ea6d2e878b30"
+  integrity sha512-rDGnpAPz3i7cwAAGcfLCZszWmwrT3Yy6phTmdptl1WlA5yHmHNd1ggP6f2TEyqqjMiQto89d43lV9OkNr4rHww==
+  dependencies:
+    minimatch "^5.1.0"
 
 remix-island@0.1.2:
   version "0.1.2"
