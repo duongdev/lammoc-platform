@@ -1,13 +1,16 @@
+import { useMemo } from 'react'
+
 import { Container } from '@mantine/core'
 import type { LoaderArgs, V2_MetaFunction } from '@remix-run/node'
 import { redirect } from '@remix-run/node'
-import { Outlet, useCatch, useLoaderData } from '@remix-run/react'
+import { Outlet, useCatch } from '@remix-run/react'
 
 import ErrorHandler from '~/components/error-handler'
 import AppBar from '~/components/nav/app-bar'
 import { APP_NAME } from '~/config/app-config'
 import { AuthProvider } from '~/contexts/auth-context'
 import { getAuthAccount, getAuthSession } from '~/services/session.server'
+import { superjson, useSuperLoaderData } from '~/utils/data'
 
 export const meta: V2_MetaFunction = () => [{ title: APP_NAME }]
 
@@ -21,11 +24,24 @@ export async function loader({ request }: LoaderArgs) {
     throw redirect(`/auth/sign-in?${searchParams}`)
   }
 
-  return { account, customerPhones }
+  return superjson({ account, customerPhones })
 }
 
 export default function App() {
-  const data = useLoaderData()
+  const data = useSuperLoaderData<typeof loader>()
+
+  const navLinks = useMemo(() => {
+    const links = [
+      { label: 'Đơn hàng', link: '/app/orders' },
+      { label: 'Tài khoản', link: '/app/user' },
+    ]
+
+    if (data.account.roles.includes('DEVELOPER')) {
+      links.push({ label: 'Admin', link: '/admin' })
+    }
+
+    return links
+  }, [data.account.roles])
 
   return (
     <AuthProvider
@@ -33,12 +49,7 @@ export default function App() {
       customerPhones={data.customerPhones}
       roles={data.account.roles}
     >
-      <AppBar
-        links={[
-          { label: 'Đơn hàng', link: '/app/orders' },
-          { label: 'Tài khoản', link: '/app/user' },
-        ]}
-      />
+      <AppBar links={navLinks} />
       <Container my={40}>
         <Outlet />
       </Container>

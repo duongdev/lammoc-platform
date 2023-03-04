@@ -5,7 +5,7 @@ import type { Account, AccountRole } from '@prisma/client'
 
 export type AuthContextValue = {
   account?: Account
-  customerPhones: string
+  customerPhones: string[]
   roles: AccountRole[]
 }
 
