@@ -1,5 +1,13 @@
-name: Tasks
-on: workflow_dispatch
+name: Sync Sapo
+on:
+  workflow_dispatch:
+  repository_dispatch:
+    types:
+      - webhook
+      - SYNC_SAPO
+
+  schedule:
+    - cron: '0 */1 * * *'
 concurrency:
   group: ci-${{ github.ref }}
   cancel-in-progress: true
@@ -44,3 +52,10 @@ jobs:
           yarn install --production=false
 
       - run: yarn sync-sapo-db
+        continue-on-error: true
+
+      - name: Repository Dispatch
+        uses: peter-evans/repository-dispatch@v1
+        with:
+          token: ${{ secrets.CUSTOM_PAT }}
+          event-type: SYNC_SAPO
