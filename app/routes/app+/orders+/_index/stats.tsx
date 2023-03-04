@@ -3,6 +3,7 @@ import type { FC } from 'react'
 import { Box, Group, MediaQuery, Paper, Text } from '@mantine/core'
 import type { Icon } from '@tabler/icons-react'
 import { IconCash, IconShoppingCart } from '@tabler/icons-react'
+import numeral from 'numeral'
 
 import { fVND } from '~/utils/format'
 
@@ -21,7 +22,11 @@ const OrderStats: FC<OrderStatsProps> = ({ expenses, orders }) => {
         },
       }}
     >
-      <StatItem icon={IconShoppingCart} label="đơn hàng" value={orders} />
+      <StatItem
+        icon={IconShoppingCart}
+        label="đơn hàng"
+        value={numeral(orders).format('0,0')}
+      />
       <StatItem icon={IconCash} label="chi tiêu" value={fVND(expenses)} />
     </Group>
   )

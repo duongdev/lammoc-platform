@@ -30,6 +30,9 @@ export const getCustomerOrders = async (
       ? {
           OR: [
             {
+              code: { search },
+            },
+            {
               code: { contains: search },
             },
             {
@@ -49,6 +52,7 @@ export const getCustomerOrders = async (
 
   const [
     orders,
+    filteredCount,
     {
       _count: { _all: totalCount },
       _sum: { total: totalExpense },
@@ -67,17 +71,21 @@ export const getCustomerOrders = async (
       take: getMaxTake(take),
       skip,
     }),
+    prisma.order.count({ where }),
     prisma.order.aggregate({
       _sum: { total: true },
       _count: { _all: true },
-      where,
+      where: {
+        customer: { phone: { hasSome: customerPhones } },
+        status: { in: ['draft', 'finalized', 'completed'] },
+      },
     }),
   ])
 
   return {
     orders,
     totalCount,
-    totalPages: Math.ceil(totalCount / take),
+    totalPages: Math.ceil(filteredCount / take),
     totalExpense: totalExpense ?? 0,
   }
 }

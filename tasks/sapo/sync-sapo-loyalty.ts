@@ -14,9 +14,23 @@ export const syncLoyalty = async (tenant: SapoTenant) => {
 
   const sapo = new SapoLoyalty(tenant, log)
 
-  await sapo.syncTiers()
-  await sapo.syncLoyaltyMembers()
-  await sapo.syncLoyaltyPointEvents()
+  try {
+    await sapo.syncTiers()
+  } catch (error) {
+    log('sync tiers failed', error)
+  }
+
+  try {
+    await sapo.syncLoyaltyMembers()
+  } catch (error) {
+    log('sync members failed', error)
+  }
+
+  try {
+    await sapo.syncLoyaltyPointEvents()
+  } catch (error) {
+    log('sync point events failed', error)
+  }
 
   await wait(60_000)
 

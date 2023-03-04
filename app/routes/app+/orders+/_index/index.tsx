@@ -180,9 +180,9 @@ const OrdersIndex: FC<OrdersIndexProps> = () => {
               <Pagination
                 boundaries={1}
                 onChange={handleFilterChange('page')}
-                page={page}
                 siblings={isMobile ? 0 : 1}
                 total={totalPages}
+                value={page}
               />
             </Center>
           </Stack>
