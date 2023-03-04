@@ -78,6 +78,7 @@ export const getCustomerOrders = async (
       where: {
         customer: { phone: { hasSome: customerPhones } },
         status: { in: ['draft', 'finalized', 'completed'] },
+        tenant,
       },
     }),
   ])
