@@ -94,6 +94,10 @@ export async function loader({ params, request }: LoaderArgs) {
 }
 
 export const meta: V2_MetaFunction<typeof loader> = ({ data }) => {
+  if (!data?.json) {
+    return [{ title: getTitle('Không tìm thấy đơn hàng') }]
+  }
+
   return [{ title: getTitle(`Đơn hàng ${data.json.code}`) }]
 }
 

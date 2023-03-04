@@ -22,7 +22,11 @@ const ErrorHandler: FC<ErrorHandlerProps> = ({ caught }) => {
         <Button component="a" href="/" leftIcon={<IconHome size={18} />}>
           Về trang chủ
         </Button>
-        <Button leftIcon={<IconRefresh size={18} />} variant="outline">
+        <Button
+          leftIcon={<IconRefresh size={18} />}
+          onClick={() => window.location.reload()}
+          variant="outline"
+        >
           Tải lại trang
         </Button>
       </Group>

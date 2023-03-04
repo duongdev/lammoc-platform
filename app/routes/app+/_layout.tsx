@@ -59,11 +59,9 @@ export default function App() {
 
 export function CatchBoundary() {
   const caught = useCatch()
-  console.log('app/index.tsx')
+  console.log('app/_layout.tsx')
   return (
-    <Container
-      sx={{ minHeight: '100vh', display: 'grid', placeItems: 'center' }}
-    >
+    <Container sx={{ display: 'grid', placeItems: 'center' }}>
       <ErrorHandler caught={caught} />
     </Container>
   )

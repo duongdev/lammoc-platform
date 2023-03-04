@@ -70,7 +70,12 @@ export function CatchBoundary() {
   const caught = useCatch()
   console.log('root.tsx')
   return (
-    <MantineProvider withGlobalStyles withNormalizeCSS theme={theme}>
+    <MantineProvider
+      withGlobalStyles
+      withNormalizeCSS
+      emotionCache={emotionCache}
+      theme={theme}
+    >
       <html>
         <head>
           <StylesPlaceholder />

@@ -19,7 +19,7 @@ const Orders: FC<OrdersProps> = () => {
 
 export function CatchBoundary() {
   const caught = useCatch()
-  console.log('app/orders/index.tsx')
+  console.log('app/order/_layout.tsx')
   return (
     <Container sx={{ display: 'grid', placeItems: 'center' }}>
       <ErrorHandler caught={caught} />
