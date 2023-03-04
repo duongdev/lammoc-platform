@@ -26,78 +26,33 @@ import type {
   SapoProductItem,
   SapoTenant,
 } from './sapo.type'
-import type { PaginationInput } from './sapo.util'
-import { getPaginationOptions } from './sapo.util'
+import type { PaginationInput } from './sapo.util';
+import { gotExtendOptions , getPaginationOptions } from './sapo.util'
 
 const TRANSACTION_SIZE = +(process.env.TRANSACTION_SIZE ?? 50)
 
 export class Sapo {
   private sapo: Got
   private log: Debugger
+  private SESSION_KEY: string
 
   constructor(
     /* eslint-disable no-unused-vars */
     private readonly tenant: SapoTenant,
     private readonly username: string = SAPO_USER!,
     private readonly password: string = SAPO_PASS!,
+    logger?: Debugger,
   ) /* eslint-enable no-unused-vars */ {
-    this.log = Debug(`Sapo:${tenant}`)
+    this.log = logger || Debug(`Sapo:${tenant}`)
+    this.SESSION_KEY = `SAPO_TOKEN_${this.tenant}`
 
     this.sapo = got.extend({
       prefixUrl: `https://${this.tenant}.mysapogo.com/admin`,
-      hooks: {
-        beforeRetry: [
-          async ({ code, options, name, message, response }, retryCount) => {
-            if (code === 'CERT_HAS_EXPIRED' || response?.statusCode === 401) {
-              const cookies =
-                retryCount <= 1
-                  ? await this.getCookies()
-                  : await this.refreshCookies()
-              const headers = {
-                Cookie: cookies
-                  .map((cookie: any) => `${cookie.name}=${cookie.value}`)
-                  .join('; '),
-              }
-              options.context.headers = headers
-              return
-            }
-
-            this.log(`[beforeRetry] Unhandled error`, {
-              code,
-              name,
-              message,
-              retryCount,
-              status: response?.statusCode,
-            })
-          },
-        ],
-        beforeRequest: [
-          (options) => {
-            options.headers = (options.context.headers as any) ?? {}
-          },
-        ],
-        beforeError: [
-          (error) => {
-            this.log('Error calling Sapo API', error)
-            return error
-          },
-        ],
-      },
-      retry: {
-        limit: 3,
-        errorCodes: [
-          'ETIMEDOUT',
-          'ECONNRESET',
-          'EADDRINUSE',
-          'ECONNREFUSED',
-          'EPIPE',
-          'ENOTFOUND',
-          'ENETUNREACH',
-          'EAI_AGAIN',
-          'CERT_HAS_EXPIRED',
-        ],
-        statusCodes: [401],
-      },
+      ...gotExtendOptions({
+        log: this.log,
+        getCookies: this.getCookies,
+        refreshCookies: this.refreshCookies,
+      }),
     })
   }
 
@@ -105,7 +60,7 @@ export class Sapo {
     let cookies: string
     try {
       const dbCookies = await prisma.appMeta.findUniqueOrThrow({
-        where: { id: `SAPO_TOKEN_${this.tenant}` },
+        where: { id: this.SESSION_KEY },
       })
 
       cookies = dbCookies.value
@@ -141,8 +96,8 @@ export class Sapo {
 
     const cookiesValue = JSON.stringify(cookies)
     await prisma.appMeta.upsert({
-      where: { id: `SAPO_TOKEN_${this.tenant}` },
-      create: { id: `SAPO_TOKEN_${this.tenant}`, value: cookiesValue },
+      where: { id: this.SESSION_KEY },
+      create: { id: this.SESSION_KEY, value: cookiesValue },
       update: { value: cookiesValue },
     })
 
