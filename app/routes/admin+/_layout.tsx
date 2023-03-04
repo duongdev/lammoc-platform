@@ -1,13 +1,16 @@
 import type { FC } from 'react'
+import { useMemo } from 'react'
 
 import type { Account } from '@prisma/client'
 import type { LoaderArgs } from '@remix-run/node'
 import { redirect } from '@remix-run/node'
-import { Outlet, useLoaderData } from '@remix-run/react'
+import { Outlet } from '@remix-run/react'
 
+import AppBar from '~/components/nav/app-bar'
 import { ADMIN_ROLES } from '~/config/app-config'
 import { AuthProvider } from '~/contexts/auth-context'
 import { getAuthAccount } from '~/services/session.server'
+import { superjson, useSuperLoaderData } from '~/utils/data'
 
 export async function loader({ request }: LoaderArgs) {
   const account = await getAuthAccount(request)
@@ -16,13 +19,22 @@ export async function loader({ request }: LoaderArgs) {
     return redirect('/auth')
   }
 
-  return { account }
+  return superjson({ account })
 }
 
 export type AdminProps = {}
 
 const Admin: FC<AdminProps> = () => {
-  const data = useLoaderData()
+  const data = useSuperLoaderData()
+
+  const navLinks = useMemo(() => {
+    const links = [
+      { label: 'Khách hàng', link: './customers' },
+      { label: 'Tài khoản', link: './accounts' },
+    ]
+
+    return links
+  }, [])
 
   if (!data.account) {
     return null
@@ -34,6 +46,7 @@ const Admin: FC<AdminProps> = () => {
       customerPhones={data.account.phone}
       roles={data.account.roles}
     >
+      <AppBar links={navLinks} />
       <Outlet />
     </AuthProvider>
   )

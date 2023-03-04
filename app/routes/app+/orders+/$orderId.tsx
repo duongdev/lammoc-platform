@@ -230,7 +230,7 @@ const LineItem: FC<{
           />
         </Box>
         <Box sx={{ flexGrow: '1 !important' as any }}>
-          <Text lineClamp={shouldShowVariant ? 1 : 2} size="sm">
+          <Text lineClamp={shouldShowVariant ? 1 : 2}>
             {lineItem.product.name || NOT_FOUND_PRODUCT_NAME}
           </Text>
           {shouldShowVariant && (
@@ -241,7 +241,7 @@ const LineItem: FC<{
         </Box>
         <MediaQuery smallerThan="sm" styles={{ display: 'none' }}>
           <Box sx={{ textAlign: 'right', flexShrink: 0 }}>
-            <Text size="sm">{fVND(lineItem.price)}</Text>
+            <Text>{fVND(lineItem.price)}</Text>
             <Text color="dimmed" size="sm">
               SL: {lineItem.quantity}
             </Text>
@@ -267,7 +267,7 @@ const PaymentDetails: FC<{ order: Order; fulfillment?: Fulfillment }> = ({
   return (
     <Stack spacing="sm">
       <Title order={4}>Thanh toán</Title>
-      <Text size="sm">
+      <Text>
         {(paymentStatus && PAYMENT_STATUS[paymentStatus]) ?? 'Chưa xác định'}
       </Text>
     </Stack>
@@ -291,7 +291,7 @@ const DeliveryDetails: FC<{ order: Order; fulfillment?: Fulfillment }> = ({
         <Text color="dimmed" size="sm">
           Giao hàng
         </Text>
-        <Text size="sm">{deliveryService.name}</Text>
+        <Text>{deliveryService.name}</Text>
         {fulfillment.shipment?.trackingUrl && (
           <Text
             underline
@@ -320,7 +320,7 @@ const DeliveryDetails: FC<{ order: Order; fulfillment?: Fulfillment }> = ({
           <Text color="dimmed" size="sm">
             Địa chỉ
           </Text>
-          <Text size="sm">
+          <Text>
             {address.fullName || order.customer?.name || '[Không tên]'}{' '}
             {address.phoneNumber ? ` - ${address.phoneNumber}` : ''}
             <br />
@@ -361,12 +361,9 @@ const OrderSummary: FC<{ order: Order }> = ({ order }) => {
         content={['Phí vận chuyển', fVND(order.deliveryFee?.fee ?? 0)]}
         size="sm"
       />
-      <SI
-        d
-        content={['Thuế', fVND(order.totalTax ?? 0)]}
-        size="sm"
-        strike={!order.createInvoice}
-      />
+      {order.createInvoice && !!order.totalTax && (
+        <SI d content={['Thuế', fVND(order.totalTax ?? 0)]} size="sm" />
+      )}
       <Divider my="sm" variant="dashed" />
       <SI b content={['Tổng cộng', fVND(order.total ?? 0)]} size="lg" />
     </Stack>

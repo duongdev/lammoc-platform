@@ -148,7 +148,6 @@ const OrderItem: FC<OrderItemProps> = ({ order }) => {
               <Box sx={{ flexGrow: '1 !important' as any }}>
                 <Text
                   lineClamp={item.variant.name === item.product.name ? 2 : 1}
-                  size="sm"
                   title={item.product.name}
                 >
                   {item.product.name || NOT_FOUND_PRODUCT_NAME}
