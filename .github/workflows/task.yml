@@ -1,11 +1,10 @@
 name: Sync Sapo
 on:
   workflow_dispatch:
-  repository_dispatch:
-    types:
-      - webhook
-      - SYNC_SAPO
-
+  # repository_dispatch:
+  #   types:
+  #     - webhook
+  #     - SYNC_SAPO
   schedule:
     - cron: '0 */1 * * *'
 concurrency:
