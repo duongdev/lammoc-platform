@@ -1,0 +1,22 @@
+{
+  "id": 10583,
+  "name": "Vàng",
+  "criteria": "money",
+  "min_condition": "100000000.00",
+  "discount": 0,
+  "max_discount_amount": null,
+  "condition_endow": null,
+  "image": {
+    "id": 11394,
+    "path": "100/232/800/resources/3e4e1a5c-f486-4df2-b897-e2fc0ad1d13b.png",
+    "extension": "png",
+    "created_at": "2023-01-06T04:16:30Z",
+    "modified_at": null
+  },
+  "rewards": null,
+  "members": 6,
+  "created_at": "2023-01-06T04:16:30Z",
+  "updated_at": "2023-01-06T04:16:30Z",
+  "status": true,
+  "description": null
+}

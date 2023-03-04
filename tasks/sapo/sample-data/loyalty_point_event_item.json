@@ -1,0 +1,19 @@
+{
+  "id": "10269360",
+  "customer_id": 10152740,
+  "phone": "0918283176",
+  "full_name": "Chú Thái",
+  "activity": "Cộng Điểm từ đơn hàng <a target='_blank' href='https://store-lam-moc.mysapogo.com/admin/orders/469432684'>SON42584</a>",
+  "adjust_point": "1.00",
+  "point": "1.11",
+  "created_at": "2023-03-04T10:51:06Z",
+  "code": "plus_from_order",
+  "order_code": "SON42584",
+  "order_id": 469432684,
+  "return_point": false,
+  "description": {
+    "plus_transaction_value": "122.000đ",
+    "program_id": "5303",
+    "order_id": "469432684"
+  }
+}

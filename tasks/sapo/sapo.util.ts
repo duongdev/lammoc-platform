@@ -5,6 +5,7 @@ import type {
   OptionsWithPagination,
   SearchParameters,
 } from 'got-cjs'
+import { toString } from 'lodash'
 
 export const DEFAULT_PER_PAGE = 250
 
@@ -122,3 +123,5 @@ export const gotExtendOptions = ({
     },
   }
 }
+
+export const id = toString

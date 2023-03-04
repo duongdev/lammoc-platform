@@ -1,0 +1,59 @@
+{
+  "id": 10152740,
+  "phone": "0918283176",
+  "addresses": [],
+  "detail": {
+    "id": 0,
+    "customer_id": 219946752,
+    "sex": "other",
+    "email": null,
+    "dob": null,
+    "group_ids": [948064],
+    "code": "CUZN32131"
+  },
+  "created_at": "2023-03-04T10:48:18Z",
+  "updated_at": "2023-03-04T10:51:11Z",
+  "tier": {
+    "criteria": "money",
+    "condition": "0.00",
+    "discount": 0,
+    "tier_id": 10580,
+    "tier_name": "Thành viên",
+    "tier_image": {
+      "id": 11391,
+      "path": "100/232/800/resources/c34decc3-9505-4d5a-9947-63b07f77daa5.png",
+      "extension": "png",
+      "created_at": "2023-01-06T04:16:30Z",
+      "modified_at": null
+    },
+    "tier_at": "2023-03-04T10:48:18Z",
+    "max_discount_amount": null,
+    "condition_endow": null,
+    "next_tier_id": 10581,
+    "next_tier": "Đồng",
+    "next_tier_image": {
+      "id": 11392,
+      "path": "100/232/800/resources/6c8c5940-6492-45e4-a61b-0d6d07d43f88.png",
+      "extension": "png",
+      "created_at": "2023-01-06T04:16:30Z",
+      "modified_at": null
+    },
+    "next_condition": "25000000.00",
+    "remaining_money_for_next_tier": "24878000.00",
+    "remaining_point_for_next_tier": null
+  },
+  "status": "activated",
+  "synchronous": true,
+  "tenant_id": 232800,
+  "full_name": "Chú Thái",
+  "activity_at": "2023-03-04T10:48:18Z",
+  "present_point": "1.11",
+  "used_point": "0.00",
+  "expire_date": null,
+  "total_spent": "122000.00",
+  "last_order": "2023-03-04T10:50:57Z",
+  "total_order": 1,
+  "total_uncompleted_order": 0,
+  "tier_spent_period": "122000.00",
+  "point_period": null
+}

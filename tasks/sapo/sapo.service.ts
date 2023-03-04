@@ -26,8 +26,8 @@ import type {
   SapoProductItem,
   SapoTenant,
 } from './sapo.type'
-import type { PaginationInput } from './sapo.util';
-import { gotExtendOptions , getPaginationOptions } from './sapo.util'
+import type { PaginationInput } from './sapo.util'
+import { gotExtendOptions, getPaginationOptions } from './sapo.util'
 
 const TRANSACTION_SIZE = +(process.env.TRANSACTION_SIZE ?? 50)
 
@@ -50,8 +50,8 @@ export class Sapo {
       prefixUrl: `https://${this.tenant}.mysapogo.com/admin`,
       ...gotExtendOptions({
         log: this.log,
-        getCookies: this.getCookies,
-        refreshCookies: this.refreshCookies,
+        getCookies: () => this.getCookies(),
+        refreshCookies: () => this.refreshCookies(),
       }),
     })
   }

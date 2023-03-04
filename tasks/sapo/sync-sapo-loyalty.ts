@@ -12,7 +12,9 @@ const syncLoyalty = async (tenant: SapoTenant) => {
 
   const sapo = new SapoLoyalty(tenant, log)
 
-  await sapo.refreshCookies()
+  await sapo.syncTiers()
+  // await sapo.syncLoyaltyMembers()
+  await sapo.syncLoyaltyPointEvents()
 }
 
 syncLoyalty('store-lam-moc')

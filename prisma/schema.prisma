@@ -53,12 +53,13 @@ model Customer {
   syncedAt  DateTime @updatedAt
   tenant    Tenant
 
-  phone    String[]
-  name     String
-  code     String
-  email    String?
-  orders   Order[]
-  accounts Account[]
+  phone          String[]
+  name           String
+  code           String
+  email          String?
+  orders         Order[]
+  accounts       Account[]
+  loyaltyMembers LoyaltyMember[]
 
   @@index([phone])
 }
@@ -92,14 +93,15 @@ model Order {
   completedOn       DateTime?
   createInvoice     Boolean   @default(false)
 
-  customer           Customer?          @relation(fields: [customerId], references: [id], onUpdate: Cascade, onDelete: Cascade)
+  customer           Customer?           @relation(fields: [customerId], references: [id], onUpdate: Cascade, onDelete: Cascade)
   customerId         String?
-  deliveryFee        OrderDeliveryFee?  @relation(fields: [orderDeliveryFeeId], references: [id], onUpdate: Cascade, onDelete: Cascade)
+  deliveryFee        OrderDeliveryFee?   @relation(fields: [orderDeliveryFeeId], references: [id], onUpdate: Cascade, onDelete: Cascade)
   orderDeliveryFeeId String?
   lineItems          OrderLineItem[]
   fulfillments       OrderFulfillment[]
-  shippingAddress    ShippingAddress?   @relation(fields: [shippingAddressId], references: [id])
+  shippingAddress    ShippingAddress?    @relation(fields: [shippingAddressId], references: [id])
   shippingAddressId  String?
+  loyaltyPointEvents LoyaltyPointEvent[]
 }
 
 model OrderLineItem {
@@ -326,4 +328,77 @@ model DeliveryServiceProvider {
   fulfillmentProcessingCount Int                        @default(0)
   freightPayer               String?
   orderFulfillmentShipments  OrderFulfillmentShipment[]
+}
+
+model LoyaltyTier {
+  id        String   @id
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now())
+  syncedAt  DateTime @updatedAt
+  tenant    Tenant
+
+  name              String
+  description       String?
+  criteria          String
+  minCondition      Float   @default(0)
+  discount          Float
+  maxDiscountAmount Float
+  imageUrl          String?
+  totalMembers      Int
+  status            Boolean
+
+  members         LoyaltyMember[] @relation("loyalty_member_tier")
+  nextTierMembers LoyaltyMember[] @relation("loyalty_member_next_tier")
+}
+
+model LoyaltyMember {
+  id        String   @id
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now())
+  syncedAt  DateTime @updatedAt
+  tenant    Tenant
+
+  phone                   String
+  status                  String
+  nextCondition           String?
+  nextTierRemainingMoney  Float?
+  nextTierRemainingPoints Float?
+  lastActivityAt          DateTime?
+  points                  Float     @default(0)
+  usedPoints              Float     @default(0)
+  expireDate              DateTime?
+  totalSpent              Float     @default(0)
+  lastOrderAt             DateTime?
+  totalOrders             Int       @default(0)
+  totalUncompletedOrders  Int       @default(0)
+  tierSpentPeriod         Float     @default(0)
+
+  customer   Customer @relation(fields: [customerId], references: [id])
+  customerId String
+
+  tier          LoyaltyTier @relation("loyalty_member_tier", fields: [loyaltyTierId], references: [id])
+  loyaltyTierId String
+
+  nextTier          LoyaltyTier?        @relation("loyalty_member_next_tier", fields: [nextLoyaltyTierId], references: [id])
+  nextLoyaltyTierId String?
+  pointEvents       LoyaltyPointEvent[]
+}
+
+model LoyaltyPointEvent {
+  id        String   @id
+  createdAt DateTime @default(now())
+  syncedAt  DateTime @updatedAt
+  tenant    Tenant
+
+  activity     String
+  adjustPoints Float   @default(0)
+  points       Float   @default(0)
+  code         String
+  orderCode    String?
+  returnPoint  Boolean @default(false)
+
+  member          LoyaltyMember @relation(fields: [loyaltyMemberId], references: [id])
+  loyaltyMemberId String
+  order           Order?        @relation(fields: [orderId], references: [id])
+  orderId         String?
 }
