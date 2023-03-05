@@ -54,7 +54,16 @@ const AppBar: FC<HeaderProps> = ({ links, logoLink = '/' }) => {
   }, [close, location])
 
   return (
-    <Header className={classes.root} height={HEADER_HEIGHT}>
+    <Header
+      className={classes.root}
+      height={HEADER_HEIGHT}
+      sx={{
+        position: 'sticky',
+        top: 0,
+        marginTop: 0,
+        zIndex: 100,
+      }}
+    >
       <Container className={classes.header}>
         <Box
           component={Link}
