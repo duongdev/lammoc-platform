@@ -1,10 +1,12 @@
 import type { FC } from 'react'
 import { useMemo } from 'react'
 
-import { Stack } from '@mantine/core'
+import { Group, Stack } from '@mantine/core'
 import type { LoaderArgs, V2_MetaFunction } from '@remix-run/node'
+import { IconAward, IconShoppingCart } from '@tabler/icons-react'
 import { flatten, get } from 'lodash'
 
+import AppMenu from '~/components/nav/app-menu'
 import PageTitle from '~/components/page-title'
 import prisma from '~/libs/prisma.server'
 import { getAuthSession } from '~/services/session.server'
@@ -62,7 +64,15 @@ const AccountIndex: FC<AccountIndexProps> = () => {
 
   return (
     <Stack>
-      <PageTitle>Chào, {account.name}</PageTitle>
+      <Group position='apart'>
+        <PageTitle>Chào, {account.name}</PageTitle>
+        <AppMenu
+        items={[
+          { label: 'Đơn hàng', icon: IconShoppingCart, to: '/app/orders' },
+          { label: 'Tích điểm', icon: IconAward, to: '/app/loyalty' },
+        ]}
+      />
+      </Group>
 
       <LoyaltyMembers members={loyaltyMembers} />
     </Stack>
