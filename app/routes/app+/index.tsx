@@ -5,7 +5,7 @@ import { useCatch } from '@remix-run/react'
 import ErrorHandler from '~/components/error-handler'
 
 export async function loader() {
-  return redirect('/app/orders')
+  return redirect('/app/account')
 }
 export function CatchBoundary() {
   const caught = useCatch()
@@ -14,7 +14,6 @@ export function CatchBoundary() {
     <Container
       sx={{ minHeight: '100vh', display: 'grid', placeItems: 'center' }}
     >
-      123
       <ErrorHandler caught={caught} />
     </Container>
   )

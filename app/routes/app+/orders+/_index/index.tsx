@@ -13,7 +13,6 @@ import {
   Stack,
   Tabs,
   TextInput,
-  Title,
 } from '@mantine/core'
 import { Tenant } from '@prisma/client'
 import type { LoaderArgs, V2_MetaFunction } from '@remix-run/node'
@@ -22,6 +21,7 @@ import { IconSearch } from '@tabler/icons-react'
 
 import EmptyState from '~/components/empty-state'
 import OrderItem from '~/components/order-item'
+import PageTitle from '~/components/page-title'
 import { getCustomerOrders } from '~/services/order.server'
 import { getAuthSession } from '~/services/session.server'
 import { getSearchParams } from '~/utils/common'
@@ -106,7 +106,7 @@ const OrdersIndex: FC<OrdersIndexProps> = () => {
   return (
     <>
       <Group position="apart">
-        <Title order={2}>Đơn hàng của bạn</Title>
+        <PageTitle>Đơn hàng của bạn</PageTitle>
         <OrderStats expenses={totalExpense} orders={totalCount} />
       </Group>
 

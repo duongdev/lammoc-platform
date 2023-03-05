@@ -23,6 +23,7 @@ import { IconChevronRight, IconHome, IconX } from '@tabler/icons-react'
 import { format } from 'date-fns'
 import { first, orderBy } from 'lodash'
 
+import PageTitle from '~/components/page-title'
 import prisma from '~/libs/prisma.server'
 import { getAuthSession } from '~/services/session.server'
 import {
@@ -144,10 +145,9 @@ const OrderView: FC<OrderViewProps> = () => {
         <Box>
           <Breadcrumbs separator={<IconChevronRight size={16} />}>
             {breadcrumbs}
-            {/* <Text size="sm">Đơn hàng {order.code}</Text> */}
           </Breadcrumbs>
 
-          <Title order={2}>Đơn hàng {order.code}</Title>
+          <PageTitle>Đơn hàng {order.code}</PageTitle>
         </Box>
 
         <Group color="dimmed" spacing="xs">

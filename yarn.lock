@@ -2177,6 +2177,13 @@
   dependencies:
     lodash "^4.17.21"
 
+"@mantine/carousel@6.0.0":
+  version "6.0.0"
+  resolved "https://registry.yarnpkg.com/@mantine/carousel/-/carousel-6.0.0.tgz#b7aef5eea5e8d539c325466f467c699a8e9d594b"
+  integrity sha512-rRK6ikSonMUk9i5mCqbhlTAG6r7obU7xnIaV0a1bBvwYMsgxRUVlDTO6od7cULXl5REa8xbSQkXsqjbP3fMgeg==
+  dependencies:
+    "@mantine/utils" "6.0.0"
+
 "@mantine/core@6.0.0":
   version "6.0.0"
   resolved "https://registry.yarnpkg.com/@mantine/core/-/core-6.0.0.tgz#721bca646713b50dc2d7fa1e538fbd409526c33e"
@@ -4577,6 +4584,18 @@ electron-to-chromium@^1.4.284:
   resolved "https://registry.yarnpkg.com/electron-to-chromium/-/electron-to-chromium-1.4.289.tgz#02b59b1096486fc0bd4871a0484d8317802c6658"
   integrity sha512-relLdMfPBxqGCxy7Gyfm1HcbRPcFUJdlgnCPVgQ23sr1TvUrRJz0/QPoGP0+x41wOVSTN/Wi3w6YDgHiHJGOzg==
 
+embla-carousel-react@7.0.9:
+  version "7.0.9"
+  resolved "https://registry.yarnpkg.com/embla-carousel-react/-/embla-carousel-react-7.0.9.tgz#7ba5664eefcf435c385ceeccbd7c722654fa5e09"
+  integrity sha512-KGnnZWukN+N2H6VjQf6C9mWmInqtCIiInhkGsJ9ckxri3m3Ks6wRDz+RRlV1kcuPHtRoxyFuBBGNwftWqMO9Pw==
+  dependencies:
+    embla-carousel "7.0.9"
+
+embla-carousel@7.0.9:
+  version "7.0.9"
+  resolved "https://registry.yarnpkg.com/embla-carousel/-/embla-carousel-7.0.9.tgz#51dc885e62b7208c8fa9ea9c470d5ae20012c39f"
+  integrity sha512-g8pGPd1BxexiZgw8F1aNM1KL3x3eEcz6TGTz20AuqCCynASBV7/h1+aS2rySDc/hHkXqbU8dk7TDhW71LCqVkQ==
+
 emoji-regex@^8.0.0:
   version "8.0.0"
   resolved "https://registry.yarnpkg.com/emoji-regex/-/emoji-regex-8.0.0.tgz#e818fd69ce5ccfcb404594f842963bf53164cc37"
@@ -6669,6 +6688,11 @@ js2xmlparser@^4.0.2:
   dependencies:
     xmlcreate "^2.0.4"
 
+jsbarcode@^3.11.3:
+  version "3.11.5"
+  resolved "https://registry.yarnpkg.com/jsbarcode/-/jsbarcode-3.11.5.tgz#390b3efd0271f35b9d68c7b8af6e972445969014"
+  integrity sha512-zv3KsH51zD00I/LrFzFSM6dst7rDn0vIMzaiZFL7qusTjPZiPtxg3zxetp0RR7obmjTw4f6NyGgbdkBCgZUIrA==
+
 jsdoc@^4.0.0:
   version "4.0.0"
   resolved "https://registry.yarnpkg.com/jsdoc/-/jsdoc-4.0.0.tgz#9569f79ea5b14ba4bc726da1a48fe6a241ad7893"
@@ -7761,6 +7785,13 @@ netmask@^2.0.2:
   version "2.0.2"
   resolved "https://registry.yarnpkg.com/netmask/-/netmask-2.0.2.tgz#8b01a07644065d536383835823bc52004ebac5e7"
   integrity sha512-dBpDMdxv9Irdq66304OLfEmQ9tbNRFnFTuZiLo+bD+r332bBmMJ8GBLXklIXXgxd3+v9+KUnZaUR5PJMa75Gsg==
+
+next-barcode@1.4.0:
+  version "1.4.0"
+  resolved "https://registry.yarnpkg.com/next-barcode/-/next-barcode-1.4.0.tgz#e62dcc31fae05585bad1d9e52af94d674e3c48a2"
+  integrity sha512-Sfbs/ToYPkAUQ4AgMEpRUZhCM0BXXMUF49JhquRir8YyC7KDfTGEpbF3Vu5v3JJx8aManG2k9LOVhMU9kbg11w==
+  dependencies:
+    jsbarcode "^3.11.3"
 
 nice-try@^1.0.4:
   version "1.0.5"

@@ -32,8 +32,8 @@ export default function App() {
 
   const navLinks = useMemo(() => {
     const links = [
+      { label: 'Tài khoản', link: '/app/account' },
       { label: 'Đơn hàng', link: '/app/orders' },
-      { label: 'Tài khoản', link: '/app/user' },
     ]
 
     if (data.account.roles.includes('DEVELOPER')) {
@@ -50,7 +50,7 @@ export default function App() {
       roles={data.account.roles}
     >
       <AppBar links={navLinks} />
-      <Container my={40}>
+      <Container my={40} sx={{ overflow: 'hidden' }}>
         <Outlet />
       </Container>
     </AuthProvider>
