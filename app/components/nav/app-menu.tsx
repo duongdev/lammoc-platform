@@ -32,11 +32,23 @@ const MenuItem: FC<MenuItemProps> = ({ icon: Icon, label, to }) => {
       component={Link}
       radius="lg"
       to={to}
-      sx={{
-        color: 'unset',
-        textDecoration: 'none',
-        display: 'grid',
-        placeItems: 'center',
+      sx={(theme) => {
+        const accent = theme.colorScheme === 'light' ? theme.black : theme.white
+        return {
+          color: 'unset',
+          textDecoration: 'none',
+          display: 'grid',
+          placeItems: 'center',
+          transition: 'all 0.2s',
+          outline: 'solid 1px transparent !important',
+          '&:hover': {
+            outlineColor: `${accent} !important`,
+            borderColor: accent,
+          },
+          '&:active': {
+            transform: 'scale(0.95)',
+          },
+        }
       }}
     >
       <Stack align="center" spacing="xs" sx={{ flexDirection: 'row' }}>

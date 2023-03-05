@@ -64,7 +64,7 @@ const AccountIndex: FC<AccountIndexProps> = () => {
 
   return (
     <Stack>
-      <Group position='apart'>
+      <Group position='apart' pt={2}>
         <PageTitle>Chào, {account.name}</PageTitle>
         <AppMenu
         items={[

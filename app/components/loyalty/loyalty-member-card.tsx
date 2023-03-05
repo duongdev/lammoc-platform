@@ -16,7 +16,11 @@ import { IconAward, IconWallet } from '@tabler/icons-react'
 import { useBarcode } from 'next-barcode'
 import numeral from 'numeral'
 
-import { LOGO_URL, LOYALTY_CARD_ASPECT_RATIO } from '~/config/app-config'
+import {
+  LOGO_URL,
+  LOYALTY_CARD_ASPECT_RATIO,
+  TENANT_COLOR,
+} from '~/config/app-config'
 import type { LoyaltyMemberItem } from '~/routes/app+/account+'
 import { fVND, fPhone } from '~/utils/format'
 import { getTierImageUrl } from '~/utils/loyalty'
@@ -52,7 +56,12 @@ const LoyaltyMemberCard: FC<LoyaltyMemberCardProps> = ({ member }) => {
   return (
     <AspectRatio miw={315} ratio={LOYALTY_CARD_ASPECT_RATIO}>
       <Box>
-        <Card withBorder h="100%" radius="lg" w="100%">
+        <Card
+          h="100%"
+          radius="lg"
+          sx={{ backgroundColor: TENANT_COLOR[member.tenant], color: 'black' }}
+          w="100%"
+        >
           <Stack h="100%">
             <Group position="apart">
               <Group spacing="xs">
@@ -60,10 +69,23 @@ const LoyaltyMemberCard: FC<LoyaltyMemberCardProps> = ({ member }) => {
                   placeholder
                   src={getTierImageUrl(member.tier.imageUrl)}
                   width={40}
+                  styles={{
+                    root: { borderRadius: '0.5rem', overflow: 'hidden' },
+                  }}
                 />
                 <Title order={4}>{member.tier.name}</Title>
               </Group>
-              {logoImage}
+              <Center
+                sx={{
+                  borderRadius: '0.5rem',
+                  overflow: 'hidden',
+                  padding: '0.5rem',
+                  background: '#fff',
+                  height: 40,
+                }}
+              >
+                {logoImage}
+              </Center>
             </Group>
             <Center
               sx={{
@@ -84,28 +106,35 @@ const LoyaltyMemberCard: FC<LoyaltyMemberCardProps> = ({ member }) => {
                 <img
                   alt={fPhone(member.phone)}
                   src={barcodeImg}
-                  style={{ maxHeight: 72, width: '100%', height: '100%' }}
+                  style={{
+                    maxHeight: 64,
+                    width: '100%',
+                    height: '100%',
+                    borderRadius: '0.5rem',
+                  }}
                 />
               )}
             </Center>
-            <Group align="flex-end" position="apart">
-              <Box>
-                <Group spacing="xs">
-                  <IconAward size="1rem" />
-                  <Text size="sm">
+            <Group noWrap align="flex-end" position="apart">
+              <Box sx={{ flexShrink: 0, maxWidth: '50%' }}>
+                <Group noWrap spacing="xs">
+                  <IconAward size="1rem" style={{ flexShrink: 0 }} />
+                  <Text lineClamp={1} size="sm">
                     {numeral(member.points).format('0,0.00')} điểm
                   </Text>
                 </Group>
-                <Group spacing="xs">
-                  <IconWallet size="1rem" />
-                  <Text size="sm">{fVND(member.totalSpent)}</Text>
+                <Group noWrap spacing="xs">
+                  <IconWallet size="1rem" style={{ flexShrink: 0 }} />
+                  <Text lineClamp={1} size="sm">
+                    {fVND(member.totalSpent)}
+                  </Text>
                 </Group>
               </Box>
               <Box sx={{ textAlign: 'right' }}>
-                <Title order={5}>{member.customer.name}</Title>
-                <Text color="dimmed" size="sm">
-                  {fPhone(member.phone)}
-                </Text>
+                <Title lineClamp={1} order={5}>
+                  {member.customer.name}
+                </Title>
+                <Text size="sm">{fPhone(member.phone)}</Text>
               </Box>
             </Group>
           </Stack>

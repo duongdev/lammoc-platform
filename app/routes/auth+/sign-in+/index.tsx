@@ -182,6 +182,7 @@ export default function SignIn() {
           onChange={handlePhoneChange}
           placeholder="Nhập SĐT mua hàng"
           ref={phoneRef}
+          type="tel"
           value={phone}
         />
 

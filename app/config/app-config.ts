@@ -10,3 +10,7 @@ export const LOGO_URL: Record<Tenant, string> = {
   STORE_LAM_MOC: '/img/slm-logo.png',
   THICH_TU_LAM: '/img/ttl-logo.png',
 }
+export const TENANT_COLOR: Record<Tenant, string> = {
+  STORE_LAM_MOC: '#fdcb27',
+  THICH_TU_LAM: '#f6e422',
+}

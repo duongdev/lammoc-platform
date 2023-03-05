@@ -81,18 +81,21 @@ const OrderItem: FC<OrderItemProps> = ({ order }) => {
       radius="md"
       shadow="sm"
       to={`./${order.id}`}
-      sx={(theme) => ({
-        transition: 'all 0.2s',
-        outline: 'solid 2px transparent !important',
-        cursor: 'pointer',
-        '&:hover': {
-          outlineColor: `${theme.black} !important`,
-          borderColor: theme.black,
-        },
-        '&:active': {
-          transform: 'scale(0.995)',
-        },
-      })}
+      sx={(theme) => {
+        const accent = theme.colorScheme === 'light' ? theme.black : theme.white
+        return {
+          transition: 'all 0.2s',
+          outline: 'solid 1px transparent !important',
+          cursor: 'pointer',
+          '&:hover': {
+            outlineColor: `${accent} !important`,
+            borderColor: accent,
+          },
+          '&:active': {
+            transform: 'scale(0.995)',
+          },
+        }
+      }}
     >
       <Stack>
         <Group position="apart">
