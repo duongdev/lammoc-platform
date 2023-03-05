@@ -207,7 +207,10 @@ export class SapoLoyalty {
 
     for await (const m of paginate) {
       const customer = await prisma.customer.findFirst({
-        where: { phone: { has: normalizePhoneNumber(m.phone) } },
+        where: {
+          phone: { has: normalizePhoneNumber(m.phone) },
+          tenant: this.DB_TENANT,
+        },
       })
       const tier = await prisma.loyaltyTier.findUnique({
         where: { id: id(m.tier.tier_id) },

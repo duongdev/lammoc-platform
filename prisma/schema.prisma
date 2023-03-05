@@ -397,7 +397,7 @@ model LoyaltyPointEvent {
   orderCode    String?
   returnPoint  Boolean @default(false)
 
-  member          LoyaltyMember @relation(fields: [loyaltyMemberId], references: [id])
+  member          LoyaltyMember @relation(fields: [loyaltyMemberId], references: [id], onDelete: Cascade)
   loyaltyMemberId String
   order           Order?        @relation(fields: [orderId], references: [id])
   orderId         String?
