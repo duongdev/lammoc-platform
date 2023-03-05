@@ -102,8 +102,8 @@ const CustomerList: FC<CustomerListProps> = () => {
       <Pagination
         mt={32}
         onChange={(page) => navigate({ search: `page=${page}` })}
-        page={page}
         total={totalCount / PER_PAGE}
+        value={page}
       />
     </Container>
   )
