@@ -2177,65 +2177,65 @@
   dependencies:
     lodash "^4.17.21"
 
-"@mantine/carousel@6.0.0":
-  version "6.0.0"
-  resolved "https://registry.yarnpkg.com/@mantine/carousel/-/carousel-6.0.0.tgz#b7aef5eea5e8d539c325466f467c699a8e9d594b"
-  integrity sha512-rRK6ikSonMUk9i5mCqbhlTAG6r7obU7xnIaV0a1bBvwYMsgxRUVlDTO6od7cULXl5REa8xbSQkXsqjbP3fMgeg==
+"@mantine/carousel@6.0.1":
+  version "6.0.1"
+  resolved "https://registry.yarnpkg.com/@mantine/carousel/-/carousel-6.0.1.tgz#05e17cad7b906c55aa35ccb05421eed4d5fbb5ca"
+  integrity sha512-ARwb/Ov4I7zH+3NA42YjSNnv+Tt9dX2BPsmbXaZXhwVTRi2eJZUyLQNsMh8FutlGXbrjtoWrf1DnI96v9CBkpg==
   dependencies:
-    "@mantine/utils" "6.0.0"
+    "@mantine/utils" "6.0.1"
 
-"@mantine/core@6.0.0":
-  version "6.0.0"
-  resolved "https://registry.yarnpkg.com/@mantine/core/-/core-6.0.0.tgz#721bca646713b50dc2d7fa1e538fbd409526c33e"
-  integrity sha512-ik2NUAAn9fYcqmOAluGtI9R73ijrr450dZDA+MezKq/dvpUU/Fhl9yXnGoCxxZ5XF6y4i6q07318rdrVturc9w==
+"@mantine/core@6.0.1":
+  version "6.0.1"
+  resolved "https://registry.yarnpkg.com/@mantine/core/-/core-6.0.1.tgz#e9cb1edc895a803c1957071eac9fc2b5457330be"
+  integrity sha512-RJ0gnEOMQu9qGV9bZxb4FrHe3UT2GjVokzZ91C/Ht8DTu8Ar1uUch45+VsqI67JG2ceHykOMvsDWgAulCUKBNg==
   dependencies:
     "@floating-ui/react" "^0.19.1"
-    "@mantine/styles" "6.0.0"
-    "@mantine/utils" "6.0.0"
+    "@mantine/styles" "6.0.1"
+    "@mantine/utils" "6.0.1"
     "@radix-ui/react-scroll-area" "1.0.2"
     react-remove-scroll "^2.5.5"
     react-textarea-autosize "8.3.4"
 
-"@mantine/hooks@6.0.0":
-  version "6.0.0"
-  resolved "https://registry.yarnpkg.com/@mantine/hooks/-/hooks-6.0.0.tgz#08b67946e0b45f67181efa9e37df68f92a8ee6d1"
-  integrity sha512-boszkajLaA4qvd/ebDhqZBbMuUXlvJv8EM0jTaXz09IaGPachBKG5WKpXEcwWh2qmrUQL6pyhIbLMgPnvwS0QQ==
+"@mantine/hooks@6.0.1":
+  version "6.0.1"
+  resolved "https://registry.yarnpkg.com/@mantine/hooks/-/hooks-6.0.1.tgz#0b01f445b8b03854b029fd257e810424da30df2c"
+  integrity sha512-D3zWNPMrmjBbns0krXCE5FyWNmrKosYqD+J4/yyBrngvN6XMlmqfUr4C6ofndRrpZHxyshEJgVYLvB5h2bioGQ==
 
-"@mantine/nprogress@6.0.0":
-  version "6.0.0"
-  resolved "https://registry.yarnpkg.com/@mantine/nprogress/-/nprogress-6.0.0.tgz#0161d2c948b19d905343dda00764f79ba0648531"
-  integrity sha512-4HGeaDXW6C3Hlq+HWmI5D5iyWeWj8HvSekAXAXASJiaa6RznP1M5MECj6bJKhZPJvIeEu/1N1Hjj2BfxEOoqdg==
+"@mantine/nprogress@6.0.1":
+  version "6.0.1"
+  resolved "https://registry.yarnpkg.com/@mantine/nprogress/-/nprogress-6.0.1.tgz#5f0921bd354a1d6af0395208dd2832144edb19c9"
+  integrity sha512-LXFVxhLEpZwB8uUWAeenxbtCyeU8ZgWAmMLJjXgHQ9I/flkxrDmNXAbcNzvNjjFXANZRIl2h3Heb6ZXYOEbZyw==
   dependencies:
-    "@mantine/utils" "6.0.0"
+    "@mantine/utils" "6.0.1"
 
-"@mantine/remix@6.0.0":
-  version "6.0.0"
-  resolved "https://registry.yarnpkg.com/@mantine/remix/-/remix-6.0.0.tgz#c061c0665e2d8cd84229b18826931e8e18d6453c"
-  integrity sha512-wqtfPix455m9my5lxMPb3GHJ6t5rnsDqkYqRSrxbMbr0M9UH4JbTMw/cIDrts3xERg0BGxZi71P+62hg4hfB2g==
+"@mantine/remix@6.0.1":
+  version "6.0.1"
+  resolved "https://registry.yarnpkg.com/@mantine/remix/-/remix-6.0.1.tgz#6dd8d67a3e71034e6bba9d7a96da986d1c6aa9dd"
+  integrity sha512-mv0lPbvMJZkP3FaLPaOrGPPl83SmRWqX+WMNRpNpuQ7rkFBDymqG5UllrtcKNuG4jUuqQU6af+viCYM7KOAJ0g==
   dependencies:
-    "@mantine/ssr" "6.0.0"
-    "@mantine/styles" "6.0.0"
+    "@mantine/ssr" "6.0.1"
+    "@mantine/styles" "6.0.1"
 
-"@mantine/ssr@6.0.0":
-  version "6.0.0"
-  resolved "https://registry.yarnpkg.com/@mantine/ssr/-/ssr-6.0.0.tgz#ceda528faf205083c53adc6533a15a0578f85a03"
-  integrity sha512-/kGRSDWw6YZ23AwsZsLR5O7nQgaWPldc9U1G0NGvHWVB6dbkX8Jb08ByQAvem1Fjq7kxnuConuU5lUKMCiRAHA==
+"@mantine/ssr@6.0.1":
+  version "6.0.1"
+  resolved "https://registry.yarnpkg.com/@mantine/ssr/-/ssr-6.0.1.tgz#8d09d35ec6624476777b2679eed3fc80fce3c06b"
+  integrity sha512-qAQEqkVZ6uirdlZzD4ia3yW7PSxITkLjuqHMgabUbfk383xko3MAcdoUHz9cufpB8w+qJzuqUUR9D7mkJCChzQ==
   dependencies:
-    "@mantine/styles" "6.0.0"
+    "@mantine/styles" "6.0.1"
     html-react-parser "1.4.12"
 
-"@mantine/styles@6.0.0":
-  version "6.0.0"
-  resolved "https://registry.yarnpkg.com/@mantine/styles/-/styles-6.0.0.tgz#71b0b7d9c1885070543206b754cac82cbe763fda"
-  integrity sha512-TyqFvdKIhbhnGYBDEJ9QIPit4NzyzQ3ivDfdzeqzd/cJBxFPhxB0sEFU8RppXpXBUlbhLFhulYFEVl2pP6zaeg==
+"@mantine/styles@6.0.1":
+  version "6.0.1"
+  resolved "https://registry.yarnpkg.com/@mantine/styles/-/styles-6.0.1.tgz#a827f82cf823d0b6715c86419f225740cf1dcc8d"
+  integrity sha512-5hY5Tt0v8GzJ4PSuE9DHlHMmzFi2Vs/l9nVc5feut0vp7GqDvoSMH+gBvsMIIsgGif+nhdztvdpv1aI0YRZgtA==
   dependencies:
     clsx "1.1.1"
     csstype "3.0.9"
 
-"@mantine/utils@6.0.0":
-  version "6.0.0"
-  resolved "https://registry.yarnpkg.com/@mantine/utils/-/utils-6.0.0.tgz#26b6b89e27a77340d571a1c41a879a8344417742"
-  integrity sha512-1AalSgzINKP4uv1DBTkJe/jh6yGwC2xaCQE4Atlr2bSHiLezYFMy/deGQ8XLFFv2AL0sjvewLW4ernlFujGMZg==
+"@mantine/utils@6.0.1":
+  version "6.0.1"
+  resolved "https://registry.yarnpkg.com/@mantine/utils/-/utils-6.0.1.tgz#cf0e42b617dbc3632a3ef29bdf0b5e29f123d6a5"
+  integrity sha512-uEN457ELHpKXS4qNAcL5OR9dFOjeFngWRZJVAPkLafWBJuLd2qmdLvKLgUVyt+cMVFtcjnu6rGVOite1+dtaFw==
 
 "@mapbox/node-pre-gyp@^1.0.10":
   version "1.0.10"
@@ -2700,18 +2700,18 @@
   dependencies:
     defer-to-connect "^2.0.1"
 
-"@tabler/icons-react@2.7.0":
-  version "2.7.0"
-  resolved "https://registry.yarnpkg.com/@tabler/icons-react/-/icons-react-2.7.0.tgz#365e69175dd7432d57ae228ded9f69613649ef27"
-  integrity sha512-WV2ZwMUuZN9QcCX4RPg9+G+ycUgoItzOWVCCQYVWbYKV581fH8szM2KVaQHQhMbttL4JYtOgf4ColJIDwsIgdw==
+"@tabler/icons-react@2.8.0":
+  version "2.8.0"
+  resolved "https://registry.yarnpkg.com/@tabler/icons-react/-/icons-react-2.8.0.tgz#e5d0cde1d72a890e85d460d3b1c512ca025d563c"
+  integrity sha512-8d5nCsgIy6tVfu/mgwOnqgN4kgnLqj232f+VSHv/zie2PKlS6NEhkX5A3qB6/+xQ/y5Y0uiwXzjhzG+iM8whDQ==
   dependencies:
-    "@tabler/icons" "2.7.0"
+    "@tabler/icons" "2.8.0"
     prop-types "^15.7.2"
 
-"@tabler/icons@2.7.0":
-  version "2.7.0"
-  resolved "https://registry.yarnpkg.com/@tabler/icons/-/icons-2.7.0.tgz#565439df8dcbcedd6f75e555c513b3500f12239b"
-  integrity sha512-mSjUKhwN5fJHI9yITqFn9GXGnsJ4gBAyQDWyP4Ev5fk6hD78G7u6cHEF1KARr5FOOdiIKSZWCzNzUzyLhiNPrg==
+"@tabler/icons@2.8.0":
+  version "2.8.0"
+  resolved "https://registry.yarnpkg.com/@tabler/icons/-/icons-2.8.0.tgz#4bdf611de9b8aca0dd8bce65ea79214f5be48b50"
+  integrity sha512-8diABuB3J+NEUtdwIXJF0bJSE5VpnnyzWeiZGFq/XlcTYJNEF+36ijiPNUGpsV/QXY6syesJKmmPkUUwD+LxdA==
 
 "@testing-library/dom@^8.11.1":
   version "8.13.0"
@@ -4176,10 +4176,10 @@ core-util-is@~1.0.0:
   resolved "https://registry.yarnpkg.com/core-util-is/-/core-util-is-1.0.3.tgz#a6042d3634c2b27e9328f837b965fac83808db85"
   integrity sha512-ZQBvi1DcpJ4GDqanjucZ2Hj3wEO5pZDS89BWbkcrvdxksJorwUDDZamX9ldFkp9aw2lmBDLgkObEA4DWNJ9FYQ==
 
-cosmiconfig@8.0.0:
-  version "8.0.0"
-  resolved "https://registry.yarnpkg.com/cosmiconfig/-/cosmiconfig-8.0.0.tgz#e9feae014eab580f858f8a0288f38997a7bebe97"
-  integrity sha512-da1EafcpH6b/TD8vDRaWV7xFINlHlF6zKsGwS1TsuVJTZRkquaS5HTMq7uq6h31619QjbsYl21gVDOm32KM1vQ==
+cosmiconfig@8.1.0:
+  version "8.1.0"
+  resolved "https://registry.yarnpkg.com/cosmiconfig/-/cosmiconfig-8.1.0.tgz#947e174c796483ccf0a48476c24e4fefb7e1aea8"
+  integrity sha512-0tLZ9URlPGU7JsKq0DQOQ3FoRsYX8xDZ7xMiATQfaiGMz7EHowNkbU9u1coAOmnh9p/1ySpm0RB3JNWRXM5GCg==
   dependencies:
     import-fresh "^3.2.1"
     js-yaml "^4.1.0"
@@ -4859,10 +4859,10 @@ escodegen@^1.13.0, escodegen@^1.8.1:
   optionalDependencies:
     source-map "~0.6.1"
 
-eslint-config-prettier@8.6.0:
-  version "8.6.0"
-  resolved "https://registry.yarnpkg.com/eslint-config-prettier/-/eslint-config-prettier-8.6.0.tgz#dec1d29ab728f4fa63061774e1672ac4e363d207"
-  integrity sha512-bAF0eLpLVqP5oEVUFKpMA+NnRFICwn9X8B5jrR9FcqnYBuPbqWEjTEspPWMj5ye6czoSLDweCzSo3Ko7gGrZaA==
+eslint-config-prettier@8.7.0:
+  version "8.7.0"
+  resolved "https://registry.yarnpkg.com/eslint-config-prettier/-/eslint-config-prettier-8.7.0.tgz#f1cc58a8afebc50980bd53475451df146c13182d"
+  integrity sha512-HHVXLSlVUhMSmyW4ZzEuvjpwqamgmlfkutD53cYXLikh4pt/modINRcCIApJ84czDxM4GZInwUrromsDdTImTA==
 
 eslint-import-resolver-node@0.3.6:
   version "0.3.6"
@@ -8619,10 +8619,10 @@ punycode@^2.1.1:
   resolved "https://registry.yarnpkg.com/punycode/-/punycode-2.3.0.tgz#f67fa67c94da8f4d0cfff981aee4118064199b8f"
   integrity sha512-rRV+zQD8tVFys26lAGR9WUuS4iUAngJScM+ZRSKtvl5tKeZ2t5bvdNFdNHBW9FWR4guGHlgmsZ1G7BSm2wTbuA==
 
-puppeteer-core@19.7.2:
-  version "19.7.2"
-  resolved "https://registry.yarnpkg.com/puppeteer-core/-/puppeteer-core-19.7.2.tgz#deee9ef915829b6a1d1a3a008625c29eeb251161"
-  integrity sha512-PvI+fXqgP0uGJxkyZcX51bnzjFA73MODZOAv0fSD35yR7tvbqwtMV3/Y+hxQ0AMMwzxkEebP6c7po/muqxJvmQ==
+puppeteer-core@19.7.3:
+  version "19.7.3"
+  resolved "https://registry.yarnpkg.com/puppeteer-core/-/puppeteer-core-19.7.3.tgz#fc5b7ac3d8e9363265bb96f816cb834991c51beb"
+  integrity sha512-9Q5HahsstfoTnllcpNkxNu2z9J7V0Si5Mr5q90K6XSXwW1P8iqe8q3HzWViVuBuEYTSMZ2LaXXzTEYeoCzLEWg==
   dependencies:
     chromium-bidi "0.4.4"
     cross-fetch "3.1.5"
@@ -8631,21 +8631,20 @@ puppeteer-core@19.7.2:
     extract-zip "2.0.1"
     https-proxy-agent "5.0.1"
     proxy-from-env "1.1.0"
-    rimraf "3.0.2"
     tar-fs "2.1.1"
     unbzip2-stream "1.4.3"
-    ws "8.11.0"
+    ws "8.12.1"
 
-puppeteer@19.7.2:
-  version "19.7.2"
-  resolved "https://registry.yarnpkg.com/puppeteer/-/puppeteer-19.7.2.tgz#1b3ce99a093cc2f8f84dfb06f066d0757ea79d4b"
-  integrity sha512-4Lm7Qpe/LU95Svirei/jDLDvR5oMrl9BPGd7HMY5+Q28n+BhvKuW97gKkR+1LlI86bO8J3g8rG/Ll5kv9J1nlQ==
+puppeteer@19.7.3:
+  version "19.7.3"
+  resolved "https://registry.yarnpkg.com/puppeteer/-/puppeteer-19.7.3.tgz#3cf3af65aaf425d13f18dfb67cbe2c3dae913c4e"
+  integrity sha512-QEiRHPUAJp8VOK27zE6h2ne4xKVYibKUZpvjCuLYaAe8/2SOLKIgstF8wK3YaLgTkeruMrYfqZo+Qlw4ZkJDAQ==
   dependencies:
-    cosmiconfig "8.0.0"
+    cosmiconfig "8.1.0"
     https-proxy-agent "5.0.1"
     progress "2.0.3"
     proxy-from-env "1.1.0"
-    puppeteer-core "19.7.2"
+    puppeteer-core "19.7.3"
 
 qs@6.10.3:
   version "6.10.3"
@@ -9077,17 +9076,17 @@ reusify@^1.0.4:
   resolved "https://registry.yarnpkg.com/reusify/-/reusify-1.0.4.tgz#90da382b1e126efc02146e90845a88db12925d76"
   integrity sha512-U9nH88a3fc/ekCF1l0/UP1IosiuIjyTh7hBvXVMHYgVcfGvt897Xguj2UOLDeI5BG2m7/uwyaLVT6fbtCwTyzw==
 
-rimraf@3.0.2, rimraf@^3.0.0, rimraf@^3.0.2:
-  version "3.0.2"
-  resolved "https://registry.yarnpkg.com/rimraf/-/rimraf-3.0.2.tgz#f1a5402ba6220ad52cc1282bac1ae3aa49fd061a"
-  integrity sha512-JZkJMZkAGFFPP2YqXZXPbMlMBgsxzE8ILs4lMIX/2o0L9UBw9O/Y3o6wFw/i9YLapcUJWwqbi3kdxIPdC62TIA==
-  dependencies:
-    glob "^7.1.3"
-
 rimraf@^2.6.1:
   version "2.7.1"
   resolved "https://registry.yarnpkg.com/rimraf/-/rimraf-2.7.1.tgz#35797f13a7fdadc566142c29d4f07ccad483e3ec"
   integrity sha512-uWjbaKIK3T1OSVptzX7Nl6PvQ3qAGtKEtVRjRuazjfL3Bx5eI409VZSqgND+4UNnmzLVdPj9FqFJNPqBZFve4w==
+  dependencies:
+    glob "^7.1.3"
+
+rimraf@^3.0.0, rimraf@^3.0.2:
+  version "3.0.2"
+  resolved "https://registry.yarnpkg.com/rimraf/-/rimraf-3.0.2.tgz#f1a5402ba6220ad52cc1282bac1ae3aa49fd061a"
+  integrity sha512-JZkJMZkAGFFPP2YqXZXPbMlMBgsxzE8ILs4lMIX/2o0L9UBw9O/Y3o6wFw/i9YLapcUJWwqbi3kdxIPdC62TIA==
   dependencies:
     glob "^7.1.3"
 
@@ -10450,10 +10449,10 @@ wrappy@1:
   resolved "https://registry.yarnpkg.com/wrappy/-/wrappy-1.0.2.tgz#b5243d8f3ec1aa35f1364605bc0d1036e30ab69f"
   integrity sha1-tSQ9jz7BqjXxNkYFvA0QNuMKtp8=
 
-ws@8.11.0:
-  version "8.11.0"
-  resolved "https://registry.yarnpkg.com/ws/-/ws-8.11.0.tgz#6a0d36b8edfd9f96d8b25683db2f8d7de6e8e143"
-  integrity sha512-HPG3wQd9sNQoT9xHyNCXoDUa+Xw/VevmY9FoHyQ+g+rrMn4j6FB4np7Z0OhdTgjx6MgQLK7jwSy1YecU1+4Asg==
+ws@8.12.1:
+  version "8.12.1"
+  resolved "https://registry.yarnpkg.com/ws/-/ws-8.12.1.tgz#c51e583d79140b5e42e39be48c934131942d4a8f"
+  integrity sha512-1qo+M9Ba+xNhPB+YTWUlK6M17brTut5EXbcBaMRN5pH5dFrXz7lzz1ChFSUq3bOUl8yEvSenhHmYUNJxFzdJew==
 
 ws@^7.4.5:
   version "7.5.8"
