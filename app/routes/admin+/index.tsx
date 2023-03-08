@@ -1,11 +1,12 @@
 import type { FC } from 'react'
-import { useMemo, useEffect } from 'react'
+import { useState, useMemo, useEffect } from 'react'
 
 import { Box, Group, Image, Paper, SimpleGrid, Text } from '@mantine/core'
 import { useInterval } from '@mantine/hooks'
 import type { Tenant } from '@prisma/client'
 import { useRevalidator } from '@remix-run/react'
-import { addDays, formatDistanceToNowStrict } from 'date-fns'
+import { addDays, formatDistanceStrict } from 'date-fns'
+import { orderBy } from 'lodash'
 import numeral from 'numeral'
 
 import PageTitle from '~/components/page-title'
@@ -17,8 +18,13 @@ export async function loader() {
   const order = prisma.order.groupBy({
     by: ['tenant'],
     _count: { _all: true },
-    _sum: { total: true },
     _max: { syncedAt: true },
+  })
+
+  const newOrder = prisma.order.groupBy({
+    by: ['tenant'],
+    where: { createdAt: { gte: addDays(new Date(), -1) } },
+    _count: { _all: true },
   })
 
   const customer = prisma.customer.groupBy({
@@ -45,6 +51,7 @@ export async function loader() {
 
   const data = await prisma.$transaction([
     order,
+    newOrder,
     customer,
     account,
     loyaltyPointEvent,
@@ -59,7 +66,7 @@ export type AdminIndexProps = {}
 const fN = (n: number) => numeral(n).format('0,0')
 
 const AdminIndex: FC<AdminIndexProps> = () => {
-  const [order, customer, account, loyaltyPointEvent, newAccounts] =
+  const [order, newOrder, customer, account, loyaltyPointEvent, newAccounts] =
     useSuperLoaderData<typeof loader>()
   const revalidator = useRevalidator()
   const interval = useInterval(() => revalidator.revalidate(), 5000)
@@ -75,14 +82,18 @@ const AdminIndex: FC<AdminIndexProps> = () => {
       {
         title: 'Đơn hàng',
         value: order[0]._count._all,
-        subValue: numeral(order[0]._sum.total ?? 0).format('0.0 a'),
+        subValue: `+${
+          newOrder.find((i) => i.tenant === order[0].tenant)?._count._all ?? 0
+        }`,
         tenant: order[0].tenant,
         time: order[0]._max.syncedAt,
       },
       {
         title: 'Đơn hàng',
         value: order[1]._count._all,
-        subValue: numeral(order[1]._sum.total ?? 0).format('0.0 a'),
+        subValue: `+${
+          newOrder.find((i) => i.tenant === order[1].tenant)?._count._all ?? 0
+        }`,
         tenant: order[1].tenant,
         time: order[1]._max.syncedAt,
       },
@@ -124,6 +135,7 @@ const AdminIndex: FC<AdminIndexProps> = () => {
       customer,
       loyaltyPointEvent,
       newAccounts._count._all,
+      newOrder,
       order,
     ],
   )
@@ -140,7 +152,7 @@ const AdminIndex: FC<AdminIndexProps> = () => {
           { maxWidth: 'xs', cols: 1 },
         ]}
       >
-        {stats.map((stat) => (
+        {orderBy(stats, ['title', 'tenant']).map((stat) => (
           <StatItem key={stat.title + stat.tenant} {...stat} />
         ))}
       </SimpleGrid>
@@ -165,24 +177,35 @@ const StatItem: FC<StatItemProps> = ({
   timePrefix = 'Cập nhật',
   tenant,
 }) => {
+  const [now, setNow] = useState(new Date())
+  const interval = useInterval(() => setNow(new Date()), 1000)
+
+  useEffect(() => {
+    interval.start()
+    return interval.stop
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
+
   return (
     <Paper withBorder p="md" radius="md">
       <Group position="apart" spacing="xs">
         <Text color="dimmed" fw="bold" size="xs" transform="uppercase">
           {title}
         </Text>
-        {tenant && <Image mr="-0.5rem" mt="-0.5rem" src={LOGO_URL[tenant]} width={64} />}
+        {tenant && (
+          <Image mr="-0.5rem" mt="-0.5rem" src={LOGO_URL[tenant]} width={64} />
+        )}
       </Group>
 
       <Box mt="1rem">
-        <Group position="apart">
+        <Group align="baseline" position="apart">
           <Text size="xl">{fN(value)}</Text>
           {subValue && <Text>{subValue}</Text>}
         </Group>
         {time && (
           <Text color="dimmed" size="sm">
             {timePrefix && `${timePrefix} `}
-            {time && formatDistanceToNowStrict(time, { addSuffix: true })}
+            {time && formatDistanceStrict(time, now, { addSuffix: true })}
           </Text>
         )}
       </Box>
