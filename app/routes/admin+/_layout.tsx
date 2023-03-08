@@ -3,7 +3,7 @@ import { useMemo } from 'react'
 
 import { Container } from '@mantine/core'
 import type { Account } from '@prisma/client'
-import type { LoaderArgs } from '@remix-run/node'
+import type { LoaderArgs, V2_MetaFunction } from '@remix-run/node'
 import { redirect } from '@remix-run/node'
 import { Outlet } from '@remix-run/react'
 
@@ -12,6 +12,11 @@ import { ADMIN_ROLES } from '~/config/app-config'
 import { AuthProvider } from '~/contexts/auth-context'
 import { getAuthAccount } from '~/services/session.server'
 import { superjson, useSuperLoaderData } from '~/utils/data'
+import { getTitle } from '~/utils/meta'
+
+export const meta: V2_MetaFunction = () => [
+  { title: getTitle('Administration') },
+]
 
 export async function loader({ request }: LoaderArgs) {
   const account = await getAuthAccount(request)

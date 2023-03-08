@@ -65,7 +65,7 @@ const AdminIndex: FC<AdminIndexProps> = () => {
   const interval = useInterval(() => revalidator.revalidate(), 5000)
 
   useEffect(() => {
-    // interval.start()
+    interval.start()
     return interval.stop
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
