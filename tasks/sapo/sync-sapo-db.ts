@@ -17,17 +17,24 @@ export const syncAllDb = async (tenant: SapoTenant) => {
     const { account } = await sapo.profiles()
     log(`Signed in as [${account.id}] ${account.full_name}`)
 
-    log(`Sync customers`)
-    await sapo.syncCustomers()
+    await Promise.all([
+      sapo.syncCustomers(),
+      sapo.syncProductCategories(),
+      sapo.syncProducts(),
+      sapo.syncOrders()
+    ])
 
-    log('Sync product categories')
-    await sapo.syncProductCategories()
+    // log(`Sync customers`)
+    // await sapo.syncCustomers()
 
-    log('Sync products')
-    await sapo.syncProducts()
+    // log('Sync product categories')
+    // await sapo.syncProductCategories()
 
-    log('Sync orders')
-    await sapo.syncOrders()
+    // log('Sync products')
+    // await sapo.syncProducts()
+
+    // log('Sync orders')
+    // await sapo.syncOrders()
   } catch (error) {
     log('ERROR!', error)
   }
