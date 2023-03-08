@@ -3,6 +3,7 @@
     "appwrite",
     "einvoice",
     "mantine",
+    "revalidator",
     "superjson"
   ]
 }

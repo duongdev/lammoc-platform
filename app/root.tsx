@@ -10,12 +10,16 @@ import {
   ScrollRestoration,
   useCatch,
 } from '@remix-run/react'
+import { setDefaultOptions } from 'date-fns'
+import vi from 'date-fns/locale/vi'
 
 import ErrorHandler from './components/error-handler'
 import NProgress from './components/nprogress'
 import { theme } from './theme'
 import { emotionCache } from './utils/emotion-cache'
 import { getTitle } from './utils/meta'
+
+setDefaultOptions({ locale: vi })
 
 export const meta: V2_MetaFunction = () => [
   {

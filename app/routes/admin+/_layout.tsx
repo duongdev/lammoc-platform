@@ -1,6 +1,7 @@
 import type { FC } from 'react'
 import { useMemo } from 'react'
 
+import { Container } from '@mantine/core'
 import type { Account } from '@prisma/client'
 import type { LoaderArgs } from '@remix-run/node'
 import { redirect } from '@remix-run/node'
@@ -47,7 +48,9 @@ const Admin: FC<AdminProps> = () => {
       roles={data.account.roles}
     >
       <AppBar links={navLinks} />
-      <Outlet />
+      <Container my={40} sx={{ overflow: 'hidden' }}>
+        <Outlet />
+      </Container>
     </AuthProvider>
   )
 }
