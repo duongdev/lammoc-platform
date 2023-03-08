@@ -59,8 +59,12 @@ const LoyaltyMemberCard: FC<LoyaltyMemberCardProps> = ({ member }) => {
         <Card
           h="100%"
           radius="lg"
-          sx={{ backgroundColor: TENANT_COLOR[member.tenant], color: 'black' }}
           w="100%"
+          sx={{
+            backgroundColor: TENANT_COLOR[member.tenant],
+            color: 'black',
+            cursor: 'default',
+          }}
         >
           <Stack h="100%">
             <Group position="apart">
