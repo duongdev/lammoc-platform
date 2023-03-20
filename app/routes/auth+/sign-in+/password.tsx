@@ -78,7 +78,11 @@ export default function AuthSignInPassword() {
         />
         <Group align="center" position="apart">
           <Checkbox label="Ghi nhớ đăng nhập" name="rememberLogin" />
-          <Text component={Link} size="sm" to="/auth/reset-password">
+          <Text
+            component={Link}
+            size="sm"
+            to={`/auth/reset-password?phone=${phone}`}
+          >
             Quên mật khẩu?
           </Text>
         </Group>

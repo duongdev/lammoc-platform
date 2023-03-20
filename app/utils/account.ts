@@ -9,3 +9,7 @@ export const getUserIdFromPhone = (phone: string) => {
 export const getAuthEmailFromPhone = (phone: string) => {
   return `p_${getUserIdFromPhone(phone).replace(/\D/g, '')}@khachhang.lammoc.vn`
 }
+
+export const isPhoneNumberValid = (phone: string) => {
+  return phone.match(/^0\d{9}$/)
+}

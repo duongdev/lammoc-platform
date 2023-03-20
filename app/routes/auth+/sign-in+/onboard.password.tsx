@@ -5,7 +5,7 @@ import type { ActionArgs } from '@remix-run/node'
 import { json } from '@remix-run/node'
 import { useActionData, useNavigation } from '@remix-run/react'
 
-import { PASSWORD_SALT } from '~/config/app-config'
+import { MIN_PASSWORD_LENGTH, PASSWORD_SALT } from '~/config/app-config'
 import {
   CUSTOMER_NOT_FOUND,
   INVALID_PASSWORD_LENGTH,
@@ -34,7 +34,7 @@ export async function action({ request }: ActionArgs) {
     )
   }
 
-  if ((password?.length ?? 0) < 8) {
+  if ((password?.length ?? 0) < MIN_PASSWORD_LENGTH) {
     return json(
       {
         success: false,
@@ -54,10 +54,10 @@ export async function action({ request }: ActionArgs) {
       )
     }
 
+    const normalizedPhone = normalizePhoneNumber(phone)
+
     // Phone number not match
-    if (
-      normalizePhoneNumber(phone) !== normalizePhoneNumber(decoded.phone_number)
-    ) {
+    if (normalizedPhone !== normalizePhoneNumber(decoded.phone_number)) {
       return json(
         { success: false, errorMessage: UNABLE_TO_SET_PASSWORD },
         { status: 400 },
@@ -65,7 +65,6 @@ export async function action({ request }: ActionArgs) {
     }
 
     const hashedPassword = hashSync(password, PASSWORD_SALT)
-    const normalizedPhone = normalizePhoneNumber(phone)
 
     const customer = await prisma.customer.findFirst({
       where: { phone: { has: normalizedPhone } },

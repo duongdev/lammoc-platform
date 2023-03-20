@@ -19,7 +19,7 @@ import {
 
 import { firebaseClient } from '~/libs/firebase.client'
 import prisma from '~/libs/prisma.server'
-import { normalizePhoneNumber } from '~/utils/account'
+import { isPhoneNumberValid, normalizePhoneNumber } from '~/utils/account'
 import { getFormData } from '~/utils/forms'
 import { getTitle } from '~/utils/meta'
 
@@ -34,7 +34,7 @@ export async function action({ request }: ActionArgs) {
   let { phone } = await getFormData<{ phone: string }>(request)
 
   // validate
-  if (!phone.match(/^0\d{9}$/)) {
+  if (!isPhoneNumberValid(phone)) {
     return json(
       {
         success: false,
@@ -49,6 +49,7 @@ export async function action({ request }: ActionArgs) {
 
   const accountByPhone = await prisma.account.findFirst({ where: { phone } })
 
+  // Redirect to login if the user has set password
   if (
     accountByPhone &&
     accountByPhone.password &&

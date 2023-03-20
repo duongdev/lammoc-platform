@@ -1,6 +1,7 @@
 import type { AccountRole, Tenant } from '@prisma/client'
 
 export const APP_NAME = 'Store Thích Tự Làm Mộc'
+export const MIN_PASSWORD_LENGTH = 8
 export const PASSWORD_SALT = 10
 export const JWT_EXPIRES_IN = '7d'
 export const ADMIN_ROLES: AccountRole[] = ['ADMIN', 'DEVELOPER', 'STAFF']
