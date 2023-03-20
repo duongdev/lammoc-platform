@@ -3,13 +3,16 @@ import {
   Box,
   Button,
   Checkbox,
+  Group,
   PasswordInput,
   Stack,
+  Text,
 } from '@mantine/core'
 import type { ActionArgs, LoaderFunction } from '@remix-run/node'
 import { json, redirect } from '@remix-run/node'
 import {
   Form,
+  Link,
   useActionData,
   useNavigation,
   useSearchParams,
@@ -73,7 +76,12 @@ export default function AuthSignInPassword() {
           name="password"
           placeholder="••••••••"
         />
-        <Checkbox label="Ghi nhớ đăng nhập" name="rememberLogin" />
+        <Group align="center" position="apart">
+          <Checkbox label="Ghi nhớ đăng nhập" name="rememberLogin" />
+          <Text component={Link} size="sm" to="/auth/reset-password">
+            Quên mật khẩu?
+          </Text>
+        </Group>
         {actionData?.errorMessage && (
           <Alert color="red">{actionData.errorMessage}</Alert>
         )}
