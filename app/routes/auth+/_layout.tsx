@@ -1,11 +1,6 @@
-import { Box, Container, Group, Image, Stack, Text, Title } from '@mantine/core'
+import { Container, Image, Group, Stack } from '@mantine/core'
 import { Outlet } from '@remix-run/react'
-import type { V2_MetaFunction } from '@remix-run/react/dist/routeModules'
 import { IconX } from '@tabler/icons-react'
-
-import { getTitle } from '~/utils/meta'
-
-export const meta: V2_MetaFunction = () => [{ title: getTitle('Đăng nhập') }]
 
 export default function AuthLayout() {
   return (
@@ -35,12 +30,6 @@ export default function AuthLayout() {
             <Image height={32} src="/img/ttl-logo.png" width="auto" />
           </a>
         </Group>
-        <Box>
-          <Title>Đăng nhập</Title>
-          <Text color="dimmed">
-            Kết nối tài khoản Store Làm Mộc và Thích Tự Làm
-          </Text>
-        </Box>
         <Outlet />
       </Stack>
     </Container>

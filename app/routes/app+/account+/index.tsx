@@ -3,7 +3,7 @@ import { useMemo } from 'react'
 
 import { Group, Stack } from '@mantine/core'
 import type { LoaderArgs, V2_MetaFunction } from '@remix-run/node'
-import { IconAward, IconShoppingCart } from '@tabler/icons-react'
+import { IconShoppingCart } from '@tabler/icons-react'
 import { flatten, get } from 'lodash'
 
 import AppMenu from '~/components/nav/app-menu'
@@ -64,14 +64,18 @@ const AccountIndex: FC<AccountIndexProps> = () => {
 
   return (
     <Stack>
-      <Group position='apart' pt={2}>
+      <Group position="apart" pt={2}>
         <PageTitle>Chào, {account.name}</PageTitle>
         <AppMenu
-        items={[
-          { label: 'Đơn hàng', icon: IconShoppingCart, to: '/app/orders' },
-          { label: 'Tích điểm', icon: IconAward, to: '/app/loyalty' },
-        ]}
-      />
+          items={[
+            { label: 'Đơn hàng', icon: IconShoppingCart, to: '/app/orders' },
+            // {
+            //   label: 'Tích điểm',
+            //   icon: IconAward,
+            //   to: '/app/account/loyalty',
+            // },
+          ]}
+        />
       </Group>
 
       <LoyaltyMembers members={loyaltyMembers} />

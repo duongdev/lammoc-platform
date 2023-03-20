@@ -24,7 +24,6 @@ import type {
   SapoOrderItem,
   SapoProductCategory,
   SapoProductItem,
-  SapoTenant,
 } from './sapo.type'
 import type { PaginationInput } from './sapo.util'
 import { gotExtendOptions, getPaginationOptions } from './sapo.util'
