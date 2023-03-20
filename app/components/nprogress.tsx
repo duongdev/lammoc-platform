@@ -6,11 +6,11 @@ import {
   NavigationProgress,
   startNavigationProgress,
 } from '@mantine/nprogress'
-import { useTransition } from '@remix-run/react'
+import { useNavigation } from '@remix-run/react'
 export type NProgressProps = {}
 
 const NProgress: FC<NProgressProps> = () => {
-  const { state } = useTransition()
+  const { state } = useNavigation()
   const loadingRef = useRef(false)
 
   useEffect(() => {

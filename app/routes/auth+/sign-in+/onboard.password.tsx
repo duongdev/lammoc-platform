@@ -3,7 +3,7 @@ import { useEffect, useRef } from 'react'
 import { Alert, Button, Group, PasswordInput } from '@mantine/core'
 import type { ActionArgs } from '@remix-run/node'
 import { json } from '@remix-run/node'
-import { useActionData, useTransition } from '@remix-run/react'
+import { useActionData, useNavigation } from '@remix-run/react'
 
 import { PASSWORD_SALT } from '~/config/app-config'
 import {
@@ -118,10 +118,10 @@ export async function action({ request }: ActionArgs) {
 
 export default function AuthSignInOnboardPassword() {
   const { errorMessage } = useActionData<typeof action>() ?? {}
-  const transition = useTransition()
+  const transition = useNavigation()
   const passwordRef = useRef<HTMLInputElement>(null)
 
-  const isLoading = transition.type !== 'idle'
+  const isLoading = transition.state !== 'idle'
 
   useEffect(() => {
     if (errorMessage) {

@@ -11,8 +11,8 @@ import { json, redirect } from '@remix-run/node'
 import {
   Form,
   useActionData,
+  useNavigation,
   useSearchParams,
-  useTransition,
 } from '@remix-run/react'
 
 import LockedAuthPhoneInput from '~/components/locked-auth-phone'
@@ -54,7 +54,7 @@ export async function action({ request }: ActionArgs) {
 
 export default function AuthSignInPassword() {
   const actionData = useActionData()
-  const { state } = useTransition()
+  const { state } = useNavigation()
   const [searchParams] = useSearchParams()
 
   const phone = searchParams.get('phone')!

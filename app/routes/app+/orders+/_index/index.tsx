@@ -16,7 +16,7 @@ import {
 } from '@mantine/core'
 import { Tenant } from '@prisma/client'
 import type { LoaderArgs, V2_MetaFunction } from '@remix-run/node'
-import { Form, useSearchParams, useTransition } from '@remix-run/react'
+import { Form, useNavigation, useSearchParams } from '@remix-run/react'
 import { IconSearch } from '@tabler/icons-react'
 
 import EmptyState from '~/components/empty-state'
@@ -70,10 +70,10 @@ const OrdersIndex: FC<OrdersIndexProps> = () => {
   const [params, setParams] = useSearchParams()
   const { orders, totalPages, page, totalCount, totalExpense } =
     useSuperLoaderData<typeof loader>()
-  const transition = useTransition()
+  const navigation = useNavigation()
   const isMobile = useIsMobile()
 
-  const fetching = transition.state !== 'idle'
+  const fetching = navigation.state !== 'idle'
 
   const status = params.get('status') ?? 'all'
   const tenant = params.get('tenant') ?? 'all'

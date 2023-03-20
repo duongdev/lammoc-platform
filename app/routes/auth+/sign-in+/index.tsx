@@ -8,7 +8,7 @@ import {
   Form,
   useActionData,
   useNavigate,
-  useTransition,
+  useNavigation,
 } from '@remix-run/react'
 import type { Auth } from 'firebase/auth'
 import {
@@ -81,7 +81,7 @@ export async function action({ request }: ActionArgs) {
 
 export default function SignIn() {
   const navigate = useNavigate()
-  const transition = useTransition()
+  const navigation = useNavigation()
   const actionData = useActionData<typeof action>()
   const recaptchaVerifierRef = useRef<RecaptchaVerifier>()
   const authRef = useRef<Auth>()
@@ -95,8 +95,8 @@ export default function SignIn() {
   const phoneRef = useRef<HTMLInputElement>(null)
 
   const isSubmitting = useMemo(
-    () => transition.type !== 'idle' || isAuthenticating,
-    [isAuthenticating, transition.type],
+    () => navigation.state !== 'idle' || isAuthenticating,
+    [isAuthenticating, navigation.state],
   )
 
   const handlePhoneChange = useCallback(
