@@ -60,29 +60,31 @@ export const UpdateAccountRoles: FC<UpdateAccountRolesProps> = ({
       method="post"
       onSubmit={handleSubmit}
     >
-      <Fieldset disabled={fetcher.state !== 'idle'}>
-        <Checkbox.Group defaultValue={roles} onChange={setRolesValue as any}>
-          <Stack>
-            {Object.values(AccountRole).map((role) => (
-              <Checkbox
-                key={role}
-                label={capitalize(role)}
-                name="roles"
-                value={role}
-              />
-            ))}
+      <Checkbox.Group defaultValue={roles} onChange={setRolesValue as any}>
+        <Stack>
+          <Fieldset disabled={fetcher.state !== 'idle'}>
+            <Stack>
+              {Object.values(AccountRole).map((role) => (
+                <Checkbox
+                  key={role}
+                  label={capitalize(role)}
+                  name="roles"
+                  value={role}
+                />
+              ))}
+            </Stack>
+          </Fieldset>
+          {data?.message && <Alert color="red">{data.message}</Alert>}
 
-            {data?.message && <Alert color="red">{data.message}</Alert>}
-
-            <Button
-              disabled={isEqual(roles, rolesValue) || isEmpty(rolesValue)}
-              type="submit"
-            >
-              Cập nhật
-            </Button>
-          </Stack>
-        </Checkbox.Group>
-      </Fieldset>
+          <Button
+            disabled={isEqual(roles, rolesValue) || isEmpty(rolesValue)}
+            loading={fetcher.state !== 'idle'}
+            type="submit"
+          >
+            Cập nhật
+          </Button>
+        </Stack>
+      </Checkbox.Group>
     </Form>
   )
 }

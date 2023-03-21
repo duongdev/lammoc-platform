@@ -295,8 +295,8 @@ const PaymentDetails: FC<{ order: Order; fulfillment?: Fulfillment }> = ({
         {(paymentStatus && PAYMENT_STATUS[paymentStatus]) ?? 'Chưa xác định'}
       </Text>
 
-      <MediaQuery smallerThan="xs" styles={{ display: 'none' }}>
-        {paymentStatus === 'unpaid' && (
+      {paymentStatus === 'unpaid' && (
+        <MediaQuery smallerThan="xs" styles={{ display: 'none' }}>
           <Box>
             <PaymentInfoButton
               compact
@@ -309,8 +309,8 @@ const PaymentDetails: FC<{ order: Order; fulfillment?: Fulfillment }> = ({
               }}
             />
           </Box>
-        )}
-      </MediaQuery>
+        </MediaQuery>
+      )}
     </Stack>
   )
 }

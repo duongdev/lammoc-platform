@@ -48,7 +48,7 @@ export async function loader({ request }: LoaderArgs) {
 
   if (searchText) {
     where.OR = [
-      { name: normalizeSearchText(searchText) },
+      { name: { search: normalizeSearchText(searchText) } },
       { phone: normalizePhoneNumber(searchText) },
     ]
   }
