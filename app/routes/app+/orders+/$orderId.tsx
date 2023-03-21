@@ -19,7 +19,12 @@ import type { OrderLineItem, Product, ProductVariant } from '@prisma/client'
 import type { LoaderArgs, V2_MetaFunction } from '@remix-run/node'
 import { Response } from '@remix-run/node'
 import { Link } from '@remix-run/react'
-import { IconChevronRight, IconHome, IconX } from '@tabler/icons-react'
+import {
+  IconChevronRight,
+  IconHome,
+  IconWallet,
+  IconX,
+} from '@tabler/icons-react'
 import { format } from 'date-fns'
 import { first, orderBy } from 'lodash'
 
@@ -153,8 +158,8 @@ const OrderView: FC<OrderViewProps> = () => {
             <PageTitle>Đơn hàng {order.code}</PageTitle>
             {paymentStatus === 'unpaid' && (
               <PaymentInfoButton
-                color="teal"
-                variant="outline"
+                color="orange"
+                leftIcon={<IconWallet />}
                 order={{
                   amount: order.total,
                   tenant: order.tenant,
@@ -289,20 +294,23 @@ const PaymentDetails: FC<{ order: Order; fulfillment?: Fulfillment }> = ({
       <Text>
         {(paymentStatus && PAYMENT_STATUS[paymentStatus]) ?? 'Chưa xác định'}
       </Text>
-      {paymentStatus === 'unpaid' && (
-        <Box>
-          <PaymentInfoButton
-            compact
-            color="teal"
-            variant="outline"
-            order={{
-              amount: order.total,
-              orderCode: order.code,
-              tenant: order.tenant,
-            }}
-          />
-        </Box>
-      )}
+
+      <MediaQuery smallerThan="xs" styles={{ display: 'none' }}>
+        {paymentStatus === 'unpaid' && (
+          <Box>
+            <PaymentInfoButton
+              compact
+              color="orange"
+              variant="outline"
+              order={{
+                amount: order.total,
+                orderCode: order.code,
+                tenant: order.tenant,
+              }}
+            />
+          </Box>
+        )}
+      </MediaQuery>
     </Stack>
   )
 }
