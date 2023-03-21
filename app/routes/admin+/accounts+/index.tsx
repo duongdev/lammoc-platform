@@ -3,8 +3,10 @@ import type { FC } from 'react'
 import {
   ActionIcon,
   Badge,
+  Center,
   Group,
   Menu,
+  Pagination,
   Table,
   Text,
   TextInput,
@@ -33,11 +35,13 @@ import { superjson, useSuperLoaderData } from '~/utils/data'
 import { getTitle } from '~/utils/meta'
 import type { ArrayElement } from '~/utils/types'
 
+const PER_PAGE = 20
+
 export const meta: V2_MetaFunction = () => [{ title: getTitle('Tài khoản') }]
 
 export async function loader({ request }: LoaderArgs) {
   const searchParams = getSearchParams(request)
-
+  const page = +(searchParams.get('page') ?? 1)
   const searchText = searchParams.get('search')
 
   const where: Prisma.AccountWhereInput = {}
@@ -49,16 +53,22 @@ export async function loader({ request }: LoaderArgs) {
     ]
   }
 
-  const accounts = await prisma.account.findMany({
-    where,
-    orderBy: {
-      customer: { orders: { _count: 'desc' } },
-    },
-    include: {
-      customer: { include: { orders: { include: { _count: true } } } },
-    },
-  })
-  return superjson({ accounts })
+  const [accounts, totalCount] = await prisma.$transaction([
+    prisma.account.findMany({
+      where,
+      orderBy: {
+        customer: { orders: { _count: 'desc' } },
+      },
+      include: {
+        customer: { include: { orders: { include: { _count: true } } } },
+      },
+      take: PER_PAGE,
+      skip: (page - 1) * PER_PAGE,
+    }),
+    prisma.account.count({ where }),
+  ])
+
+  return superjson({ accounts, totalCount })
 }
 
 export type AccountsProps = {}
@@ -68,15 +78,16 @@ type AccountItem = ArrayElement<
 >
 
 const Accounts: FC<AccountsProps> = () => {
-  const { accounts } = useSuperLoaderData<typeof loader>()
-  const [searchParams] = useSearchParams()
+  const { accounts, totalCount } = useSuperLoaderData<typeof loader>()
+  const [searchParams, setSearchParams] = useSearchParams()
 
   const searchText = searchParams.get('search') ?? ''
+  const page = +(searchParams.get('page') ?? 1)
 
   return (
     <>
       <Group position="apart">
-        <PageTitle count={accounts.length}>Tài khoản</PageTitle>
+        <PageTitle count={totalCount}>Tài khoản</PageTitle>
         <Form method="get">
           <TextInput
             defaultValue={searchText}
@@ -86,7 +97,7 @@ const Accounts: FC<AccountsProps> = () => {
           />
         </Form>
       </Group>
-      <Table mt="sm">
+      <Table striped mt="sm">
         <thead>
           <tr>
             <th>Khách hàng</th>
@@ -104,6 +115,17 @@ const Accounts: FC<AccountsProps> = () => {
           ))}
         </tbody>
       </Table>
+      <Center>
+        <Pagination
+          mt="lg"
+          total={Math.ceil(totalCount / PER_PAGE)}
+          value={page}
+          onChange={(page) => {
+            searchParams.set('page', page.toString())
+            setSearchParams(searchParams)
+          }}
+        />
+      </Center>
     </>
   )
 }
@@ -132,7 +154,9 @@ const Account: FC<{ account: AccountItem }> = ({ account }) => {
       <td>
         <Group spacing="xs">
           {account.roles.map((role) => (
-            <Badge color="blue" key={role}>{role}</Badge>
+            <Badge color="blue" key={role}>
+              {role}
+            </Badge>
           ))}
         </Group>
       </td>

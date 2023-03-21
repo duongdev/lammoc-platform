@@ -7,7 +7,6 @@ import {
   Form,
   useFetcher,
   useLoaderData,
-  useNavigate,
   useSearchParams,
 } from '@remix-run/react'
 import { IconSearch } from '@tabler/icons-react'
@@ -47,7 +46,7 @@ export const loader = async ({ request }: LoaderArgs) => {
     skip: (page - 1) * PER_PAGE,
   })
 
-  const totalCount = await prisma.customer.count()
+  const totalCount = await prisma.customer.count({ where })
 
   return { customers, totalCount }
 }
@@ -76,9 +75,8 @@ export type CustomerListProps = {}
 const CustomerList: FC<CustomerListProps> = () => {
   const { customers, totalCount } = useLoaderData<typeof loader>()
   const fetcher = useFetcher()
-  const [search] = useSearchParams()
-  const navigate = useNavigate()
-  const page = +(search.get('page') ?? 1)
+  const [searchParams, setSearchParams] = useSearchParams()
+  const page = +(searchParams.get('page') ?? 1)
 
   const handleSignInAsCustomer = (customerId: string) => {
     return fetcher.submit({ customerId }, { method: 'post' })
@@ -90,7 +88,7 @@ const CustomerList: FC<CustomerListProps> = () => {
         <PageTitle count={totalCount}>Khách hàng</PageTitle>
         <Form method="get">
           <TextInput
-            defaultValue={search.get('search') ?? ''}
+            defaultValue={searchParams.get('search') ?? ''}
             icon={<IconSearch size="1rem" />}
             name="search"
             placeholder="Tìm khách hàng..."
@@ -113,10 +111,13 @@ const CustomerList: FC<CustomerListProps> = () => {
       </Stack>
 
       <Pagination
-        mt={32}
-        onChange={(page) => navigate({ search: `page=${page}` })}
+        mt="lg"
         total={totalCount / PER_PAGE}
         value={page}
+        onChange={(page) => {
+          searchParams.set('page', page.toString())
+          setSearchParams(searchParams)
+        }}
       />
     </>
   )
