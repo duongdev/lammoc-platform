@@ -47,13 +47,13 @@ export const TENANT_BANK: Record<
   }
 > = {
   STORE_LAM_MOC: {
-    bankName: 'Vietcombank (VCB)',
+    bankName: 'Ngoại thương Việt Nam (VCB)',
     brandName: 'Hùng Vương (HCM)',
     accountName: 'Công ty TNHH Store Làm Mộc',
     accountNumber: '0421000539383',
   },
   THICH_TU_LAM: {
-    bankName: 'Vietcombank (VCB)',
+    bankName: 'Ngoại thương Việt Nam (VCB)',
     brandName: 'Hùng Vương (HCM)',
     accountName: 'Công ty Cổ Phần Thích Tự Làm',
     accountNumber: '0421000547910',
