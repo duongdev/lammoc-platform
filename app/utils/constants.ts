@@ -34,3 +34,28 @@ export const PAYMENT_STATUS: Record<string, string> = {
   unpaid: 'Chưa thanh toán',
   paid: 'Đã thanh toán',
 }
+
+export const PAYMENT_INFO_BUTTON_DEFAULT_LABEL = 'Thanh toán ngay'
+
+export const TENANT_BANK: Record<
+  Tenant,
+  {
+    bankName: string
+    brandName: string
+    accountNumber: string
+    accountName: string
+  }
+> = {
+  STORE_LAM_MOC: {
+    bankName: 'Vietcombank (VCB)',
+    brandName: 'Hùng Vương (HCM)',
+    accountName: 'Công ty TNHH Store Làm Mộc',
+    accountNumber: '0421000539383',
+  },
+  THICH_TU_LAM: {
+    bankName: 'Vietcombank (VCB)',
+    brandName: 'Hùng Vương (HCM)',
+    accountName: 'Công ty Cổ Phần Thích Tự Làm',
+    accountNumber: '0421000547910',
+  },
+}

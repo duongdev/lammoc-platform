@@ -24,6 +24,7 @@ import { format } from 'date-fns'
 import { first, orderBy } from 'lodash'
 
 import PageTitle from '~/components/page-title'
+import { PaymentInfoButton } from '~/components/payment-info'
 import prisma from '~/libs/prisma.server'
 import { getAuthSession } from '~/services/session.server'
 import {
@@ -138,6 +139,7 @@ const OrderView: FC<OrderViewProps> = () => {
       'desc',
     ),
   )
+  const paymentStatus = order.paymentStatus || fulfillment?.paymentStatus
 
   return (
     <>
@@ -147,7 +149,20 @@ const OrderView: FC<OrderViewProps> = () => {
             {breadcrumbs}
           </Breadcrumbs>
 
-          <PageTitle>Đơn hàng {order.code}</PageTitle>
+          <Group position="apart">
+            <PageTitle>Đơn hàng {order.code}</PageTitle>
+            {paymentStatus === 'unpaid' && (
+              <PaymentInfoButton
+                color="teal"
+                variant="outline"
+                order={{
+                  amount: order.total,
+                  tenant: order.tenant,
+                  orderCode: order.code,
+                }}
+              />
+            )}
+          </Group>
         </Box>
 
         <Group color="dimmed" spacing="xs">
@@ -274,6 +289,20 @@ const PaymentDetails: FC<{ order: Order; fulfillment?: Fulfillment }> = ({
       <Text>
         {(paymentStatus && PAYMENT_STATUS[paymentStatus]) ?? 'Chưa xác định'}
       </Text>
+      {paymentStatus === 'unpaid' && (
+        <Box>
+          <PaymentInfoButton
+            compact
+            color="teal"
+            variant="outline"
+            order={{
+              amount: order.total,
+              orderCode: order.code,
+              tenant: order.tenant,
+            }}
+          />
+        </Box>
+      )}
     </Stack>
   )
 }
