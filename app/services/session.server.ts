@@ -42,7 +42,9 @@ export const createAuthSession = async ({
   const session = await storage.getSession()
   session.set(ACCOUNT_ID, accountId)
 
-  const account = await prisma.account.findUnique({ where: { id: accountId } })
+  const account = await prisma.account.findUnique({
+    where: { id: accountId },
+  })
 
   if (!account) {
     return json({ errorMessage: INVALID_AUTH_CREDENTIALS })
@@ -108,7 +110,12 @@ export const getAuthAccount = async (request: Request) => {
     return null
   }
 
-  const account = await prisma.account.findUnique({ where: { id: accountId } })
+  const account = await prisma.account.update({
+    where: { id: accountId },
+    data: {
+      lastLoggedIn: new Date(),
+    },
+  })
 
   return account
 }

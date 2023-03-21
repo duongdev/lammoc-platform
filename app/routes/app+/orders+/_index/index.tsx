@@ -20,7 +20,7 @@ import { Form, useNavigation, useSearchParams } from '@remix-run/react'
 import { IconSearch } from '@tabler/icons-react'
 
 import EmptyState from '~/components/empty-state'
-import OrderItem from '~/components/order-item'
+import OrderItem from '~/components/orders/order-item'
 import PageTitle from '~/components/page-title'
 import { getCustomerOrders } from '~/services/order.server'
 import { getAuthSession } from '~/services/session.server'

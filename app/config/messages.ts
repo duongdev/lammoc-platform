@@ -10,3 +10,5 @@ export const INVALID_AUTH_CREDENTIALS = 'Thông tin đăng nhập không đúng.
 export const RATE_LIMIT_EXCEEDED =
   'Quá nhiều yêu cầu trong thời gian ngắn. Vui lòng thử lại sau.'
 export const CUSTOMER_NOT_FOUND = 'Không thể tìm thấy thông tin khách hàng'
+export const ACCOUNT_NOT_FOUND = 'Không tìm thấy tài khoản'
+export const FORBIDDEN = 'Mày không có quyền!'

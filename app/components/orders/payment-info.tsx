@@ -22,7 +22,7 @@ import {
 } from '~/utils/constants'
 import { fVND } from '~/utils/format'
 
-import TextInputCopy from './text-input-copy'
+import TextInputCopy from '../text-input-copy'
 
 export type OrderInfo = {
   tenant: Tenant

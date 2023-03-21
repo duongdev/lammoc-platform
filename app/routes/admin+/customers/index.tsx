@@ -1,13 +1,7 @@
 import type { FC } from 'react'
 
-import {
-  Box,
-  Container,
-  Pagination,
-  Stack,
-  TextInput,
-  Title,
-} from '@mantine/core'
+import { Box, Group, Pagination, Stack, TextInput } from '@mantine/core'
+import type { Prisma } from '@prisma/client'
 import type { ActionArgs, LoaderArgs } from '@remix-run/node'
 import {
   Form,
@@ -16,11 +10,13 @@ import {
   useNavigate,
   useSearchParams,
 } from '@remix-run/react'
+import { IconSearch } from '@tabler/icons-react'
 
+import PageTitle from '~/components/page-title'
 import prisma from '~/libs/prisma.server'
 import { createAuthSession, getAuthSession } from '~/services/session.server'
 import { normalizePhoneNumber } from '~/utils/account'
-import { getSearchParams } from '~/utils/common'
+import { getSearchParams, normalizeSearchText } from '~/utils/common'
 
 const PER_PAGE = 20
 
@@ -30,11 +26,21 @@ export const loader = async ({ request }: LoaderArgs) => {
   const search = searchParams.get('search')
   const status = searchParams.get('status')
 
+  const where: Prisma.CustomerWhereInput = {
+    orders: status ? { some: { status } } : undefined,
+  }
+
+  if (search) {
+    where.OR = [
+      { phone: search ? { has: normalizePhoneNumber(search) } : undefined },
+      {
+        name: search ? { search: normalizeSearchText(search) } : undefined,
+      },
+    ]
+  }
+
   const customers = await prisma.customer.findMany({
-    where: {
-      phone: search ? { has: normalizePhoneNumber(search) } : undefined,
-      orders: status ? { some: { status } } : undefined,
-    },
+    where,
     orderBy: { orders: { _count: 'desc' } },
     include: { _count: true },
     take: PER_PAGE,
@@ -79,13 +85,20 @@ const CustomerList: FC<CustomerListProps> = () => {
   }
 
   return (
-    <Container sx={{ marginTop: 40, marginBottom: 40 }}>
-      <Title mb={40}>Khách hàng ({totalCount})</Title>
-
-      <Stack spacing={16}>
+    <>
+      <Group position="apart">
+        <PageTitle count={totalCount}>Khách hàng</PageTitle>
         <Form method="get">
-          <TextInput name="search" placeholder="Search SĐT" />
+          <TextInput
+            defaultValue={search.get('search') ?? ''}
+            icon={<IconSearch size="1rem" />}
+            name="search"
+            placeholder="Tìm khách hàng..."
+          />
         </Form>
+      </Group>
+
+      <Stack mt="lg" spacing={16}>
         {customers.map((customer) => (
           <Box
             key={customer.id}
@@ -105,7 +118,7 @@ const CustomerList: FC<CustomerListProps> = () => {
         total={totalCount / PER_PAGE}
         value={page}
       />
-    </Container>
+    </>
   )
 }
 

@@ -13,3 +13,6 @@ export const removeVietnameseTones = (text: string): string => {
     .replace(/đ/g, 'd')
     .replace(/Đ/g, 'D')
 }
+
+export const normalizeSearchText = (text: string): string =>
+  removeVietnameseTones(text.replace(/\s+/g, ' ').trim()).replace(/\s/, '&')

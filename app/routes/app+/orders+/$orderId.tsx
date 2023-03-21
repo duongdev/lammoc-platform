@@ -28,8 +28,8 @@ import {
 import { format } from 'date-fns'
 import { first, orderBy } from 'lodash'
 
+import { PaymentInfoButton } from '~/components/orders/payment-info'
 import PageTitle from '~/components/page-title'
-import { PaymentInfoButton } from '~/components/payment-info'
 import prisma from '~/libs/prisma.server'
 import { getAuthSession } from '~/services/session.server'
 import {
@@ -158,8 +158,8 @@ const OrderView: FC<OrderViewProps> = () => {
             <PageTitle>Đơn hàng {order.code}</PageTitle>
             {paymentStatus === 'unpaid' && (
               <PaymentInfoButton
-                color="orange"
                 leftIcon={<IconWallet />}
+                variant="gradient"
                 order={{
                   amount: order.total,
                   tenant: order.tenant,
@@ -300,7 +300,7 @@ const PaymentDetails: FC<{ order: Order; fulfillment?: Fulfillment }> = ({
           <Box>
             <PaymentInfoButton
               compact
-              color="orange"
+              color="blue"
               variant="outline"
               order={{
                 amount: order.total,

@@ -7,7 +7,7 @@ import { Outlet, useCatch } from '@remix-run/react'
 
 import ErrorHandler from '~/components/error-handler'
 import AppBar from '~/components/nav/app-bar'
-import { APP_NAME } from '~/config/app-config'
+import { ADMIN_ROLES, APP_NAME } from '~/config/app-config'
 import { AuthProvider } from '~/contexts/auth-context'
 import { getAuthAccount, getAuthSession } from '~/services/session.server'
 import { superjson, useSuperLoaderData } from '~/utils/data'
@@ -36,7 +36,7 @@ export default function App() {
       { label: 'Đơn hàng', link: '/app/orders' },
     ]
 
-    if (data.account.roles.includes('DEVELOPER')) {
+    if (data.account.roles.some((role) => ADMIN_ROLES.includes(role))) {
       links.push({ label: 'Admin', link: '/admin' })
     }
 

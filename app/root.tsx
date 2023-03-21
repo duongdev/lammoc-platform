@@ -1,4 +1,5 @@
 import { Container, MantineProvider } from '@mantine/core'
+import { Notifications } from '@mantine/notifications'
 import { StylesPlaceholder } from '@mantine/remix'
 import type { LinksFunction, V2_MetaFunction } from '@remix-run/node'
 import {
@@ -64,6 +65,7 @@ export default function App() {
         </head>
         <body>
           <Outlet />
+          <Notifications />
           <ScrollRestoration />
           <Scripts />
           <LiveReload />
