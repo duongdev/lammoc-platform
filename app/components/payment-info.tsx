@@ -1,8 +1,7 @@
 import type { FC } from 'react'
 import { useMemo } from 'react'
 
-import type {
-  ButtonProps} from '@mantine/core';
+import type { ButtonProps } from '@mantine/core'
 import {
   Button,
   Group,
@@ -57,8 +56,8 @@ export const PaymentInfoModal: FC<PaymentInfoModalProps> = ({
     <Modal
       onClose={onClose}
       opened={opened}
-      size="auto"
-      styles={{ body: { padding: '1rem 0' } }}
+      size="xl"
+      styles={{ body: { padding: '1rem 0' }, root: { width: '100%' } }}
       title={<Title order={4}>Thông tin thanh toán</Title>}
       withCloseButton={false}
     >
@@ -106,7 +105,11 @@ export const PaymentInfoModal: FC<PaymentInfoModalProps> = ({
         </Tabs.Panel>
       </Tabs>
       <Group mt="sm" position="right" px="1rem">
-        <Button leftIcon={<IconX size="1rem" />} onClick={onClose} variant="default">
+        <Button
+          leftIcon={<IconX size="1rem" />}
+          onClick={onClose}
+          variant="default"
+        >
           Đóng
         </Button>
         {/* <Button>Đã thanh toán</Button> */}
@@ -129,7 +132,9 @@ export const PaymentInfoButton: FC<PaymentInfoButtonProps> = ({
 
   return (
     <>
-      <Button onClick={open} {...buttonProps}>{label}</Button>
+      <Button onClick={open} {...buttonProps}>
+        {label}
+      </Button>
       <PaymentInfoModal onClose={close} opened={opened} order={order} />
     </>
   )
