@@ -1,4 +1,5 @@
 git fetch -p && git checkout main && git reset --hard origin/main && git fetch -p && for branch in $(git branch -vv | grep ': gone]' | awk '{print $1}'); do git branch -D $branch; done && yarn
 yarn prisma migrate deploy &
 yarn build
-pm2 reload ecosystem.config.js
+pm2 delete all
+pm2 start ecosystem.config.js
