@@ -153,7 +153,7 @@ export default function ResetPassword() {
   useEffect(() => {
     setTimeout(() => {
       authRef.current = getAuth(firebaseClient)
-      authRef.current.useDeviceLanguage()
+      authRef.current.languageCode = 'vi'
 
       recaptchaVerifierRef.current = new RecaptchaVerifier(
         'submit-button',

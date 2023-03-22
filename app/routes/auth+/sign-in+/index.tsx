@@ -155,7 +155,7 @@ export default function SignIn() {
   useEffect(() => {
     setTimeout(() => {
       authRef.current = getAuth(firebaseClient)
-      authRef.current.useDeviceLanguage()
+      authRef.current.languageCode = 'vi'
 
       recaptchaVerifierRef.current = new RecaptchaVerifier(
         'sign-in-button',

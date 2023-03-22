@@ -41,7 +41,7 @@ export default function App() {
       emotionCache={emotionCache}
       theme={theme}
     >
-      <html lang="en">
+      <html lang="vi">
         <head>
           <StylesPlaceholder />
           <meta charSet="utf-8" />
