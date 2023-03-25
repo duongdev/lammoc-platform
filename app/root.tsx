@@ -13,6 +13,7 @@ import {
 } from '@remix-run/react'
 import { setDefaultOptions } from 'date-fns'
 import vi from 'date-fns/locale/vi'
+import { createHead } from 'remix-island'
 
 import ErrorHandler from './components/error-handler'
 import NProgress from './components/nprogress'
@@ -21,6 +22,25 @@ import { emotionCache } from './utils/emotion-cache'
 import { getTitle } from './utils/meta'
 
 setDefaultOptions({ locale: vi })
+
+export const Head = createHead(() => (
+  <>
+    <meta charSet="utf-8" />
+    <meta
+      content="initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no, width=device-width, height=device-height, target-densitydpi=device-dpi"
+      name="viewport"
+    />
+
+    <Meta />
+    <Links />
+    <link href="https://fonts.googleapis.com" rel="preconnect" />
+    <link crossOrigin="" href="https://fonts.gstatic.com" rel="preconnect" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:ital,wght@0,200;0,300;0,400;0,500;0,600;1,200;1,300;1,400;1,500;1,600&display=swap"
+      rel="stylesheet"
+    />
+  </>
+))
 
 export const meta: V2_MetaFunction = () => [
   {
@@ -41,37 +61,15 @@ export default function App() {
       emotionCache={emotionCache}
       theme={theme}
     >
-      <html lang="vi">
-        <head>
-          <StylesPlaceholder />
-          <meta charSet="utf-8" />
-          <meta
-            content="initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no, width=device-width, height=device-height, target-densitydpi=device-dpi"
-            name="viewport"
-          />
+      <StylesPlaceholder />
+      <Head />
+      <Outlet />
+      <ScrollRestoration />
+      <Scripts />
+      <LiveReload />
 
-          <Meta />
-          <Links />
-          <link href="https://fonts.googleapis.com" rel="preconnect" />
-          <link
-            crossOrigin=""
-            href="https://fonts.gstatic.com"
-            rel="preconnect"
-          />
-          <link
-            href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:ital,wght@0,200;0,300;0,400;0,500;0,600;1,200;1,300;1,400;1,500;1,600&display=swap"
-            rel="stylesheet"
-          />
-        </head>
-        <body>
-          <Outlet />
-          <Notifications />
-          <ScrollRestoration />
-          <Scripts />
-          <LiveReload />
-          <NProgress />
-        </body>
-      </html>
+      <Notifications />
+      <NProgress />
     </MantineProvider>
   )
 }

@@ -110,7 +110,13 @@ export const getAuthAccount = async (request: Request) => {
     return null
   }
 
-  const account = await prisma.account.update({
+  const account = await prisma.account.findUnique({ where: { id: accountId } })
+
+  if (!account) {
+    return null
+  }
+
+  prisma.account.update({
     where: { id: accountId },
     data: {
       lastLoggedIn: new Date(),

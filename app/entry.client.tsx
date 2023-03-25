@@ -1,16 +1,16 @@
 import { startTransition } from 'react'
-import { hydrate as $hydrate } from 'react-dom'
+import { hydrateRoot } from 'react-dom/client'
 
 import { ClientProvider } from '@mantine/remix'
 import { RemixBrowser } from '@remix-run/react'
 
 const hydrate = () => {
   startTransition(() => {
-    $hydrate(
+    hydrateRoot(
+      document.getElementById('root')!,
       <ClientProvider>
         <RemixBrowser />
       </ClientProvider>,
-      document,
     )
   })
 }
