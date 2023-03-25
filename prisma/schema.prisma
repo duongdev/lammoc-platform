@@ -38,6 +38,10 @@ model Account {
 
   customer   Customer? @relation(fields: [customerId], references: [id])
   customerId String?
+
+  createdStreamSessions StreamSession[]
+  streamProducts        StreamProduct[]
+  streamCarts           StreamCart[]
 }
 
 enum AccountRole {
@@ -102,6 +106,7 @@ model Order {
   shippingAddress    ShippingAddress?    @relation(fields: [shippingAddressId], references: [id])
   shippingAddressId  String?
   loyaltyPointEvents LoyaltyPointEvent[]
+  streamCarts        StreamCart[]
 }
 
 model OrderLineItem {
@@ -171,6 +176,7 @@ model ProductVariant {
   brand             ProductBrand?    @relation(fields: [productBrandId], references: [id], onUpdate: Cascade, onDelete: Cascade)
   productBrandId    String?
   orderLineItems    OrderLineItem[]
+  streamProducts    StreamProduct[]
 }
 
 model ProductBrand {
@@ -401,4 +407,65 @@ model LoyaltyPointEvent {
   loyaltyMemberId String
   order           Order?        @relation(fields: [orderId], references: [id])
   orderId         String?
+}
+
+model StreamSession {
+  id        String   @id
+  createdAt DateTime @default(now())
+  updated   DateTime @updatedAt
+
+  title       String
+  description String?
+  startsAt    DateTime?
+  startedAt   DateTime?
+  embedCode   String?
+
+  createdBy      Account          @relation(fields: [accountId], references: [id])
+  accountId      String
+  products       StreamProduct[]
+  carts          StreamCart[]
+  StreamCartItem StreamCartItem[]
+}
+
+model StreamProduct {
+  id        String   @id
+  createdAt DateTime @default(now())
+  updated   DateTime @updatedAt
+
+  price    Float @default(0)
+  quantity Int?
+
+  accountId        String
+  createdBy        Account        @relation(fields: [accountId], references: [id])
+  productVariant   ProductVariant @relation(fields: [productVariantId], references: [id])
+  productVariantId String
+  streamSession    StreamSession  @relation(fields: [streamSessionId], references: [id])
+  streamSessionId  String
+}
+
+model StreamCart {
+  id        String   @id
+  createdAt DateTime @default(now())
+  updated   DateTime @updatedAt
+
+  accountId       String
+  account         Account          @relation(fields: [accountId], references: [id])
+  streamSession   StreamSession    @relation(fields: [streamSessionId], references: [id])
+  streamSessionId String
+  StreamCartItem  StreamCartItem[]
+  createdOrder Order?  @relation(fields: [orderId], references: [id])
+  orderId      String?
+}
+
+model StreamCartItem {
+  id        String   @id
+  createdAt DateTime @default(now())
+  updated   DateTime @updatedAt
+
+  quantity Int @default(1)
+
+  streamSession   StreamSession @relation(fields: [streamSessionId], references: [id])
+  streamSessionId String
+  cart            StreamCart    @relation(fields: [streamCartId], references: [id])
+  streamCartId    String
 }
