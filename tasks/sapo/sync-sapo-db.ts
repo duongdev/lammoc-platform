@@ -21,20 +21,8 @@ export const syncAllDb = async (tenant: SapoTenant) => {
       sapo.syncCustomers(),
       sapo.syncProductCategories(),
       sapo.syncProducts(),
-      sapo.syncOrders()
+      sapo.syncOrders(),
     ])
-
-    // log(`Sync customers`)
-    // await sapo.syncCustomers()
-
-    // log('Sync product categories')
-    // await sapo.syncProductCategories()
-
-    // log('Sync products')
-    // await sapo.syncProducts()
-
-    // log('Sync orders')
-    // await sapo.syncOrders()
   } catch (error) {
     log('ERROR!', error)
   }

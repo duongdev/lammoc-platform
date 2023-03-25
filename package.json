@@ -12,7 +12,8 @@
     "prod": "sh ./scripts/deploy.sh",
     "sync-sapo-db": "DEBUG=Sapo:* ts-node -r dotenv/config -r tsconfig-paths/register --transpileOnly tasks/sapo/sync-sapo.ts",
     "sync-sapo-loyalty": "DEBUG=Sapo:* ts-node -r dotenv/config -r tsconfig-paths/register --transpileOnly tasks/sapo/sync-sapo-loyalty.ts",
-    "adjust-loyalty-point": "DEBUG=Sapo:* ts-node -r dotenv/config -r tsconfig-paths/register --transpileOnly tasks/sapo/adjust-loyalty-point.ts"
+    "adjust-loyalty-point": "DEBUG=Sapo:* ts-node -r dotenv/config -r tsconfig-paths/register --transpileOnly tasks/sapo/adjust-loyalty-point.ts",
+    "dev:sapo": "DEBUG=Sapo:* ts-node -r dotenv/config -r tsconfig-paths/register --transpileOnly tasks/sapo/dev.ts"
   },
   "dependencies": {
     "@emotion/react": "11.10.6",

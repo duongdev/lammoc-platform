@@ -76,12 +76,9 @@ export const gotExtendOptions = ({
           if (code === 'CERT_HAS_EXPIRED' || response?.statusCode === 401) {
             const cookies =
               retryCount <= 1 ? await getCookies() : await refreshCookies()
-            const headers = {
-              Cookie: cookies
-                .map((cookie: any) => `${cookie.name}=${cookie.value}`)
-                .join('; '),
-            }
-            options.context.headers = headers
+            options.context.cookie = cookies
+              .map((cookie: any) => `${cookie.name}=${cookie.value}`)
+              .join('; ')
             return
           }
 
@@ -96,12 +93,14 @@ export const gotExtendOptions = ({
       ],
       beforeRequest: [
         (options) => {
-          options.headers = (options.context.headers as any) ?? {}
+          if (typeof options.context.cookie === 'string') {
+            options.headers.Cookie = options.context.cookie
+          }
         },
       ],
       beforeError: [
         (error) => {
-          log('Error calling Sapo API', error)
+          log('Error calling Sapo API', error.response?.body || error)
           return error
         },
       ],

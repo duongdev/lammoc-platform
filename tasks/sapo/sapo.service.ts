@@ -9,14 +9,14 @@ import type { Debugger } from 'debug'
 import Debug from 'debug'
 import type { Got } from 'got-cjs'
 import got from 'got-cjs'
-import { flatten, toString } from 'lodash'
+import { flatten, isEqual, pick, toString } from 'lodash'
 import puppeteer from 'puppeteer'
 
 import prisma, { createChunkTransactions } from '~/libs/prisma.server'
 import { normalizePhoneNumber } from '~/utils/account'
 
 import { PUPPETEER_CONFIG, SAPO_PASS, SAPO_USER } from './sapo.config'
-import { SAPO_TENANT } from './sapo.const'
+import { SAPO_TENANT, VAT_IDS } from './sapo.const'
 import type {
   SapoAccount,
   SapoCustomer,
@@ -206,7 +206,54 @@ export class Sapo {
     this.log(`Synced ${transaction.proceeded()} categories`)
   }
 
-  async syncProducts(options?: PaginationInput) {
+  async enforceProductVat(product: SapoProductItem) {
+    const { variants } = product
+    const vat = VAT_IDS[this.tenant]
+
+    await Promise.all(
+      variants.map(async (variant) => {
+        const cmpData = pick(variant, [
+          'taxable',
+          'input_vat_id',
+          'output_vat_id',
+        ])
+        const vatData = {
+          taxable: true,
+          input_vat_id: vat.in,
+          output_vat_id: vat.out,
+        }
+
+        if (isEqual(cmpData, vatData)) {
+          this.log(`Skip variant ${variant.id} of product ${product.id}`)
+          return
+        }
+
+        this.log(
+          `Enforce VAT for variant ${variant.id} of product ${product.id}`,
+        )
+        console.log({ cmpData, vatData })
+
+        await this.sapo
+          .put(`products/${product.id}/variants/${variant.id}.json`, {
+            json: {
+              ...variant,
+              ...vatData,
+            },
+          })
+          .json()
+          .catch((error) => {
+            console.log(error.response.body)
+          })
+        this.log(`Updated variant ${variant.id} of product ${product.id}`)
+      }),
+    )
+  }
+
+  /** Sync all products from Sapo to DB */
+  async syncProducts(
+    options?: PaginationInput & { enforceVat?: boolean; updateDb?: boolean },
+  ) {
+    const { enforceVat = false, updateDb = true } = options ?? {}
     this.log('Sync all products', options)
 
     const paginate = this.sapo.paginate<SapoProductItem>(
@@ -220,6 +267,14 @@ export class Sapo {
     })
 
     for await (const product of paginate) {
+      if (enforceVat) {
+        await this.enforceProductVat(product)
+      }
+
+      if (!updateDb) {
+        continue
+      }
+
       const category = {
         id: toString(product.category_id),
         code: product.category_code,
