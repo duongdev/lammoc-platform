@@ -35,6 +35,7 @@ const Admin: FC<AdminProps> = () => {
 
   const navLinks = useMemo(() => {
     const links = [
+      { label: 'Livestream', link: './streams' },
       { label: 'Khách hàng', link: './customers' },
       { label: 'Tài khoản', link: './accounts' },
     ]
