@@ -16,8 +16,9 @@ module.exports = {
   future: {
     v2_routeConvention: true,
     v2_meta: true,
-    v2_errorBoundary: false,
+    v2_errorBoundary: true,
     unstable_dev: true,
+    v2_normalizeFormMethod: true,
   },
   routes: (defineRoutes) => {
     return flatRoutes('routes', defineRoutes, {
