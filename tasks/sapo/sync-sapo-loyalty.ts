@@ -33,6 +33,4 @@ export const syncLoyalty = async (tenant: SapoTenant) => {
   }
 
   await wait(60_000)
-
-  syncLoyalty(tenant)
 }

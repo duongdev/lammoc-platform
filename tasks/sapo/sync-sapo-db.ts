@@ -46,8 +46,4 @@ export const syncNewOrders = async (tenant: SapoTenant): Promise<void> => {
   } catch (error) {
     log('ERROR!', error)
   }
-
-  await wait(60_000)
-
-  syncNewOrders(tenant)
 }
