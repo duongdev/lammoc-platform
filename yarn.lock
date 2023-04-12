@@ -2311,80 +2311,80 @@
   dependencies:
     lodash "^4.17.21"
 
-"@mantine/carousel@6.0.6":
-  version "6.0.6"
-  resolved "https://registry.yarnpkg.com/@mantine/carousel/-/carousel-6.0.6.tgz#1c43f642e97522dbf959dce359ae452cc3b7277d"
-  integrity sha512-uVDyIqcuAXP6JSPHZ5Xyk6kGFxnay9UbppCej2EHB5mcEyiqCTMegwQtLBNYrpJ5OX+44sviL9bgjoOWLjF0kA==
+"@mantine/carousel@6.0.7":
+  version "6.0.7"
+  resolved "https://registry.yarnpkg.com/@mantine/carousel/-/carousel-6.0.7.tgz#8ab2429de93fc5f4f425db5a0bde963b32d148ec"
+  integrity sha512-Vzfchp/zwPR+fS6lwMzLK8otMu48zBrX6HgTUiAkk5ewxDxb51dMvEZfQluZPreM20smGctH1DFL4Rq/ON2L0Q==
   dependencies:
-    "@mantine/utils" "6.0.6"
+    "@mantine/utils" "6.0.7"
 
-"@mantine/core@6.0.6":
-  version "6.0.6"
-  resolved "https://registry.yarnpkg.com/@mantine/core/-/core-6.0.6.tgz#e09086c798ee546f02e2da07ad617d8249791029"
-  integrity sha512-0DtwlNcHEb6d8/qtoYCFHc/at+8w1sg3TUWh+cdFFiykZqpRrXBRoGGfbElN5RHtQqAVg4BXC0jDSHpz6CjPHw==
+"@mantine/core@6.0.7":
+  version "6.0.7"
+  resolved "https://registry.yarnpkg.com/@mantine/core/-/core-6.0.7.tgz#43ac0576321fdff4f7848c4164d7d1ce1b0edb19"
+  integrity sha512-yk2ojsfdADte55T5nQTGRdwLttPYC98k7D9eMn9vLWnoSB3OPjlJhIcNstqL3jXSklZhlDLYjCeZyrOb7+HRaA==
   dependencies:
     "@floating-ui/react" "^0.19.1"
-    "@mantine/styles" "6.0.6"
-    "@mantine/utils" "6.0.6"
+    "@mantine/styles" "6.0.7"
+    "@mantine/utils" "6.0.7"
     "@radix-ui/react-scroll-area" "1.0.2"
     react-remove-scroll "^2.5.5"
     react-textarea-autosize "8.3.4"
 
-"@mantine/dates@6.0.6":
-  version "6.0.6"
-  resolved "https://registry.yarnpkg.com/@mantine/dates/-/dates-6.0.6.tgz#b07a965c6083eb27346df95902d5d75b33802ad8"
-  integrity sha512-eIBnvugWZp0ComzAaiIy5tjBXq9G53Q5Fht6SPyFBxXU/NZ/ZQhLq49nlFyLBpuZQOJ2Ex71S8cv/FMwLaAS4A==
+"@mantine/dates@6.0.7":
+  version "6.0.7"
+  resolved "https://registry.yarnpkg.com/@mantine/dates/-/dates-6.0.7.tgz#f7a0efd0b99d9e7d2cb7049d83d793a1ad5be388"
+  integrity sha512-CvSfSMnb24sES0GvTfyYQ10QE3eCmD0nbapu+2N2RBR+NXveQhZ8VtJlxHLR67/P6x/gaMpUVFTGVWcWIDmdsQ==
   dependencies:
-    "@mantine/utils" "6.0.6"
+    "@mantine/utils" "6.0.7"
 
-"@mantine/hooks@6.0.6":
-  version "6.0.6"
-  resolved "https://registry.yarnpkg.com/@mantine/hooks/-/hooks-6.0.6.tgz#d571eaaa13f5f191740381c101aab3ac45c703fb"
-  integrity sha512-yGqGIZVgvL33XL+4UbP/BcvH/R5SKJYfrNcKIQY+SZ4y3CP05Q/p0BpjcLUJowKbD+xHaqXnMxE8yGf9KWAZig==
+"@mantine/hooks@6.0.7":
+  version "6.0.7"
+  resolved "https://registry.yarnpkg.com/@mantine/hooks/-/hooks-6.0.7.tgz#f97e259be97568588f544716f90f78e39a31eaa3"
+  integrity sha512-+Axk3hiSeqzSAtEqJR3C1PDW1YYl0ph4zBS8DAhFueXXtsjJOVRoGBbyc/gXovpjRM3llFtLqpwqxxbOJogx0g==
 
-"@mantine/notifications@6.0.6":
-  version "6.0.6"
-  resolved "https://registry.yarnpkg.com/@mantine/notifications/-/notifications-6.0.6.tgz#b4b64f7a951920e3c134dbc82c7eab5f49a31afd"
-  integrity sha512-QoUG8CB6w88OGt8EGWjqpopO3fse90kSOB6GQ5ljiB4zupifhtvDVPT+Hq2GxATqXvLEipjsMJLJK15jNJOuZw==
+"@mantine/notifications@6.0.7":
+  version "6.0.7"
+  resolved "https://registry.yarnpkg.com/@mantine/notifications/-/notifications-6.0.7.tgz#a41725773a4b825dd89545c71b0c50ac055df2a8"
+  integrity sha512-ZTWQG5P7paUrLng4H32vSSXl3EAE2mXZ3DavTgFD59ByIxCa1LoxxV7UhigNAb1E7Ve64euxljFYAe3VR86mkg==
   dependencies:
-    "@mantine/utils" "6.0.6"
+    "@mantine/utils" "6.0.7"
     react-transition-group "4.4.2"
 
-"@mantine/nprogress@6.0.6":
-  version "6.0.6"
-  resolved "https://registry.yarnpkg.com/@mantine/nprogress/-/nprogress-6.0.6.tgz#53563714a11838c43ab61636fc2485620f1c19e1"
-  integrity sha512-O+xfugRjznsfH9lb9809lAKNmKue1OzE8UTQd8xrTY1vwTkagYm2jcETl4YyZdMYnvKjbSfrCTcVLLddT/M9Hg==
+"@mantine/nprogress@6.0.7":
+  version "6.0.7"
+  resolved "https://registry.yarnpkg.com/@mantine/nprogress/-/nprogress-6.0.7.tgz#6a061707c64eb87ab4183473566209e81bd6059e"
+  integrity sha512-9p+4FN6gBjag7hta0lZO14EbMlTOo6Jc/yF8X3tDEGnUjeWKFzo4gqcFImSi0V261sMush/GxJx21iwuBSYgng==
   dependencies:
-    "@mantine/utils" "6.0.6"
+    "@mantine/utils" "6.0.7"
 
-"@mantine/remix@6.0.6":
-  version "6.0.6"
-  resolved "https://registry.yarnpkg.com/@mantine/remix/-/remix-6.0.6.tgz#2fc1546a95d24399703de39c8385a18664d62ae6"
-  integrity sha512-5N4pCFSwgIVL9YlaVwt5MMWmnIoBgzh0qqjJKArlfVbS7FrLW3MhdilyHO391syY+Te8o2nm2arxpj/qE9k+ZQ==
+"@mantine/remix@6.0.7":
+  version "6.0.7"
+  resolved "https://registry.yarnpkg.com/@mantine/remix/-/remix-6.0.7.tgz#2c415a9b9870a34dc25697cb2a32bd9cc1a238b7"
+  integrity sha512-oz06Z1UWX21MKGfnjUzWPomCc2y3tM4O0wp1TsOLwlECkXTnmbw7ntSMdqyHGxD7CvWKSXYv4IPMlE4dfva2Ag==
   dependencies:
-    "@mantine/ssr" "6.0.6"
-    "@mantine/styles" "6.0.6"
+    "@mantine/ssr" "6.0.7"
+    "@mantine/styles" "6.0.7"
 
-"@mantine/ssr@6.0.6":
-  version "6.0.6"
-  resolved "https://registry.yarnpkg.com/@mantine/ssr/-/ssr-6.0.6.tgz#7283bd475e96a2a830a64ed1c79948d65148e723"
-  integrity sha512-0XSkO6lKwf36LYB3vCIcaCALei4NsfZ3raK2wmpS7IOV5zF+c5EjoVxIxwd4p93GHR3D/0CW9whQrPHlcoOaOA==
+"@mantine/ssr@6.0.7":
+  version "6.0.7"
+  resolved "https://registry.yarnpkg.com/@mantine/ssr/-/ssr-6.0.7.tgz#4fdb8d88c4cacf27bedf65060e866213c5c50d88"
+  integrity sha512-v1IT0C4sXh6h9IM8UWFXCBJhgiZjSt2hCPwS+Wjw6RAxCDH3/pq97v0zMKDWbIIR2AueaISRujPk3ON11IG6MQ==
   dependencies:
-    "@mantine/styles" "6.0.6"
+    "@mantine/styles" "6.0.7"
     html-react-parser "1.4.12"
 
-"@mantine/styles@6.0.6":
-  version "6.0.6"
-  resolved "https://registry.yarnpkg.com/@mantine/styles/-/styles-6.0.6.tgz#a71c9289bbe7cc863823e3446c76996cc6a5940f"
-  integrity sha512-jNC4uTANTl3Z4B3H+oohJd9i7A542asn6UPUR+xMyjNk2guWSQcLUXe2x3VpL6G71ybNF7UQuZTEyar6OaKW3w==
+"@mantine/styles@6.0.7":
+  version "6.0.7"
+  resolved "https://registry.yarnpkg.com/@mantine/styles/-/styles-6.0.7.tgz#39121c4a5f6268afd5ab5c18a0dda6835199d4dc"
+  integrity sha512-vbR2I853wFY40NOi66N97n3pstjA0bEU1Y0QitX1EAOvmHvuzTuaUtrEq9EqHOiwx8h9e0TndqsYapjDbkw0eg==
   dependencies:
     clsx "1.1.1"
     csstype "3.0.9"
 
-"@mantine/utils@6.0.6":
-  version "6.0.6"
-  resolved "https://registry.yarnpkg.com/@mantine/utils/-/utils-6.0.6.tgz#19bff743cf69c0c0b39664a633cb7827bc996833"
-  integrity sha512-Pd+ZTJ3maXb1zihZzHpo00XLwcKEg+ZGLPFG5vg/YafLDDWIhgV6snTFVKsPb2cunVjOwzbKcvlmCHXBe97mTQ==
+"@mantine/utils@6.0.7":
+  version "6.0.7"
+  resolved "https://registry.yarnpkg.com/@mantine/utils/-/utils-6.0.7.tgz#fcbc9c809c33bd9c96fd12d7ca63d0c19550bafd"
+  integrity sha512-XMm66GNn9hXnc9s/twXzL9iqhzM8HLVOyuKDo4WUn/ZM6NEJYJJVcTTlSIXOPq9AWo8bI76vbAHkIry1aEbgmg==
 
 "@mapbox/node-pre-gyp@^1.0.10":
   version "1.0.10"
@@ -2864,18 +2864,18 @@
   dependencies:
     defer-to-connect "^2.0.1"
 
-"@tabler/icons-react@2.14.0":
-  version "2.14.0"
-  resolved "https://registry.yarnpkg.com/@tabler/icons-react/-/icons-react-2.14.0.tgz#38f3b94844d61e28249e5f704b84eafbf38d7d57"
-  integrity sha512-5lsXkV2T+ygKwrernJnnbkRtNdbBp8JANP17gdPHhhhVEUIuvaTWU+lDEwJFgyaChlepl5AwcFoMMhcnlPO6Hw==
+"@tabler/icons-react@2.15.0":
+  version "2.15.0"
+  resolved "https://registry.yarnpkg.com/@tabler/icons-react/-/icons-react-2.15.0.tgz#9e3db4c957fb35affd623dabee7da14e6a2d6eb0"
+  integrity sha512-yE+0kskRLANxB3ulkJ4UsouvMsNA+C5y58JjWgdHX8T4pLK/9FOtFPdGmZW2Z5SodC6XZCXH/uw0PqAy1I3/JA==
   dependencies:
-    "@tabler/icons" "2.14.0"
+    "@tabler/icons" "2.15.0"
     prop-types "^15.7.2"
 
-"@tabler/icons@2.14.0":
-  version "2.14.0"
-  resolved "https://registry.yarnpkg.com/@tabler/icons/-/icons-2.14.0.tgz#167658ba130272dcf61bfd36abcc513f696f4c87"
-  integrity sha512-q4qFe8P0M0cwRlQajPtjucjVrRPVkv/aFHWrCm+HZH9eOkjYSyyFtn7/Zz7lkjBcGiPUkh08d/d3IvJToP/zvw==
+"@tabler/icons@2.15.0":
+  version "2.15.0"
+  resolved "https://registry.yarnpkg.com/@tabler/icons/-/icons-2.15.0.tgz#2b39eba98fdf70fda62333b3847c0124361ea66d"
+  integrity sha512-6fwWrsLOqmeoDPii4O1/tG1lsaNoPigUEx8UrOgTLJ81HazbAy5rfypp7FN9/PGsal4VDU+hevOkaGkE6algTQ==
 
 "@testing-library/dom@^8.11.1":
   version "8.13.0"
@@ -3181,10 +3181,10 @@
     "@types/scheduler" "*"
     csstype "^3.0.2"
 
-"@types/react@18.0.33":
-  version "18.0.33"
-  resolved "https://registry.yarnpkg.com/@types/react/-/react-18.0.33.tgz#a1575160cb4376787c2f5fe0312302f824baa61e"
-  integrity sha512-sHxzVxeanvQyQ1lr8NSHaj0kDzcNiGpILEVt69g9S31/7PfMvNCKLKcsHw4lYKjs3cGNJjXSP4mYzX43QlnjNA==
+"@types/react@18.0.35":
+  version "18.0.35"
+  resolved "https://registry.yarnpkg.com/@types/react/-/react-18.0.35.tgz#192061cb1044fe01f2d3a94272cd35dd50502741"
+  integrity sha512-6Laome31HpetaIUGFWl1VQ3mdSImwxtFZ39rh059a1MNnKGqBpC88J6NJ8n/Is3Qx7CefDGLgf/KhN/sYCf7ag==
   dependencies:
     "@types/prop-types" "*"
     "@types/scheduler" "*"
@@ -3561,10 +3561,10 @@ anymatch@~3.1.2:
     normalize-path "^3.0.0"
     picomatch "^2.0.4"
 
-appwrite@10.2.0:
-  version "10.2.0"
-  resolved "https://registry.yarnpkg.com/appwrite/-/appwrite-10.2.0.tgz#de8cde863599ab2ce83e2a2d24372acb15951046"
-  integrity sha512-1cQoFWj9XlbfFP2heq5phRGjXtygpnJZY3MsAN8IWJuPvCKcVxq7Ntkz7IZm48OhLe74ByMvHCSLcOZ2BD1VsQ==
+appwrite@11.0.0:
+  version "11.0.0"
+  resolved "https://registry.yarnpkg.com/appwrite/-/appwrite-11.0.0.tgz#ab9e9cc7c70e453dee5a6c32a41f362e443fc976"
+  integrity sha512-YqLDwfVexQNFrAom6DxROrSm5dgR0FO128H+TBGTMZFc5ebXRw+IAmUHCZO77AbTqZ3EduTQZl61f0PKmcywtQ==
   dependencies:
     cross-fetch "3.1.5"
     isomorphic-form-data "2.0.0"
@@ -10875,10 +10875,10 @@ yocto-queue@^0.1.0:
   resolved "https://registry.yarnpkg.com/yocto-queue/-/yocto-queue-0.1.0.tgz#0294eb3dee05028d31ee1a5fa2c556a6aaf10a1b"
   integrity sha512-rVksvsnNCdJ/ohGc6xgPwyN8eheCxsiLM8mxuE/t/mOVqJewPuO1miLpTHQiRgTKCLexL4MeAFVagts7HmNZ2Q==
 
-yup@1.0.2:
-  version "1.0.2"
-  resolved "https://registry.yarnpkg.com/yup/-/yup-1.0.2.tgz#1cf485f407f77e0407b450311f2981a1e66f7c58"
-  integrity sha512-Lpi8nITFKjWtCoK3yQP8MUk78LJmHWqbFd0OOMXTar+yjejlQ4OIIoZgnTW1bnEUKDw6dZBcy3/IdXnt2KDUow==
+yup@1.1.0:
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/yup/-/yup-1.1.0.tgz#9e2439156970410f13c0aa842379c3a7240127ca"
+  integrity sha512-CtpEHWiIMwWJBJ+zX8xWImXXdvJ10X/sKkYYTXfVocHj087e9zhP0GNkU7HlXBBI4T9BtHQxs8n2jLzmo/X8Yg==
   dependencies:
     property-expr "^2.0.5"
     tiny-case "^1.0.3"

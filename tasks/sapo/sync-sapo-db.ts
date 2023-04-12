@@ -28,7 +28,6 @@ export const syncAllDb = async (tenant: SapoTenant) => {
   }
 
   await wait(60_000)
-  await syncAllDb(tenant)
 }
 
 export const syncNewOrders = async (tenant: SapoTenant): Promise<void> => {

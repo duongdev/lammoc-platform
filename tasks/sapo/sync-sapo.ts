@@ -6,7 +6,13 @@ const main = async () => {
   const slm = new Sapo('store-lam-moc')
   const ttl = new Sapo('thichtulam')
 
-  await Promise.all([slm, ttl].map((sapo) => sapo.refreshCookies()))
+  try {
+    // await Promise.all([slm, ttl].map((sapo) => sapo.refreshCookies()))
+    await slm.refreshCookies()
+    await ttl.refreshCookies()
+  } catch (error) {
+    console.error(error)
+  }
 
   await Promise.all([
     syncNewOrders('store-lam-moc'),
