@@ -77,33 +77,38 @@ export class Sapo {
     const browser = await puppeteer.launch(PUPPETEER_CONFIG)
     const page = await browser.newPage()
 
-    await page.goto(
-      `https://accounts.sapo.vn/login?clientId=a2KG8sj3g1&domain=${this.tenant}&relativeContextPath=/admin/orders`,
-      { waitUntil: 'domcontentloaded' },
-    )
+    try {
+      await page.goto(
+        `https://accounts.sapo.vn/login?clientId=a2KG8sj3g1&domain=${this.tenant}&relativeContextPath=/admin/orders`,
+        { waitUntil: 'domcontentloaded' },
+      )
 
-    await page.type('#username', this.username)
-    await page.type('#password', this.password)
-    await page.click('.btn-login')
+      await page.type('#username', this.username)
+      await page.type('#password', this.password)
+      await page.click('.btn-login')
 
-    await page.waitForSelector('.sb-avatar', {
-      timeout: 3 * 60 * 1000, // 3m - sometimes it takes very long to sign in
-    })
+      await page.waitForSelector('.sb-avatar', {
+        timeout: 3 * 60 * 1000, // 3m - sometimes it takes very long to sign in
+      })
 
-    const cookies = await page.cookies()
+      const cookies = await page.cookies()
 
-    await browser.close()
+      await browser.close()
 
-    const cookiesValue = JSON.stringify(cookies)
-    await prisma.appMeta.upsert({
-      where: { id: this.SESSION_KEY },
-      create: { id: this.SESSION_KEY, value: cookiesValue },
-      update: { value: cookiesValue },
-    })
+      const cookiesValue = JSON.stringify(cookies)
+      await prisma.appMeta.upsert({
+        where: { id: this.SESSION_KEY },
+        create: { id: this.SESSION_KEY, value: cookiesValue },
+        update: { value: cookiesValue },
+      })
 
-    this.log('Cookies refreshed')
+      this.log('Cookies refreshed')
 
-    return cookies
+      return cookies
+    } catch (error) {
+      browser.close()
+      throw error
+    }
   }
 
   async profiles() {
