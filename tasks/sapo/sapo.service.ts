@@ -427,6 +427,9 @@ export class Sapo {
 
     const lastSync = (
       await prisma.order.findFirst({
+        where: {
+          tenant: SAPO_TENANT[this.tenant],
+        },
         orderBy: { syncedAt: 'desc' },
       })
     )?.syncedAt
