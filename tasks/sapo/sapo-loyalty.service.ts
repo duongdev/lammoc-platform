@@ -86,13 +86,13 @@ export class SapoLoyalty {
     await page.type('input', this.tenant!)
     await page.click('button')
 
-    await page.waitForNetworkIdle({ timeout: 120_000 })
+    await page.waitForNetworkIdle({ timeout: 3 * 60 * 1000 })
 
     await page.type('#username', this.username)
     await page.type('#password', this.password)
     await page.click('.btn-login')
 
-    await page.waitForSelector('.admin-logo', { timeout: 120_000 })
+    await page.waitForSelector('.admin-logo', { timeout: 3 * 60 * 1000 })
 
     log('Current page URL:', page.url())
     if (page.url().startsWith('https://loyalty.sapocorp.net/admin')) {
