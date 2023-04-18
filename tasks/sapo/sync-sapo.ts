@@ -8,8 +8,8 @@ const main = async () => {
 
   try {
     // await Promise.all([slm, ttl].map((sapo) => sapo.refreshCookies()))
-    await slm.refreshCookies()
-    await ttl.refreshCookies()
+    await slm.profiles()
+    await ttl.profiles()
   } catch (error) {
     console.error(error)
   }

@@ -79,22 +79,34 @@ export const gotExtendOptions = ({
             options.context.cookie = cookies
               .map((cookie: any) => `${cookie.name}=${cookie.value}`)
               .join('; ')
-            return
-          }
 
-          log(`[beforeRetry] Unhandled error`, {
-            code,
-            name,
-            message,
-            retryCount,
-            status: response?.statusCode,
-          })
+            log('[beforeRetry] Error calling Sapo API, retrying...', {
+              code,
+              name,
+              message,
+              retryCount,
+              status: response?.statusCode,
+            })
+          } else {
+            log(`[beforeRetry] Unhandled error`, {
+              code,
+              name,
+              message,
+              retryCount,
+              status: response?.statusCode,
+            })
+          }
         },
       ],
       beforeRequest: [
-        (options) => {
+        async (options) => {
           if (typeof options.context.cookie === 'string') {
             options.headers.Cookie = options.context.cookie
+          } else {
+            const cookies = await getCookies()
+            options.headers.Cookie = cookies
+              .map((cookie: any) => `${cookie.name}=${cookie.value}`)
+              .join('; ')
           }
         },
       ],

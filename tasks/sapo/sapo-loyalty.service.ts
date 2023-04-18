@@ -43,7 +43,7 @@ export class SapoLoyalty {
     }
 
     this.DB_TENANT = SAPO_TENANT[this.tenant]
-    this.SESSION_KEY = `SAPO_LOYALTY_COOKIE_${this.tenant}`
+    this.SESSION_KEY = `SAPO_LOYALTY_TOKEN_${this.tenant}`
 
     this.sapo = got.extend({
       prefixUrl: 'https://loyalty.sapocorp.net/api',
