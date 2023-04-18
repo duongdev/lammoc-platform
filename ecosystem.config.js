@@ -4,7 +4,8 @@ module.exports = {
       name: 'sapo-sync',
       script: 'yarn',
       args: 'sync-sapo-db',
-      autorestart: true,
+      autorestart: false,
+      cron_restart: '0 */4 * * *',
       env: {
         TRANSACTION_SIZE: 250,
       },
@@ -13,7 +14,7 @@ module.exports = {
       name: 'web',
       script: 'yarn',
       args: 'start',
-      autorestart: true,
+      autorestart: false,
       env: {
         NODE_ENV: 'production',
         PORT: 80,
