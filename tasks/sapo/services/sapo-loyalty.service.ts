@@ -15,15 +15,15 @@ import puppeteer from 'puppeteer'
 import prisma, { createChunkTransactions } from '~/libs/prisma.server'
 import { normalizePhoneNumber } from '~/utils/account'
 
-import { PUPPETEER_CONFIG, SAPO_PASS, SAPO_USER } from './sapo.config'
-import { SAPO_TENANT } from './sapo.const'
+import { PUPPETEER_CONFIG, SAPO_PASS, SAPO_USER } from '../sapo.config'
+import { SAPO_TENANT } from '../sapo.const'
 import type {
   SapoLoyaltyMemberItem,
   SapoLoyaltyPointEventItem,
   SapoLoyaltyTierItem,
   SapoTenant,
-} from './sapo.type'
-import { getPaginationOptions, gotExtendOptions, id } from './sapo.util'
+} from '../sapo.type'
+import { getPaginationOptions, gotExtendOptions, id } from '../sapo.util'
 
 const TRANSACTION_SIZE = +(process.env.TRANSACTION_SIZE ?? 50)
 

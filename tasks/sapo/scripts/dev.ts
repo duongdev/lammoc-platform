@@ -1,4 +1,4 @@
-import { Sapo } from './sapo.service'
+import { Sapo } from '../services/sapo.service'
 
 async function main() {
   const sapo1 = new Sapo('store-lam-moc')

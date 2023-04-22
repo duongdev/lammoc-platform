@@ -15,8 +15,8 @@ import puppeteer from 'puppeteer'
 import prisma, { createChunkTransactions } from '~/libs/prisma.server'
 import { normalizePhoneNumber } from '~/utils/account'
 
-import { PUPPETEER_CONFIG, SAPO_PASS, SAPO_USER } from './sapo.config'
-import { SAPO_TENANT, VAT_IDS } from './sapo.const'
+import { PUPPETEER_CONFIG, SAPO_PASS, SAPO_USER } from '../sapo.config'
+import { SAPO_TENANT, VAT_IDS } from '../sapo.const'
 import type {
   SapoAccount,
   SapoCustomer,
@@ -25,9 +25,9 @@ import type {
   SapoProductCategory,
   SapoProductItem,
   SapoTenant,
-} from './sapo.type'
-import type { PaginationInput } from './sapo.util'
-import { gotExtendOptions, getPaginationOptions } from './sapo.util'
+} from '../sapo.type'
+import type { PaginationInput } from '../sapo.util'
+import { gotExtendOptions, getPaginationOptions } from '../sapo.util'
 
 const TRANSACTION_SIZE = +(process.env.TRANSACTION_SIZE ?? 50)
 
