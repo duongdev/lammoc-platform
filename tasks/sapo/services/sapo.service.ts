@@ -254,7 +254,7 @@ export class Sapo {
     )
   }
 
-  /** Sync all products from Sapo to DB */
+  /** Sync all products and variants from Sapo to DB */
   async syncProducts(
     options?: PaginationInput & { enforceVat?: boolean; updateDb?: boolean },
   ) {

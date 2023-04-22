@@ -169,14 +169,45 @@ model ProductVariant {
   unit        String?
   images      String[]
 
-  product           Product          @relation(fields: [productId], references: [id], onUpdate: Cascade, onDelete: Cascade)
+  product           Product               @relation(fields: [productId], references: [id], onUpdate: Cascade, onDelete: Cascade)
   productId         String
-  category          ProductCategory? @relation(fields: [productCategoryId], references: [id], onUpdate: Cascade, onDelete: Cascade)
+  category          ProductCategory?      @relation(fields: [productCategoryId], references: [id], onUpdate: Cascade, onDelete: Cascade)
   productCategoryId String?
-  brand             ProductBrand?    @relation(fields: [productBrandId], references: [id], onUpdate: Cascade, onDelete: Cascade)
+  brand             ProductBrand?         @relation(fields: [productBrandId], references: [id], onUpdate: Cascade, onDelete: Cascade)
   productBrandId    String?
   orderLineItems    OrderLineItem[]
   streamProducts    StreamProduct[]
+  variantPrices     ProductVariantPrice[]
+}
+
+model ProductVariantPrice {
+  id                 String   @id
+  createdAt          DateTime @default(now())
+  updatedAt          DateTime @updatedAt
+  value              Float
+  included_tax_price Float
+  name               String
+
+  productVariantId String
+  productVariant   ProductVariant @relation(fields: [productVariantId], references: [id], onUpdate: Cascade, onDelete: Cascade)
+
+  priceListId String
+  priceList   ProductVariantPriceList @relation(fields: [priceListId], references: [id], onUpdate: Cascade, onDelete: Cascade)
+}
+
+model ProductVariantPriceList {
+  id        String   @id
+  tenant    Tenant
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now())
+  syncedAt  DateTime @updatedAt
+
+  code                 String
+  name                 String
+  isCost               Boolean               @default(false)
+  currencyIso          String
+  currencySymbol       String
+  productVariantPrices ProductVariantPrice[]
 }
 
 model ProductBrand {
@@ -453,8 +484,8 @@ model StreamCart {
   streamSession   StreamSession    @relation(fields: [streamSessionId], references: [id])
   streamSessionId String
   StreamCartItem  StreamCartItem[]
-  createdOrder Order?  @relation(fields: [orderId], references: [id])
-  orderId      String?
+  createdOrder    Order?           @relation(fields: [orderId], references: [id])
+  orderId         String?
 }
 
 model StreamCartItem {
