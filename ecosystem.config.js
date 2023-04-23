@@ -8,6 +8,7 @@ module.exports = {
       cron_restart: '0 */4 * * *',
       env: {
         TRANSACTION_SIZE: 250,
+        TS_NODE_CWD: '/root/lammoc-platform',
       },
     },
     {
