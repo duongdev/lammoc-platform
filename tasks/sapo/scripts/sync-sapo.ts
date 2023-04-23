@@ -51,7 +51,7 @@ export const syncAllDb = async (tenant: SapoTenant) => {
     await Promise.all([
       sapo.syncCustomers(),
       sapo.syncProductCategories(),
-      sapo.syncProducts(),
+      sapo.syncProducts().then(() => sapo.syncProductVariantPrices()),
     ])
   } catch (error) {
     log('ERROR!', error)

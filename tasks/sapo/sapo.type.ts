@@ -1,3 +1,5 @@
+import type { ArrayElement } from '~/utils/types'
+
 import type account from './sample-data/account.json'
 import type customer from './sample-data/customer.json'
 import type delivery_service_provider_id from './sample-data/delivery_service_provider_item.json'
@@ -11,6 +13,7 @@ export type SapoTenant = 'store-lam-moc' | 'thichtulam'
 export type SapoAccount = typeof account
 export type SapoCustomer = typeof customer
 export type SapoProductItem = typeof product_item
+export type SapoVariantItem = ArrayElement<typeof product_item.variants>
 export type SapoOrderItem = typeof order_item
 export type SapoDeliveryServiceProviderItem =
   typeof delivery_service_provider_id

@@ -4,19 +4,28 @@ import type {
   OrderLineItem,
   Prisma,
   Product,
+  ProductVariant,
+  ProductVariantPrice,
+  ProductVariantPriceList,
 } from '@prisma/client'
+import { each } from 'bluebird'
 import type { Debugger } from 'debug'
 import Debug from 'debug'
 import type { Got } from 'got-cjs'
 import got from 'got-cjs'
-import { flatten, isEqual, pick, toString } from 'lodash'
+import { chunk, flatten, isEqual, pick, toString } from 'lodash'
 import puppeteer from 'puppeteer'
 
 import prisma, { createChunkTransactions } from '~/libs/prisma.server'
 import { normalizePhoneNumber } from '~/utils/account'
 
 import { PUPPETEER_CONFIG, SAPO_PASS, SAPO_USER } from '../sapo.config'
-import { SAPO_TENANT, VAT_IDS } from '../sapo.const'
+import {
+  BASE_VARIANT_PRICE,
+  SAPO_TENANT,
+  VARIANT_PRICE,
+  VAT_IDS,
+} from '../sapo.const'
 import type {
   SapoAccount,
   SapoCustomer,
@@ -27,7 +36,11 @@ import type {
   SapoTenant,
 } from '../sapo.type'
 import type { PaginationInput } from '../sapo.util'
-import { gotExtendOptions, getPaginationOptions } from '../sapo.util'
+import {
+  roundPrice,
+  gotExtendOptions,
+  getPaginationOptions,
+} from '../sapo.util'
 
 const TRANSACTION_SIZE = +(process.env.TRANSACTION_SIZE ?? 50)
 
@@ -266,7 +279,9 @@ export class Sapo {
       getPaginationOptions(options),
     )
 
-    const transaction = createChunkTransactions<Product>({
+    const transaction = createChunkTransactions<
+      Product | ProductVariantPrice | Prisma.BatchPayload
+    >({
       size: TRANSACTION_SIZE,
       log: this.log,
     })
@@ -364,6 +379,58 @@ export class Sapo {
           update: productData,
         }),
       )
+
+      // Upsert variant prices
+      for (const variant of product.variants) {
+        // Delete old variant prices
+        await transaction.add(
+          prisma.productVariantPrice.deleteMany({
+            where: {
+              productVariant: { id: toString(variant.id) },
+              tenant: SAPO_TENANT[this.tenant],
+            },
+          }),
+        )
+
+        for (const price of variant.variant_prices) {
+          const variantPriceData: Prisma.ProductVariantPriceCreateInput = {
+            id: toString(price.id),
+            tenant: SAPO_TENANT[this.tenant],
+            value: price.value,
+            includedTaxPrice: price.included_tax_price,
+            name: price.name,
+            priceList: {
+              connectOrCreate: {
+                where: { id: toString(price.price_list_id) },
+                create: {
+                  id: toString(price.price_list_id),
+                  tenant: SAPO_TENANT[this.tenant],
+                  name: price.price_list.name,
+                  code: price.price_list.name,
+                  currencyIso: price.price_list.currency_iso,
+                  currencySymbol: price.price_list.currency_symbol,
+                  createdAt: new Date(price.price_list.created_on),
+                  isCost: !!price.price_list.is_cost,
+                  updatedAt: new Date(price.price_list.modified_on),
+                },
+              },
+            },
+            productVariant: {
+              connect: { id: toString(variant.id) },
+            },
+          }
+
+          await transaction.add(
+            prisma.productVariantPrice.upsert({
+              where: {
+                id: toString(price.id),
+              },
+              create: variantPriceData,
+              update: variantPriceData,
+            }),
+          )
+        }
+      }
     }
 
     await transaction.close()
@@ -733,5 +800,149 @@ export class Sapo {
     await transaction.close()
 
     this.log(`Synced ${transaction.proceeded()} orders`)
+  }
+
+  /**
+   * (#6) Go through every variant and update its price to Sapo
+   * according to the formula.
+   * Processes by chunks of 10 variants.
+   */
+  async syncProductVariantPrices() {
+    const log = this.log.extend(this.syncProductVariantPrices.name)
+
+    log('Start syncing product variant prices')
+
+    const variants = await prisma.productVariant.findMany({
+      where: { tenant: SAPO_TENANT[this.tenant] },
+      orderBy: {
+        syncedAt: 'desc',
+      },
+      include: {
+        product: true,
+        variantPrices: {
+          include: { priceList: true },
+        },
+      },
+    })
+
+    const chunks = chunk(variants, 10)
+
+    await each(chunks, async (chunk) => {
+      await Promise.all(
+        chunk.map((variant) => this.syncOneProductVariantPrice({ variant })),
+      )
+    })
+
+    log('Finished syncing product variant prices')
+  }
+
+  /**
+   * (#6) Calculates the prices and sync one product variant price to Sapo
+   */
+  async syncOneProductVariantPrice({
+    variant: $variant,
+    variantId,
+  }: {
+    variant?: ProductVariant & {
+      product: Product
+      variantPrices: (ProductVariantPrice & {
+        priceList: ProductVariantPriceList
+      })[]
+    }
+    variantId?: string
+  }) {
+    const log = this.log.extend(this.syncOneProductVariantPrice.name)
+
+    if (!(variantId || $variant)) {
+      throw new Error('Either variantId or variant must be provided')
+    }
+
+    let variant: typeof $variant | null = $variant
+
+    if (!variant) {
+      log(`Fetching variant ${variantId}`)
+      variant = await prisma.productVariant.findFirst({
+        where: { id: variantId, tenant: SAPO_TENANT[this.tenant] },
+        include: {
+          product: true,
+          variantPrices: {
+            include: { priceList: true },
+          },
+        },
+      })
+    }
+
+    if (!variant) {
+      throw new Error(`Variant ${variantId} not found`)
+    }
+
+    const retailId = VARIANT_PRICE.retail[this.tenant]
+    const retailPrice = variant.variantPrices.find(
+      (p) => p.priceListId === toString(retailId),
+    )?.value
+
+    // If the variant has no retail price, skip it
+    if (!retailPrice) {
+      return
+    }
+
+    const prices = Object.values(VARIANT_PRICE).map((priceConfig) => ({
+      price_list_id: priceConfig[this.tenant],
+      name: variant?.variantPrices.find(
+        (p) => p.priceListId === toString(priceConfig[this.tenant]),
+      )?.name,
+      value: roundPrice(
+        retailPrice /
+          (retailPrice < BASE_VARIANT_PRICE
+            ? priceConfig.fLow
+            : priceConfig.fHigh),
+      ),
+    }))
+
+    // Compare the prices with the current prices in Database
+    // If there is any difference, update the variant in Sapo
+    const currentPrices = variant.variantPrices.map((p) => ({
+      price_list_id: p.priceListId,
+      name: p.name,
+      value: p.value,
+    }))
+
+    // Filter different prices between Sapo and Database
+    const differentPrices = prices.filter(
+      (price) =>
+        !currentPrices.find(
+          (p) => p.price_list_id === toString(price.price_list_id),
+        ) ||
+        currentPrices.find(
+          (p) => p.price_list_id === toString(price.price_list_id),
+        )?.value !== price.value,
+    )
+
+    if (differentPrices.length === 0) {
+      log(`Skipping [${variant.id}] ${variant.name} because it has no changes`)
+      return
+    }
+
+    log(
+      `Updating [${variant.id}] ${variant.name} to Sapo`,
+      prices.map((price) => ({
+        ...price,
+        currentPrice: currentPrices.find(
+          (p) => p.price_list_id === toString(price.price_list_id),
+        )?.value,
+      })),
+    )
+
+    const updatedVariant = await this.sapo
+      .put(`products/${variant.productId}/variants/${variant.id}.json`, {
+        json: { variant_prices: prices },
+      })
+      .json()
+      .catch((err) => {
+        console.error(err.response.body)
+      })
+
+    log(`Updated [${variant.id}] ${variant.name} to Sapo`)
+    return updatedVariant
   }
 }
