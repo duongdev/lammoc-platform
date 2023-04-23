@@ -181,12 +181,14 @@ model ProductVariant {
 }
 
 model ProductVariantPrice {
-  id                 String   @id
-  createdAt          DateTime @default(now())
-  updatedAt          DateTime @updatedAt
-  value              Float
-  included_tax_price Float
-  name               String
+  id        String   @id
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  tenant    Tenant
+
+  value            Float
+  includedTaxPrice Float
+  name             String
 
   productVariantId String
   productVariant   ProductVariant @relation(fields: [productVariantId], references: [id], onUpdate: Cascade, onDelete: Cascade)
