@@ -136,11 +136,10 @@ export const gotExtendOptions = ({
 }
 
 /** 
- * Round number by 500. 
- * 1200 => 1000
- * 1500 => 1500
- * 1800 => 2000
+ * Ceiling price to nearest 1000
  */
-export const roundPrice = (price: number) => Math.round(price / 500) * 500
+export const roundPrice = (price: number) => {
+  return Math.ceil(price / 1000) * 1000
+}
 
 export const id = toString
