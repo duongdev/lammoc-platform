@@ -12,8 +12,8 @@ git fetch -p && for branch in $(git branch -vv | grep ': gone]' | awk '{print $1
 # Pull latest changes
 yarn
 yarn prisma migrate deploy &
+yarn prisma generate &
 yarn build
 
 # Restart pm2
-pm2 delete all
-pm2 start ecosystem.config.js
+pm2 reload ecosystem.config.js
