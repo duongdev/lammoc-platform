@@ -1,7 +1,3 @@
-const FNM = {
-  interpreter: '/run/user/0/fnm_multishells/20485_1683011309582/bin/node',
-}
-
 module.exports = {
   apps: [
     {
@@ -9,12 +5,9 @@ module.exports = {
       script: 'yarn',
       args: 'sync-sapo-db',
       autorestart: false,
-      cron_restart: '0 */4 * * *',
       env: {
         TRANSACTION_SIZE: 250,
-        TS_NODE_CWD: '/root/lammoc-platform',
       },
-      ...FNM,
     },
     {
       name: 'web',
@@ -25,7 +18,6 @@ module.exports = {
         NODE_ENV: 'production',
         PORT: 80,
       },
-      ...FNM,
     },
   ],
 }
