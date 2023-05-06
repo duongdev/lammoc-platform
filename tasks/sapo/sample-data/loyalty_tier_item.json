@@ -1,22 +1,47 @@
 {
-  "id": 10583,
-  "name": "Vàng",
+  "id": 17535,
+  "name": "Kim Cương",
   "criteria": "money",
   "min_condition": "100000000.00",
-  "discount": 0,
-  "max_discount_amount": null,
-  "condition_endow": null,
+  "discount": 5,
+  "max_discount_amount": "200000.00",
+  "condition_endow": "200000.00",
   "image": {
-    "id": 11394,
-    "path": "100/232/800/resources/3e4e1a5c-f486-4df2-b897-e2fc0ad1d13b.png",
+    "id": 18818,
+    "path": "100/232/800/resources/261111a1-d242-4127-8d18-7fbcd53eb9bf.png",
     "extension": "png",
-    "created_at": "2023-01-06T04:16:30Z",
+    "created_at": "2023-05-06T08:00:43Z",
     "modified_at": null
   },
-  "rewards": null,
+  "rewards": [
+    {
+      "id": 434,
+      "name": "Tặng 200 điểm khi thăng hạng Kim Cương",
+      "point": "200.00",
+      "image": {
+        "id": 18819,
+        "path": "100/232/800/resources/b925fdfb-dd11-4974-b63a-e659d561453a.png",
+        "extension": "png",
+        "created_at": "2023-05-06T08:00:43Z",
+        "modified_at": null
+      }
+    }
+  ],
   "members": 6,
-  "created_at": "2023-01-06T04:16:30Z",
-  "updated_at": "2023-01-06T04:16:30Z",
+  "created_at": "2023-05-06T08:00:43Z",
+  "updated_at": "2023-05-06T08:00:43Z",
   "status": true,
-  "description": null
+  "description": [
+    "Nhóm chăm sóc 2-3 nhân viên để hỗ trợ nhanh",
+    "Ưu tiên sử dụng thử sản phẩm của hãng",
+    "Mời tham gia các sự kiện công ty",
+    "Xem live chất lượng cao riêng",
+    "Nhận được trước các chương trình khuyến mãi",
+    "Được tham gia nhóm Fan Cứng trên facebook",
+    "Chăm sóc đặc biệt Zalo VIP, Telegram VIP",
+    "Giảm giá 5% tối đa 1 triệu đồng cho đơn hàng đầu tiên của bạn do khách hàng giới thiệu",
+    "Giảm giá thêm 5% cho 1 đơn hàng vào ngày sinh nhật",
+    "Tặng thêm 200đ khi thăng hạn lên Vàng",
+    "Giảm giá 5% tối đa 200k cho đơn hàng từ 200k"
+  ]
 }

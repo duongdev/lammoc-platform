@@ -377,17 +377,32 @@ model LoyaltyTier {
   tenant    Tenant
 
   name              String
-  description       String?
+  description       String[]
   criteria          String
-  minCondition      Float   @default(0)
+  minCondition      Float    @default(0)
   discount          Float
   maxDiscountAmount Float
   imageUrl          String?
   totalMembers      Int
   status            Boolean
 
-  members         LoyaltyMember[] @relation("loyalty_member_tier")
-  nextTierMembers LoyaltyMember[] @relation("loyalty_member_next_tier")
+  members         LoyaltyMember[]     @relation("loyalty_member_tier")
+  nextTierMembers LoyaltyMember[]     @relation("loyalty_member_next_tier")
+  rewards         LoyaltyTierReward[]
+}
+
+model LoyaltyTierReward {
+  id        String   @id
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  tenant    Tenant
+
+  name     String
+  point    Float   @default(0)
+  imageUrl String?
+
+  loyaltyTier   LoyaltyTier @relation(fields: [loyaltyTierId], references: [id])
+  loyaltyTierId String
 }
 
 model LoyaltyMember {

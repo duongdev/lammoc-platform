@@ -155,10 +155,24 @@ export class SapoLoyalty {
         status: t.status,
         totalMembers: t.members,
         createdAt: new Date(t.created_at),
-        description: t.description,
+        description: t.description ?? [],
         imageUrl: t.image.path,
         minCondition: toNumber(t.min_condition ?? 0),
         updatedAt: new Date(t.updated_at),
+        rewards: t.rewards
+          ? {
+              connectOrCreate: t.rewards.map((r) => ({
+                where: { id: id(r.id) },
+                create: {
+                  id: id(r.id),
+                  name: r.name,
+                  point: toNumber(r.point),
+                  imageUrl: r.image.path,
+                  tenant: this.DB_TENANT,
+                },
+              })),
+            }
+          : undefined,
       }
 
       await transaction.add(
@@ -212,13 +226,20 @@ export class SapoLoyalty {
           tenant: this.DB_TENANT,
         },
       })
+
+      if (!customer) {
+        log(`Customer not found:`, m.phone)
+        failed += 1
+
+        continue
+      }
+
       const tier = await prisma.loyaltyTier.findUnique({
         where: { id: id(m.tier.tier_id) },
       })
 
-      if (!(customer && tier)) {
-        log('member sync failed')
-        log(m)
+      if (!tier) {
+        log(`Tier not found:`, m.tier.tier_name, m.tier.tier_id)
         failed += 1
 
         continue

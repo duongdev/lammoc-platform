@@ -1,10 +1,11 @@
-import { Sapo } from '../services/sapo.service'
+import { SapoLoyalty } from "../services/sapo-loyalty.service"
 
 async function main() {
-  const sapo = new Sapo('thichtulam')
+  const sapo = new SapoLoyalty('store-lam-moc')
 
-  await sapo.syncProducts()
-  await sapo.syncProductVariantPrices()
+  await sapo.syncTiers()
+  await sapo.syncLoyaltyMembers()
+  await sapo.syncLoyaltyPointEvents()
 }
 
 main()
