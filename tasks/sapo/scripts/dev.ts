@@ -1,9 +1,9 @@
 import { Sapo } from '../services/sapo.service'
 
 async function main() {
-  const sapo = new Sapo('store-lam-moc')
+  const sapo = new Sapo('thichtulam')
 
-  await sapo.syncProducts({ countLimit: 1000 })
+  await sapo.syncProducts()
   await sapo.syncProductVariantPrices()
 }
 

@@ -22,6 +22,7 @@ import { normalizePhoneNumber } from '~/utils/account'
 import { PUPPETEER_CONFIG, SAPO_PASS, SAPO_USER } from '../sapo.config'
 import {
   BASE_VARIANT_PRICE,
+  IMPORT_PRICE,
   SAPO_TENANT,
   VARIANT_PRICE,
   VAT_IDS,
@@ -34,6 +35,7 @@ import type {
   SapoProductCategory,
   SapoProductItem,
   SapoTenant,
+  SapoVariantItem,
 } from '../sapo.type'
 import type { PaginationInput } from '../sapo.util'
 import {
@@ -899,6 +901,20 @@ export class Sapo {
       ),
     }))
 
+    // Append the import price if it exists
+    const importPrice = await this.getVariantImportPrice({
+      variantId: variant.id,
+    })
+
+    if (importPrice) {
+      log(`Variant ${variant.id} has import price ${importPrice}`)
+      prices.push({
+        price_list_id: IMPORT_PRICE[this.tenant],
+        name: 'Giá nhập',
+        value: importPrice,
+      })
+    }
+
     // Compare the prices with the current prices in Database
     // If there is any difference, update the variant in Sapo
     const currentPrices = variant.variantPrices.map((p) => ({
@@ -944,5 +960,29 @@ export class Sapo {
 
     log(`Updated [${variant.id}] ${variant.name} to Sapo`)
     return updatedVariant
+  }
+
+  async getVariantImportPrice({ variantId }: { variantId: string }) {
+    const log = this.log.extend(this.getVariantImportPrice.name)
+
+    // Fetch the variant from Sapo
+    const data = await this.sapo
+      .get(`variants/${variantId}.json`)
+      .json<{ variant: SapoVariantItem }>()
+
+    const variant = data.variant
+
+    if (!variant) {
+      log(`Variant ${variantId} not found`)
+      return null
+    }
+
+    // importPrice is the average of positive inventories.mac
+    const importPrice =
+      variant.inventories
+        .filter((i) => !!i.mac)
+        .reduce((acc, i) => acc + i.mac, 0) / variant.inventories.length
+
+    return importPrice
   }
 }

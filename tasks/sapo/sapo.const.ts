@@ -63,3 +63,8 @@ export const VARIANT_PRICE = {
     fHigh: 0.85,
   },
 }
+
+export const IMPORT_PRICE: Record<SapoTenant, number> = {
+  'store-lam-moc': 705927,
+  thichtulam: 1994793,
+}
