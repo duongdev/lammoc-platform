@@ -314,36 +314,51 @@ export class SapoLoyalty {
     })
     let failed = 0
 
-    for await (const e of paginate) {
+    for await (const loyaltyEvent of paginate) {
       const order =
-        e.order_id &&
+        loyaltyEvent.order_id &&
         (await prisma.order.findUnique({
-          where: { id: id(e.order_id) },
-        }))
-      const member =
-        e.customer_id &&
-        (await prisma.loyaltyMember.findUnique({
-          where: { id: id(e.customer_id) },
+          where: { id: id(loyaltyEvent.order_id) },
         }))
 
-      if ((e.order_id && !order) || (e.customer_id && !member)) {
-        log('event failed', e)
+      if (!loyaltyEvent.order_id && !order) {
+        log(
+          'Failed to update loyalty event. Order not found',
+          loyaltyEvent.order_id,
+        )
+        failed += 1
+        continue
+      }
+
+      const member =
+        loyaltyEvent.customer_id &&
+        (await prisma.loyaltyMember.findUnique({
+          where: { id: id(loyaltyEvent.customer_id) },
+        }))
+
+      if (loyaltyEvent.customer_id && !member) {
+        log(
+          'Failed to update loyalty event. Customer not found',
+          loyaltyEvent.customer_id,
+        )
         failed += 1
         continue
       }
 
       const eventData: Prisma.LoyaltyPointEventCreateInput = {
-        id: id(e.id),
+        id: id(loyaltyEvent.id),
         tenant: this.DB_TENANT,
-        activity: e.activity,
-        code: e.code,
-        member: { connect: { id: id(e.customer_id) } },
-        adjustPoints: toNumber(e.adjust_point) ?? 0,
-        createdAt: new Date(e.created_at),
-        order: e.order_id ? { connect: { id: id(e.order_id) } } : undefined,
-        orderCode: e.order_code,
-        points: toNumber(e.point) ?? 0,
-        returnPoint: !!e.return_point,
+        activity: loyaltyEvent.activity,
+        code: loyaltyEvent.code,
+        member: { connect: { id: id(loyaltyEvent.customer_id) } },
+        adjustPoints: toNumber(loyaltyEvent.adjust_point) ?? 0,
+        createdAt: new Date(loyaltyEvent.created_at),
+        order: loyaltyEvent.order_id
+          ? { connect: { id: id(loyaltyEvent.order_id) } }
+          : undefined,
+        orderCode: loyaltyEvent.order_code,
+        points: toNumber(loyaltyEvent.point) ?? 0,
+        returnPoint: !!loyaltyEvent.return_point,
       }
       await transaction.add(
         prisma.loyaltyPointEvent.upsert({
