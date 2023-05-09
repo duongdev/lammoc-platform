@@ -135,7 +135,7 @@ export const gotExtendOptions = ({
   }
 }
 
-/** 
+/**
  * Ceiling price to nearest 1000
  */
 export const roundPrice = (price: number) => {

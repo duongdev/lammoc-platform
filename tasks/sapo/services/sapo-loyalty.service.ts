@@ -5,6 +5,7 @@ import type {
   Prisma,
   Tenant,
 } from '@prisma/client'
+import { isAfter, isSameDay } from 'date-fns'
 import type { Debugger } from 'debug'
 import debug from 'debug'
 import type { Got } from 'got-cjs'
@@ -18,6 +19,7 @@ import { normalizePhoneNumber } from '~/utils/account'
 import { PUPPETEER_CONFIG, SAPO_PASS, SAPO_USER } from '../sapo.config'
 import { SAPO_TENANT } from '../sapo.const'
 import type {
+  SapoLoyaltyAdjustItem,
   SapoLoyaltyMemberItem,
   SapoLoyaltyPointEventItem,
   SapoLoyaltyTierItem,
@@ -219,55 +221,55 @@ export class SapoLoyalty {
     })
     let failed = 0
 
-    for await (const m of paginate) {
+    for await (const member of paginate) {
       const customer = await prisma.customer.findFirst({
         where: {
-          phone: { has: normalizePhoneNumber(m.phone) },
+          phone: { has: normalizePhoneNumber(member.phone) },
           tenant: this.DB_TENANT,
         },
       })
 
       if (!customer) {
-        log(`Customer not found:`, m.phone)
+        log(`Customer not found:`, member.phone)
         failed += 1
 
         continue
       }
 
       const tier = await prisma.loyaltyTier.findUnique({
-        where: { id: id(m.tier.tier_id) },
+        where: { id: id(member.tier.tier_id) },
       })
 
       if (!tier) {
-        log(`Tier not found:`, m.tier.tier_name, m.tier.tier_id)
+        log(`Tier not found:`, member.tier.tier_name, member.tier.tier_id)
         failed += 1
 
         continue
       }
 
       const memberData: Prisma.LoyaltyMemberCreateInput = {
-        id: id(m.id),
+        id: id(member.id),
         tenant: this.DB_TENANT,
         customer: { connect: { id: customer.id } },
-        phone: normalizePhoneNumber(m.phone),
-        status: m.status,
-        tier: { connect: { id: id(m.tier.tier_id) } },
-        createdAt: new Date(m.created_at),
-        expireDate: m.expire_date && new Date(m.expire_date),
-        lastActivityAt: m.activity_at && new Date(m.activity_at),
-        lastOrderAt: m.last_order && new Date(m.last_order),
+        phone: normalizePhoneNumber(member.phone),
+        status: member.status,
+        tier: { connect: { id: id(member.tier.tier_id) } },
+        createdAt: new Date(member.created_at),
+        expireDate: member.expire_date && new Date(member.expire_date),
+        lastActivityAt: member.activity_at && new Date(member.activity_at),
+        lastOrderAt: member.last_order && new Date(member.last_order),
         nextTierRemainingMoney: toNumber(
-          m.tier.remaining_money_for_next_tier ?? 0,
+          member.tier.remaining_money_for_next_tier ?? 0,
         ),
-        nextCondition: m.tier.next_condition,
-        nextTierRemainingPoints: m.tier.remaining_point_for_next_tier,
-        points: toNumber(m.present_point ?? 0),
-        tierSpentPeriod: toNumber(m.tier_spent_period ?? 0),
-        totalSpent: toNumber(m.total_spent ?? 0),
-        totalOrders: toNumber(m.total_order ?? 0),
-        totalUncompletedOrders: toNumber(m.total_uncompleted_order ?? 0),
-        updatedAt: new Date(m.updated_at),
-        usedPoints: toNumber(m.used_point ?? 0),
+        nextCondition: member.tier.next_condition,
+        nextTierRemainingPoints: member.tier.remaining_point_for_next_tier,
+        points: toNumber(member.present_point ?? 0),
+        tierSpentPeriod: toNumber(member.tier_spent_period ?? 0),
+        totalSpent: toNumber(member.total_spent ?? 0),
+        totalOrders: toNumber(member.total_order ?? 0),
+        totalUncompletedOrders: toNumber(member.total_uncompleted_order ?? 0),
+        updatedAt: new Date(member.updated_at),
+        usedPoints: toNumber(member.used_point ?? 0),
       }
 
       await transaction.add(
@@ -372,5 +374,152 @@ export class SapoLoyalty {
     await transaction.close()
 
     log(`Synced ${transaction.proceeded()} loyalty events. Failed: ${failed}`)
+  }
+
+  /** Mr. Vinh's request
+   * He updated points for some customers in Sapo
+   * by mistake, and he wants to fix it.
+   * This function should only run once.
+   */
+  async fixUnintendedLoyaltyPoints() {
+    const log = this.log.extend(this.fixUnintendedLoyaltyPoints.name)
+
+    log(`Starting...`)
+
+    const paginate = this.sapo.paginate<SapoLoyaltyMemberItem>(
+      'customers',
+      getPaginationOptions({
+        searchParams: {
+          sort: 'createdAt,ASC',
+        },
+        perPage: 250,
+      }),
+    )
+
+    let count = 0
+    let adjustQueue: SapoLoyaltyAdjustItem[] = []
+    let proceeded = 0
+
+    const clearQueue = () => {
+      adjustQueue = []
+    }
+
+    const proceedQueue = async () => {
+      await this.adjustLoyaltyPoint(adjustQueue)
+      proceeded += adjustQueue.length
+
+      log(`\n\nProceeded ${proceeded} unintended adjust points\n\n`)
+
+      clearQueue()
+    }
+
+    const addAdjustItem = async (adjustItem: SapoLoyaltyAdjustItem) => {
+      adjustQueue.push(adjustItem)
+
+      if (adjustQueue.length >= 100) {
+        await proceedQueue()
+      }
+    }
+
+    for await (const member of paginate) {
+      count += 1
+
+      // Get his latest point events from Sapo
+      const result = await this.sapo
+        .get(
+          `customers/point-event?id=${member.id}&page=0&per_page=250`, // Assume that he has less than 250 point events
+        )
+        .json<{ data: SapoLoyaltyPointEventItem[] }>()
+
+      const pointEvents = result.data
+
+      const unintendedUpdate = pointEvents.find(
+        (event) =>
+          // Has bonus up rank event with "200.00"
+          event.code === 'bonus_up_rank' &&
+          event.adjust_point === '200.00' &&
+          // It's created within May 06 2023,
+          isSameDay(new Date(event.created_at), new Date('2023-05-06')),
+      )
+
+      if (!unintendedUpdate) {
+        log('Skipped unintended update')
+        continue
+      }
+
+      const revertUpdate = pointEvents.find(
+        (event) =>
+          event.code === 'adjust_manual_point' &&
+          +event.adjust_point <= -199 &&
+          // It's created after May 08 2023,
+          isAfter(new Date(event.created_at), new Date('2023-05-08')),
+      )
+
+      if (revertUpdate) {
+        log('Skipped reverted')
+        continue
+      }
+
+      log(
+        `[${count}] Fixing unintended update for member [${member.id}] ${member.full_name} (${member.phone}) https://loyalty.sapocorp.net/admin/customers/${member.id}`,
+      )
+
+      // Revert the update
+      // Don't need to await
+      await addAdjustItem({
+        customerId: member.id.toString(),
+        adjustPoint: +member.present_point - 200,
+        currentPoint: +member.present_point,
+        customerName: member.full_name,
+        phone: member.phone,
+      })
+    }
+
+    await proceedQueue()
+
+    log(
+      `Finished fixing unintended loyalty points for ${proceeded}/${count} members`,
+    )
+  }
+
+  async adjustLoyaltyPoint(adjustItems: SapoLoyaltyAdjustItem[]) {
+    const log = this.log.extend(`${this.adjustLoyaltyPoint.name}`)
+
+    const items = adjustItems.map(
+      ({ adjustPoint, currentPoint, customerId, customerName, phone }) => ({
+        adjust_point: adjustPoint,
+        currentPoint: currentPoint,
+        note: '',
+        phone,
+        customerName,
+        customerId: customerId,
+        showNote: false,
+      }),
+    )
+
+    const adjustTicket = await this.sapo
+      .post('adjust-paper', {
+        json: {
+          id: 0,
+          code: '',
+          note: '',
+          tags: [],
+          type: 'point',
+          items,
+        },
+      })
+      .json<{ id: number }>()
+
+    log(`Adjust ticket created:`, adjustTicket.id)
+
+    // Publish the ticket
+    await this.sapo.put(`adjust-paper/${adjustTicket.id}?mode=adjust`, {
+      json: {
+        note: '',
+        tags: [],
+      },
+    })
+
+    log(`Adjust ticket published successfully`)
   }
 }

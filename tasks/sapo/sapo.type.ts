@@ -32,3 +32,12 @@ export type SapoProductCategory = {
   status: string
   default: boolean
 }
+
+export type SapoLoyaltyAdjustItem = {
+  customerId: string
+  /** The new point to set. Not the delta */
+  adjustPoint: number
+  currentPoint: number
+  customerName: string
+  phone: string
+}
