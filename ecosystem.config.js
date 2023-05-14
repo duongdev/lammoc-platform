@@ -5,6 +5,7 @@ module.exports = {
       script: 'yarn',
       args: 'sync-sapo-db',
       autorestart: false,
+      cron_restart: '0 */4 * * *',
       env: {
         TRANSACTION_SIZE: 250,
       },
