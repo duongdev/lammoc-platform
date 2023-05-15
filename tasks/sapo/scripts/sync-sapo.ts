@@ -52,6 +52,7 @@ export const syncAllDb = async (tenant: SapoTenant) => {
       sapo.syncCustomers(),
       sapo.syncProductCategories(),
       sapo.syncProducts(),
+      sapo.syncProductVariantPrices(),
     ])
   } catch (error) {
     log('ERROR!', error)

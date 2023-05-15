@@ -4,9 +4,7 @@ import type {
   OrderLineItem,
   Prisma,
   Product,
-  ProductVariant,
   ProductVariantPrice,
-  ProductVariantPriceList,
 } from '@prisma/client'
 import { each } from 'bluebird'
 import type { Debugger } from 'debug'
@@ -831,7 +829,9 @@ export class Sapo {
 
     await each(chunks, async (chunk) => {
       await Promise.all(
-        chunk.map((variant) => this.syncOneProductVariantPrice({ variant })),
+        chunk.map((variant) =>
+          this.syncOneProductVariantPrice({ variantId: variant.id }),
+        ),
       )
     })
 
@@ -841,46 +841,18 @@ export class Sapo {
   /**
    * (#6) Calculates the prices and sync one product variant price to Sapo
    */
-  async syncOneProductVariantPrice({
-    variant: $variant,
-    variantId,
-  }: {
-    variant?: ProductVariant & {
-      product: Product
-      variantPrices: (ProductVariantPrice & {
-        priceList: ProductVariantPriceList
-      })[]
-    }
-    variantId?: string
-  }) {
+  async syncOneProductVariantPrice({ variantId }: { variantId: string }) {
     const log = this.log.extend(this.syncOneProductVariantPrice.name)
 
-    if (!(variantId || $variant)) {
-      throw new Error('Either variantId or variant must be provided')
-    }
-
-    let variant: typeof $variant | null = $variant
-
-    if (!variant) {
-      log(`Fetching variant ${variantId}`)
-      variant = await prisma.productVariant.findFirst({
-        where: { id: variantId, tenant: SAPO_TENANT[this.tenant] },
-        include: {
-          product: true,
-          variantPrices: {
-            include: { priceList: true },
-          },
-        },
-      })
-    }
+    const variant = await this.getVariantDataFromSapo(variantId)
 
     if (!variant) {
       throw new Error(`Variant ${variantId} not found`)
     }
 
     const retailId = VARIANT_PRICE.retail[this.tenant]
-    const retailPrice = variant.variantPrices.find(
-      (p) => p.priceListId === toString(retailId),
+    const retailPrice = variant.variant_prices.find(
+      (p) => p.price_list_id === retailId,
     )?.value
 
     // If the variant has no retail price, skip it
@@ -890,8 +862,8 @@ export class Sapo {
 
     const prices = Object.values(VARIANT_PRICE).map((priceConfig) => ({
       price_list_id: priceConfig[this.tenant],
-      name: variant?.variantPrices.find(
-        (p) => p.priceListId === toString(priceConfig[this.tenant]),
+      name: variant?.variant_prices.find(
+        (p) => p.price_list_id === priceConfig[this.tenant],
       )?.name,
       value: roundPrice(
         retailPrice /
@@ -902,9 +874,7 @@ export class Sapo {
     }))
 
     // Append the import price if it exists
-    const importPrice = await this.getVariantImportPrice({
-      variantId: variant.id,
-    })
+    const importPrice = await this.getVariantImportPrice({ variant })
 
     if (importPrice) {
       log(`Variant ${variant.id} has import price ${importPrice}`)
@@ -917,8 +887,8 @@ export class Sapo {
 
     // Compare the prices with the current prices in Database
     // If there is any difference, update the variant in Sapo
-    const currentPrices = variant.variantPrices.map((p) => ({
-      price_list_id: p.priceListId,
+    const currentPrices = variant.variant_prices.map((p) => ({
+      price_list_id: p.price_list_id,
       name: p.name,
       value: p.value,
     }))
@@ -926,12 +896,9 @@ export class Sapo {
     // Filter different prices between Sapo and Database
     const differentPrices = prices.filter(
       (price) =>
-        !currentPrices.find(
-          (p) => p.price_list_id === toString(price.price_list_id),
-        ) ||
-        currentPrices.find(
-          (p) => p.price_list_id === toString(price.price_list_id),
-        )?.value !== price.value,
+        !currentPrices.find((p) => p.price_list_id === price.price_list_id) ||
+        currentPrices.find((p) => p.price_list_id === price.price_list_id)
+          ?.value !== price.value,
     )
 
     if (differentPrices.length === 0) {
@@ -944,13 +911,13 @@ export class Sapo {
       prices.map((price) => ({
         ...price,
         currentPrice: currentPrices.find(
-          (p) => p.price_list_id === toString(price.price_list_id),
+          (p) => p.price_list_id === price.price_list_id,
         )?.value,
       })),
     )
 
     const updatedVariant = await this.sapo
-      .put(`products/${variant.productId}/variants/${variant.id}.json`, {
+      .put(`products/${variant.product_id}/variants/${variant.id}.json`, {
         json: { variant_prices: prices },
       })
       .json()
@@ -962,9 +929,9 @@ export class Sapo {
     return updatedVariant
   }
 
-  async getVariantImportPrice({ variantId }: { variantId: string }) {
-    const log = this.log.extend(this.getVariantImportPrice.name)
-
+  async getVariantDataFromSapo(
+    variantId: string,
+  ): Promise<SapoVariantItem | null> {
     // Fetch the variant from Sapo
     const data = await this.sapo
       .get(`variants/${variantId}.json`)
@@ -972,9 +939,36 @@ export class Sapo {
 
     const variant = data.variant
 
+    return variant
+  }
+
+  async getVariantImportPrice({
+    variantId,
+    variant: $variant,
+  }: {
+    variantId?: string
+    variant?: SapoVariantItem
+  }) {
+    const log = this.log.extend(this.getVariantImportPrice.name)
+
+    let variant: SapoVariantItem | null | undefined = $variant
+
+    if (!variant && variantId) {
+      variant = await this.getVariantDataFromSapo(variantId)
+    }
+
     if (!variant) {
       log(`Variant ${variantId} not found`)
       return null
+    }
+
+    // If it has import price already, return it
+    const importPriceItem = variant.variant_prices.find(
+      (p) => p.price_list_id === IMPORT_PRICE[this.tenant],
+    )?.value
+
+    if (importPriceItem) {
+      return importPriceItem
     }
 
     // importPrice is the average of positive inventories.mac
