@@ -64,8 +64,23 @@ model Customer {
   orders         Order[]
   accounts       Account[]
   loyaltyMembers LoyaltyMember[]
+  customerProfile CustomerProfile? @relation(fields: [customerProfileId], references: [id])
+  customerProfileId String?
 
   @@index([phone])
+}
+
+model CustomerProfile{
+  id        String @unique
+  facebook  String?
+  job       String?
+  gender    Gender @default(Male)
+  customers Customer[]
+}
+
+enum Gender {
+  Male
+  Female
 }
 
 model Order {

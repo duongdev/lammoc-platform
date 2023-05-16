@@ -6,6 +6,7 @@ import type {
   Product,
   ProductVariantPrice,
 } from '@prisma/client'
+import { Gender } from '@prisma/client'
 import { each } from 'bluebird'
 import type { Debugger } from 'debug'
 import Debug from 'debug'
@@ -978,5 +979,55 @@ export class Sapo {
         .reduce((acc, i) => acc + i.mac, 0) / variant.inventories.length
 
     return importPrice
+  }
+
+  async syncCustomerProfile() {
+    const log = this.log.extend(this.syncCustomerProfile.name)
+
+    log('Starting delete customerProfile')
+    await prisma.customerProfile.deleteMany()
+    log('Completed delete customerProfile')
+
+    const customers = await prisma.customer.findMany({
+      take: 5,
+    })
+
+    const chunks = chunk(customers, 5)
+
+    await each(chunks, async (chunk) => {
+      await Promise.all(
+        chunk.map(async (customer) => {
+          console.log('>>>> ~ Sapo ~ awaiteach ~ customer:', customer)
+
+          customer.phone.map(async (phone) => {
+            const customersByPhone = await prisma.customer.findMany({
+              where: { phone: { has: phone } },
+            })
+
+            const customerProfileData: Prisma.CustomerProfileCreateInput = {
+              id: phone,
+              gender: Gender.Male,
+              customers: {
+                connectOrCreate: customersByPhone.map((customer) => ({
+                  where: { id: toString(phone) },
+                  create: customer,
+                })),
+              },
+            }
+
+            console.dir(customerProfileData, { depth: null })
+            await prisma.customerProfile.upsert({
+              where: { id: phone },
+              create: customerProfileData,
+              update: customerProfileData,
+            })
+
+            // update customerProfileId on Customer ??
+          })
+        }),
+      )
+    })
+
+    log('Finished syncing customer profile')
   }
 }
