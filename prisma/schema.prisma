@@ -72,6 +72,9 @@ model Customer {
 
 model CustomerProfile {
   id        String     @unique
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now())
+
   facebook  String?
   job       String?
   gender    Gender     @default(Male)

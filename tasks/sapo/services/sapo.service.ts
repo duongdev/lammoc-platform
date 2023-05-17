@@ -1006,33 +1006,32 @@ export class Sapo {
 
             const customerProfileData: Prisma.CustomerProfileCreateInput = {
               id: toString(phone),
-              gender: Gender.Male,
+              gender: Gender.Female,
               customers: {
-                connectOrCreate: customersByPhone.map((customer) => ({
-                  where: { id: toString(phone) },
-                  create: {
-                    id: customer.id,
-                    createdAt: customer.createdAt,
-                    updatedAt: customer.updatedAt,
-                    syncedAt: customer.syncedAt,
-                    tenant: customer.tenant,
-                    phone: customer.phone,
-                    name: customer.name,
+                connectOrCreate: {
+                  where: { id: phone },
+                  create: customersByPhone.map((customer) => ({
                     code: customer.code,
-                    email: customer.email,
-                  },
-                })),
+                    name: customer.name,
+                    tenant: customer.tenant,
+                  })),
+                },
               },
             }
 
             console.dir(customerProfileData, { depth: null })
-            await prisma.customerProfile.upsert({
+
+            const customerProfiles = await prisma.customerProfile.upsert({
               where: { id: toString(phone) },
+              update: {},
               create: customerProfileData,
-              update: customerProfileData,
             })
 
-            // update customerProfileId on Customer ??
+            console.log(
+              '>>>> ~ Sapo ~ customer.phone.map ~ customerprofiles:',
+              customerProfiles,
+            )
+            console.log(await prisma.customer.findMany({ take: 5 }))
           })
         }),
       )
