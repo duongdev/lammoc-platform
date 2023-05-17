@@ -57,24 +57,24 @@ model Customer {
   syncedAt  DateTime @updatedAt
   tenant    Tenant
 
-  phone          String[]
-  name           String
-  code           String
-  email          String?
-  orders         Order[]
-  accounts       Account[]
-  loyaltyMembers LoyaltyMember[]
-  customerProfile CustomerProfile? @relation(fields: [customerProfileId], references: [id])
+  phone             String[]
+  name              String
+  code              String
+  email             String?
+  orders            Order[]
+  accounts          Account[]
+  loyaltyMembers    LoyaltyMember[]
+  customerProfile   CustomerProfile? @relation(fields: [customerProfileId], references: [id], onDelete: Cascade, onUpdate: Cascade)
   customerProfileId String?
 
   @@index([phone])
 }
 
-model CustomerProfile{
-  id        String @unique
+model CustomerProfile {
+  id        String     @unique
   facebook  String?
   job       String?
-  gender    Gender @default(Male)
+  gender    Gender     @default(Male)
   customers Customer[]
 }
 

@@ -997,7 +997,7 @@ export class Sapo {
     await each(chunks, async (chunk) => {
       await Promise.all(
         chunk.map(async (customer) => {
-          console.log('>>>> ~ Sapo ~ awaiteach ~ customer:', customer)
+          console.log('>>>> ~ Sapo ~ customer:', customer.phone)
 
           customer.phone.map(async (phone) => {
             const customersByPhone = await prisma.customer.findMany({
@@ -1005,19 +1005,29 @@ export class Sapo {
             })
 
             const customerProfileData: Prisma.CustomerProfileCreateInput = {
-              id: phone,
+              id: toString(phone),
               gender: Gender.Male,
               customers: {
                 connectOrCreate: customersByPhone.map((customer) => ({
                   where: { id: toString(phone) },
-                  create: customer,
+                  create: {
+                    id: customer.id,
+                    createdAt: customer.createdAt,
+                    updatedAt: customer.updatedAt,
+                    syncedAt: customer.syncedAt,
+                    tenant: customer.tenant,
+                    phone: customer.phone,
+                    name: customer.name,
+                    code: customer.code,
+                    email: customer.email,
+                  },
                 })),
               },
             }
 
             console.dir(customerProfileData, { depth: null })
             await prisma.customerProfile.upsert({
-              where: { id: phone },
+              where: { id: toString(phone) },
               create: customerProfileData,
               update: customerProfileData,
             })
