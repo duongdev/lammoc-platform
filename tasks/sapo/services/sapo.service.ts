@@ -1,4 +1,6 @@
 import type {
+  Customer,
+  CustomerProfile,
   DeliveryServiceProvider,
   Order,
   OrderLineItem,
@@ -6,13 +8,13 @@ import type {
   Product,
   ProductVariantPrice,
 } from '@prisma/client'
-import { Gender } from '@prisma/client'
 import { each } from 'bluebird'
+import cuid from 'cuid'
 import type { Debugger } from 'debug'
 import Debug from 'debug'
 import type { Got } from 'got-cjs'
 import got from 'got-cjs'
-import { chunk, flatten, isEqual, pick, toString } from 'lodash'
+import { chunk, flatten, isEqual, omit, pick, toString } from 'lodash'
 import puppeteer from 'puppeteer'
 
 import prisma, { createChunkTransactions } from '~/libs/prisma.server'
@@ -984,59 +986,92 @@ export class Sapo {
   async syncCustomerProfile() {
     const log = this.log.extend(this.syncCustomerProfile.name)
 
-    log('Starting delete customerProfile')
-    await prisma.customerProfile.deleteMany()
-    log('Completed delete customerProfile')
-
-    const customers = await prisma.customer.findMany({
-      take: 5,
+    let customerHaveNotCustomerProfileId = await prisma.customer.findFirst({
+      where: { customerProfileId: null },
     })
 
-    const chunks = chunk(customers, 5)
+    while (customerHaveNotCustomerProfileId) {
+      customerHaveNotCustomerProfileId &&
+        (await this.ensureOneCustomerProfile(customerHaveNotCustomerProfileId))
 
-    await each(chunks, async (chunk) => {
+      customerHaveNotCustomerProfileId = await prisma.customer.findFirst({
+        where: { customerProfileId: null },
+      })
+    }
+
+    log('Finished syncing customer profile')
+  }
+
+  async ensureOneCustomerProfile(customer: Customer): Promise<CustomerProfile> {
+    const log = this.log.extend(this.ensureOneCustomerProfile.name)
+    log('ensureOneCustomerProfile', customer.id)
+
+    // Find another customer has phone same with current customer
+    const customersHaveSamePhone = flatten(
       await Promise.all(
-        chunk.map(async (customer) => {
-          console.log('>>>> ~ Sapo ~ customer:', customer.phone)
+        customer.phone.map(async (customerPhone) => {
+          return await prisma.customer.findMany({
+            where: {
+              phone: { has: customerPhone },
+              customerProfileId: null,
+              id: { not: customer.id },
+            },
+          })
+        }),
+      ),
+    )
 
-          customer.phone.map(async (phone) => {
-            const customersByPhone = await prisma.customer.findMany({
-              where: { phone: { has: phone } },
-            })
+    // Add base customer that not include in query
+    customersHaveSamePhone.push(customer)
 
-            const customerProfileData: Prisma.CustomerProfileCreateInput = {
-              id: toString(phone),
-              gender: Gender.Female,
-              customers: {
-                connectOrCreate: {
-                  where: { id: phone },
-                  create: customersByPhone.map((customer) => ({
-                    code: customer.code,
-                    name: customer.name,
-                    tenant: customer.tenant,
-                  })),
-                },
-              },
-            }
+    const hadCustomerProfileId = customersHaveSamePhone.some(
+      (customerHaveSamePhone) => customerHaveSamePhone.customerProfileId,
+    )
 
-            console.dir(customerProfileData, { depth: null })
+    if (hadCustomerProfileId) {
+      // Find customerProfileId linked to customer list
+      const customerHadCustomerProfile = customersHaveSamePhone.find(
+        (customer) => customer.customerProfileId,
+      ) as Customer
 
-            const customerProfiles = await prisma.customerProfile.upsert({
-              where: { id: toString(phone) },
-              update: {},
-              create: customerProfileData,
-            })
-
-            console.log(
-              '>>>> ~ Sapo ~ customer.phone.map ~ customerprofiles:',
-              customerProfiles,
-            )
-            console.log(await prisma.customer.findMany({ take: 5 }))
+      // Connect all customer to customerProfileId
+      await Promise.all(
+        customersHaveSamePhone.map(async (customerHaveSamePhone) => {
+          await prisma.customer.update({
+            where: { id: customerHaveSamePhone.id },
+            data: customerHadCustomerProfile?.id
+              ? {
+                  customerProfile: {
+                    connect: { id: customerHadCustomerProfile.id as string },
+                  },
+                }
+              : {},
           })
         }),
       )
-    })
 
-    log('Finished syncing customer profile')
+      return await prisma.customerProfile.findFirstOrThrow({
+        where: { id: toString(customerHadCustomerProfile?.id) },
+      })
+    } else {
+      // Create customerProfileId, connect to Customers
+      const customerProfile: Prisma.CustomerProfileCreateInput = {
+        id: cuid(),
+        customers: {
+          connectOrCreate: customersHaveSamePhone.map(
+            (customerHaveSamePhone) => ({
+              where: { id: customerHaveSamePhone.id },
+              create: omit(customerHaveSamePhone, ['customerProfileId']),
+            }),
+          ),
+        },
+      }
+
+      const createdCustomerProfile = await prisma.customerProfile.create({
+        data: customerProfile,
+      })
+
+      return createdCustomerProfile
+    }
   }
 }
