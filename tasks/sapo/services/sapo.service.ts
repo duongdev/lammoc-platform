@@ -9,7 +9,6 @@ import type {
   ProductVariantPrice,
 } from '@prisma/client'
 import { each } from 'bluebird'
-import cuid from 'cuid'
 import type { Debugger } from 'debug'
 import Debug from 'debug'
 import type { Got } from 'got-cjs'
@@ -1056,7 +1055,6 @@ export class Sapo {
     } else {
       // Create customerProfileId, connect to Customers
       const customerProfile: Prisma.CustomerProfileCreateInput = {
-        id: cuid(),
         customers: {
           connectOrCreate: customersHaveSamePhone.map(
             (customerHaveSamePhone) => ({
