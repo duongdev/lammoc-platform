@@ -39,4 +39,4 @@ jobs:
           yarn install --production=false
 
       - name: Run build
-        run: yarn lint --max-warnings=0
+        run: yarn build
