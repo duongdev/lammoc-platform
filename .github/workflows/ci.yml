@@ -1,35 +1,22 @@
-name: Sync Sapo
-on:
-  workflow_dispatch:
-  # repository_dispatch:
-  #   types:
-  #     - webhook
-  #     - SYNC_SAPO
-  schedule:
-    - cron: '0 */1 * * *'
+name: Build and test
+on: push
 concurrency:
   group: ci-${{ github.ref }}
   cancel-in-progress: true
 env:
   CI: true
   NODE_OPTIONS: '--max-old-space-size=8192'
-  JWT_SECRET: ${{ secrets.JWT_SECRET }}
-  SESSION_SECRET: ${{ secrets.SESSION_SECRET }}
-  FIREBASE_PRIVATE: ${{ secrets.FIREBASE_PRIVATE }}
-  SAPO_USER: ${{ secrets.SAPO_USER }}
-  SAPO_PASS: ${{ secrets.SAPO_PASS }}
-  DATABASE_URL: ${{ secrets.DATABASE_URL }}
 
 jobs:
-  sync-sapo:
-    name: Sync sapo to DB
-    runs-on: ubuntu-18.04
-    timeout-minutes: 360
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
     steps:
       - uses: actions/checkout@v3
       - uses: actions/setup-node@v3
         with:
-          node-version: '16'
+          node-version: '18'
 
       - name: Get yarn cache directory path
         id: yarn-cache-dir-path
@@ -42,6 +29,7 @@ jobs:
             ${{ steps.yarn-cache-dir-path.outputs.dir }}
             node_modules
             */*/node_modules
+            .cache
           key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
           restore-keys: |
             ${{ runner.os }}-yarn-
@@ -50,11 +38,5 @@ jobs:
         run: |
           yarn install --production=false
 
-      - run: yarn sync-sapo-db
-        continue-on-error: true
-
-      - name: Repository Dispatch
-        uses: peter-evans/repository-dispatch@v1
-        with:
-          token: ${{ secrets.CUSTOM_PAT }}
-          event-type: SYNC_SAPO
+      - name: Run build
+        run: yarn build
