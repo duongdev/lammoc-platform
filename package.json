@@ -34,7 +34,7 @@
     "bcrypt": "5.1.0",
     "bluebird": "3.7.2",
     "constate": "3.3.2",
-    "date-fns": "2.29.3",
+    "date-fns": "2.30.0",
     "dayjs": "1.11.8",
     "debug": "4.3.4",
     "firebase": "9.20.0",
