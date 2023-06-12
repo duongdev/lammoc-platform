@@ -40,7 +40,7 @@
     "firebase": "9.22.2",
     "firebase-admin": "11.9.0",
     "fuzzysort": "2.0.4",
-    "got": "12.6.1",
+    "got": "13.0.0",
     "got-cjs": "12.5.4",
     "isbot": "3.6.10",
     "jsonwebtoken": "9.0.0",
