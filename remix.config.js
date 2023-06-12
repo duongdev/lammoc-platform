@@ -8,10 +8,11 @@ const { flatRoutes } = require('remix-flat-routes')
 
 module.exports = {
   serverBuildTarget: process.env.VERCEL ? 'vercel' : undefined,
-  server:
-    process.env.NODE_ENV === 'development' || !process.env.VERCEL
-      ? undefined
-      : './server.vercel.js',
+  // server:
+  //   process.env.NODE_ENV === 'development' || !process.env.VERCEL
+  //     ? undefined
+  //     : './server.vercel.js',
+  serverModuleFormat: 'cjs',
   ignoredRouteFiles: ['**/*'],
   future: {
     v2_routeConvention: true,
@@ -19,6 +20,7 @@ module.exports = {
     v2_errorBoundary: true,
     unstable_dev: true,
     v2_normalizeFormMethod: true,
+    v2_headers: true,
   },
   routes: (defineRoutes) => {
     return flatRoutes('routes', defineRoutes, {
