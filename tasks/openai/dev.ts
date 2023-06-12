@@ -1,23 +1,22 @@
-import { convertToHtml } from "./helpers"
-import { generateProductDescription } from "./openai"
+import { convertToHtml, getPlainProductInput } from './helpers'
+import { generateProductDescription } from './openai'
+
+const NAME = 'Hộp dụng cụ trong suốt RINGSTAR R-345'
+const DESCRIPTION = `
+<h3>HỘP DỤNG CỤ TRONG SUỐT RINGSTAR R-345</h3>
+<p>Kích thước: 347×167×119mm .&nbsp;Chất liệu: Nhựa PP cao cấp .&nbsp;Trọng lượng: 0.55kg</p>
+<p>Sản xuất 100% tại Nhật Bản bằng chất liệu nhựa trong suốt và độ bền cao .&nbsp;Khả năng chống trầy.&nbsp;Nhỏ gọn, tiện lợi</p>
+`
 
 async function dev() {
-  const product = {
-    name: 'Máy khoan bê tông cầm tay Bosch GBH 2-24 DRE 06112721K0',
-    description: `Thông số kỹ thuật:
-Công suất đầu vào định mức: 790 W
-Năng lượng va đập, lên tới: 2,7 J
-Trọng lượng: 2,8 kg
-Kích thước dụng cụ (chiều dài): 367 mm
-Kích thước dụng cụ (chiều cao): 210 mm
-Bộ gá dụng cụ: SDS plus
-Phạm vi khoan
-Đường kính khoan tối đa trên tường gạch, máy cắt lõi: 68 mm
-Đường kính khoan tối đa trên kim loại: 13 mm
-Đường kính khoan tối đa trên gỗ: 30 mm`,
-  }
+  const product = getPlainProductInput(NAME, DESCRIPTION.trim())
 
   const generatedContent = await generateProductDescription(product)
+
+  if (!generatedContent) {
+    console.log('No generated content')
+    return
+  }
 
   console.log('generatedContent', generatedContent)
 

@@ -24,7 +24,7 @@ Dữ liệu trả ra bao gồm:
 - safetyNotes: bullet points - dùng sản phẩm này thì cần lưu ý những điều gì để an toàn.
 - maintenance: bullet points - làm sao để sản phẩm sử dụng sản phẩm lâu dài.
 - Kết luận (conclusion): đoạn text nêu bật rằng tại sao sản phẩm này là lựa chọn tốt nhất cho khách hàng.
-- specifications: Liệt kê các thông số kỹ thuật của sản phẩm. Phải biểu diễn dạng key - value chứ không phải array.
+- specifications: Liệt kê các thông số kỹ thuật của sản phẩm không bao gồm tên sản phẩm. Phải biểu diễn dạng key (Tiếng Việt) - value chứ không phải array.
 
 `,
     },

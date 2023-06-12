@@ -9,12 +9,13 @@ import {
   ChatCompletionRequestMessageRoleEnum,
 } from 'openai'
 
-import { PRODUCT_DESCRIPTION_PROMPT_V1 } from './completion'
+import type { GeneratedContent } from './helpers'
+import { PRODUCT_DESCRIPTION_PROMPT_V1 } from './prompt'
 
 export const generateProductDescription = async (product: {
   name: string
   description?: string
-}) => {
+}): Promise<GeneratedContent | null> => {
   const debug = Debug('openai:generateProductDescription')
 
   const openai = new OpenAIApi(
@@ -70,7 +71,17 @@ export const generateProductDescription = async (product: {
     }
 
     try {
-      const json = JSON.parse(content)
+      // Safe JSON parse
+      const json = JSON.parse(
+        content.replace(/[\n\r]+/g, '\n').trim(),
+        (key, value) => {
+          if (typeof value === 'string') {
+            return value.trim()
+          }
+
+          return value
+        },
+      )
 
       return json
     } catch (error) {

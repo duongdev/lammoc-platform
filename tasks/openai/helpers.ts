@@ -1,3 +1,5 @@
+import jsdom from 'jsdom'
+
 export type BulletSection = {
   ul: true
   text: string
@@ -23,6 +25,7 @@ export function convertToHtml(json: GeneratedContent) {
   const safetyNotesHtml = convertBulletSectionToHtml(safetyNotes)
   const maintenanceHtml = convertBulletSectionToHtml(maintenance)
 
+  /* cSpell:disable */
   return `
     <h4><strong>Giới thiệu tổng quan</strong></h4>
     <p>${json.overview}</p>
@@ -52,12 +55,12 @@ export function convertToHtml(json: GeneratedContent) {
       </tbody>
     </table>
   `
+  /* cSpell:enable */
 }
 
 function convertBulletSectionToHtml(section: BulletSection) {
-  const { text, points } = section
+  const { points } = section
   return `
-    <p>${text}</p>
     <ul>
       ${points
         .map((point) => {
@@ -66,4 +69,24 @@ function convertBulletSectionToHtml(section: BulletSection) {
         .join('')}
     </ul>
   `
+}
+
+export function getPlainProductInput(name: string, description: string) {
+  // Run on node.js
+  const { JSDOM } = jsdom
+  const dom = new JSDOM(description)
+  const { document } = dom.window
+  const desc =
+    document.body.textContent
+      ?.trim()
+      // replace multiple spaces with single space
+      .replace(/\s\s+/g, ' ')
+      // replace multiple newlines with single newline
+      .replace(/\n\n+/g, '\n')
+      .trim() ?? ''
+
+  return {
+    name,
+    description: desc,
+  }
 }
