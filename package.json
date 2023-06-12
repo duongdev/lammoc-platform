@@ -11,7 +11,8 @@
     "seed": "DEBUG=Sapo:* tsnd -r dotenv/config -r tsconfig-paths/register ./tasks/common/seed.ts",
     "prod": "sh ./scripts/deploy.sh",
     "sync-sapo-db": "DEBUG=Sapo:* ts-node -r dotenv/config -r tsconfig-paths/register ./tasks/sapo/scripts/sync-sapo.ts",
-    "sapo:dev": "DEBUG=Sapo:* ts-node -r dotenv/config -r tsconfig-paths/register --transpileOnly ./tasks/sapo/scripts/dev.ts"
+    "sapo:dev": "DEBUG=Sapo:* ts-node -r dotenv/config -r tsconfig-paths/register --transpileOnly ./tasks/sapo/scripts/dev.ts",
+    "openai:dev": "DEBUG=openai:* ts-node -r dotenv/config -r tsconfig-paths/register --transpileOnly ./tasks/openai/dev.ts"
   },
   "dependencies": {
     "@emotion/react": "11.11.1",
@@ -47,6 +48,7 @@
     "lodash": "4.17.21",
     "next-barcode": "1.4.0",
     "numeral": "2.0.6",
+    "openai": "3.2.1",
     "puppeteer": "20.5.0",
     "query-string": "8.1.0",
     "react": "18.2.0",
