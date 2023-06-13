@@ -47,7 +47,7 @@
     "lodash": "4.17.21",
     "next-barcode": "1.4.0",
     "numeral": "2.0.6",
-    "puppeteer": "20.7.0",
+    "puppeteer": "20.7.1",
     "query-string": "8.1.0",
     "react": "18.2.0",
     "react-dom": "18.2.0",
