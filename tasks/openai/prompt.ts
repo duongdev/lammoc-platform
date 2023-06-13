@@ -20,7 +20,7 @@ Dữ liệu trả ra bao gồm:
 - shortDescription: Một đoạn văn đưa ra gợi ý tại sao nên mua sản phẩm này.
 - overview: Giới thiệu 1 đoạn dẫn nhập cho thông tin bên dưới. Đoạn này phải nêu bật được các thông số quan trọng nhất của sản phẩm.
 - Những điểm nổi bật của sản phẩm (coreFeatures): bullet points - đoạn text nêu bật các thông số và diễn giải chi tiết tại sao nó quan trọng
-- whoShouldBy: bullet points - liệt kê các đối tượng nên mua và tại sao nên mua.
+- Ai nên mua (whoShouldBy): bullet points - liệt kê các đối tượng nên mua và tại sao nên mua.
 - safetyNotes: bullet points - dùng sản phẩm này thì cần lưu ý những điều gì để an toàn.
 - maintenance: bullet points - làm sao để sản phẩm sử dụng sản phẩm lâu dài.
 - Kết luận (conclusion): đoạn text nêu bật rằng tại sao sản phẩm này là lựa chọn tốt nhất cho khách hàng.

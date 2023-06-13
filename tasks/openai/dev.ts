@@ -11,8 +11,8 @@ const DESCRIPTION = `
 `
 
 async function dev() {
-  const sapoWeb = new SapoWeb()
-  sapoWeb.syncSEOProductDescription()
+  const sapoWeb = new SapoWeb('store-lam-moc')
+  sapoWeb.generateProductDescriptionByVendors()
   // const product = getPlainProductInput(NAME, DESCRIPTION.trim())
 
   // const generatedContent = await generateProductDescription(product)

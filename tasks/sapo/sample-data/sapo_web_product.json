@@ -1,0 +1,90 @@
+{
+  "id": 30266881,
+  "name": "Kìm cắt nhựa lưỡi tròn FUJIYA -  APN-185RS",
+  "alias": "kim-cat-nhua-luoi-tron-fujiya-apn-185rs",
+  "vendor": "FUJIYA",
+  "product_type": "Kìm cắt nhựa",
+  "meta_title": null,
+  "meta_description": null,
+  "summary": null,
+  "published_on": "2023-03-29T08:42:00Z",
+  "template_layout": null,
+  "created_on": "2023-03-29T08:42:20Z",
+  "modified_on": "2023-06-01T13:19:00Z",
+  "content": "<h2><strong>Kìm cắt nhựa lưỡi tròn FUJIYA - &nbsp;APN-185RS</strong></h2>\n<p>&nbsp;</p>\n<p>THÔNG SỐ KỸ THUẬT:</p>\n<p>- Thương hiệu: Fujiya Japan</p>\n<p>- Xuất xứ: Việt Nam</p>\n<p>- Trọng lượng: 245g</p>\n<p>- Kích thước(mm): 185 mm</p>\n<p>- Chiều dài thực tế: 186 mm</p>\n<p>- Khả năng cắt dây nhựa: φ5.0mm</p>\n<p>- Kích thước hộp (HxWxD): 223 x 73 x 20mm</p>\n<p>&nbsp;</p>\n<p>ƯU ĐIỂM NỔI BẬT:</p>\n<p>- Được sản xuất với kỹ thuật chuyên nghiệp, áp dụng phương pháp sử lý nhiệt độc quyền dành cho chất liệu thép đặc thù chất lượng cao.</p>\n<p>- Phần lưỡi với thiết kế tròn được tinh luyện từ thép hợp kim cứng với độ bền cao, hạn chế cong vênh. Nhờ công nghệ mài lưỡi phát triển mà lưỡi cắt có độ mỏng và độ sắc bén cao phù hợp nhất bén nên thuận lợi cho thao tác cắt các ba via của sản phẩm đúc nhựa, khuôn mẫu nhựa .</p>\n<p>- Phần cầm tay khoa học được bọc bằng nhựa tổng hợp có khả năng cách nhiệt, điện vừa giúp đảm bảo an toàn cho người dùng vừa tạo độ ma sát làm giảm trơn trượt tránh tê mỏi tay khi làm việc lâu.</p>\n<p>- Phần lò xo được thiết kể để thao tác một cách linh hoạt.</p>\n<p>&nbsp;</p>\n<p>CẢNH BÁO:</p>\n<p>- Không sử dụng để cắt vật có nguồn điện đi qua có khả năng gây nhiễm điện</p>\n<p>&nbsp;</p>\n<p><strong>CHÚ Ý:</strong></p>\n<p>- Không sử dụng ngoài mục đích của sản phẩm - Khi thao tác vui lòng xác nhận điểm an toàn xung quanh.</p>\n<p>- Trang bị thiết bị an toàn như kính bảo hộ, ... khi thao tác. - Không sử dụng quá năng lực cho phép của sản phẩm.</p>\n<p>&nbsp;</p>\n<p><strong>ỨNG DỤNG:&nbsp;</strong></p>\n<p>- Sử dụng phổ biến trong ngành công nghiệp, cơ khí, chế tạo, sửa chữa, lắp ráp…</p>\n<p>- Dùng để cắt, giữ, kẹp vật dụng.</p>",
+  "tags": "FUJIYA, label1-Hàng chính hãng",
+  "status": "active",
+  "images": [
+    {
+      "id": 65889478,
+      "product_id": 30266881,
+      "position": 1,
+      "variant_ids": [
+        85083777
+      ],
+      "created_on": "2023-03-29T08:42:21Z",
+      "modified_on": "2023-03-29T08:42:21Z",
+      "src": "https://bizweb.dktcdn.net/100/377/825/products/apn-185fs-1679556075374.png?v=1680079341877",
+      "alt": "",
+      "filename": "apn-185fs-1679556075374.png",
+      "size": 91764,
+      "width": 500,
+      "height": 500
+    }
+  ],
+  "image": {
+    "id": 65889478,
+    "product_id": 30266881,
+    "position": 1,
+    "variant_ids": [
+      85083777
+    ],
+    "created_on": "2023-03-29T08:42:21Z",
+    "modified_on": "2023-03-29T08:42:21Z",
+    "src": "https://bizweb.dktcdn.net/100/377/825/products/apn-185fs-1679556075374.png?v=1680079341877",
+    "alt": "",
+    "filename": "apn-185fs-1679556075374.png",
+    "size": 91764,
+    "width": 500,
+    "height": 500
+  },
+  "variants": [
+    {
+      "id": 85083777,
+      "inventory_item_id": 85083777,
+      "barcode": "4952520340059",
+      "sku": "APN-185RS",
+      "price": 185000,
+      "compare_at_price": 0,
+      "option1": "APN-185RS",
+      "option2": null,
+      "option3": null,
+      "taxable": true,
+      "inventory_management": "bizweb",
+      "inventory_policy": "continue",
+      "inventory_quantity": 1,
+      "requires_shipping": true,
+      "weight": 800,
+      "weight_unit": "g",
+      "image_id": 65889478,
+      "position": 1,
+      "created_on": "2023-03-29T08:42:20Z",
+      "modified_on": "2023-06-01T13:18:56Z",
+      "title": "APN-185RS",
+      "grams": 800,
+      "product_id": 30266881
+    }
+  ],
+  "options": [
+    {
+      "id": 83583679,
+      "name": "Title",
+      "position": 1,
+      "created_on": "2023-03-29T08:42:20Z",
+      "modified_on": "2023-03-29T08:42:20Z",
+      "values": [
+        "APN-185RS"
+      ]
+    }
+  ]
+}

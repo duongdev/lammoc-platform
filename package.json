@@ -12,7 +12,7 @@
     "prod": "sh ./scripts/deploy.sh",
     "sync-sapo-db": "DEBUG=Sapo:* ts-node -r dotenv/config -r tsconfig-paths/register ./tasks/sapo/scripts/sync-sapo.ts",
     "sapo:dev": "DEBUG=Sapo:* ts-node -r dotenv/config -r tsconfig-paths/register --transpileOnly ./tasks/sapo/scripts/dev.ts",
-    "openai:dev": "DEBUG=openai:* ts-node -r dotenv/config -r tsconfig-paths/register --transpileOnly ./tasks/openai/dev.ts"
+    "openai:dev": "DEBUG=openai:*,sapo-web:* ts-node -r dotenv/config -r tsconfig-paths/register --transpileOnly ./tasks/openai/dev.ts"
   },
   "dependencies": {
     "@emotion/react": "11.11.1",

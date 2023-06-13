@@ -6,3 +6,4 @@ node_modules
 /api
 .env
 yarn-error.log
+tasks/sapo/services/processors

@@ -91,6 +91,6 @@ export const generateProductDescription = async (product: {
     }
   } catch (error: any) {
     debug('OpenAI error:', error.response?.data?.error)
-    throw error
+    return null
   }
 }
