@@ -1,3 +1,5 @@
+import { SapoWeb } from 'tasks/sapo/services/sapo-web.service'
+
 import { convertToHtml, getPlainProductInput } from './helpers'
 import { generateProductDescription } from './openai'
 
@@ -9,18 +11,20 @@ const DESCRIPTION = `
 `
 
 async function dev() {
-  const product = getPlainProductInput(NAME, DESCRIPTION.trim())
+  const sapoWeb = new SapoWeb()
+  sapoWeb.syncSEOProductDescription()
+  // const product = getPlainProductInput(NAME, DESCRIPTION.trim())
 
-  const generatedContent = await generateProductDescription(product)
+  // const generatedContent = await generateProductDescription(product)
 
-  if (!generatedContent) {
-    console.log('No generated content')
-    return
-  }
+  // if (!generatedContent) {
+  //   console.log('No generated content')
+  //   return
+  // }
 
-  console.log('generatedContent', generatedContent)
+  // console.log('generatedContent', generatedContent)
 
-  console.log(convertToHtml(generatedContent))
+  // console.log(convertToHtml(generatedContent))
 }
 
 dev()

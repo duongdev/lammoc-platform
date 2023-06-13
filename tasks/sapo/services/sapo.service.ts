@@ -16,8 +16,6 @@ import got from 'got-cjs'
 import { chunk, flatten, isEqual, omit, pick, toString } from 'lodash'
 import puppeteer from 'puppeteer'
 
-import { convertToHtml, getPlainProductInput } from 'tasks/openai/helpers'
-import { generateProductDescription } from 'tasks/openai/openai'
 import prisma, { createChunkTransactions } from '~/libs/prisma.server'
 import { normalizePhoneNumber } from '~/utils/account'
 
@@ -1072,72 +1070,6 @@ export class Sapo {
       })
 
       return createdCustomerProfile
-    }
-  }
-
-  async ensureSEOProductDescription(product: SapoProductItem) {
-    const log = this.log.extend(this.ensureSEOProductDescription.name)
-    log('updateProductContent')
-
-    // Find first product have not tag SEO
-    const isSEO =
-      product.tags
-        .split(',')
-        .map((tag) => tag.trim())
-        .filter((t) => t === 'SEO').length === 1
-
-    if (!isSEO) {
-      // Process OpenAI description
-      const productInput = getPlainProductInput(
-        product.name,
-        product.description.trim(),
-      )
-
-      const generatedContent = await generateProductDescription(productInput)
-
-      if (!generatedContent) {
-        console.log('No generated content')
-
-        // update GPT_ERR to tag
-        const updatedProduct = await this.sapo
-          .put(`products/#${product.id}.json`, {
-            json: { tags: [...product.tags, 'GPT_ERR'] },
-          })
-          .catch((error) => {
-            console.log(error.response.body)
-          })
-        return updatedProduct
-      }
-
-      const htmlParse = convertToHtml(generatedContent)
-
-      // Update description
-      const updatedProduct = await this.sapo
-        .put(`products/#${product.id}.json`, {
-          json: {
-            description: htmlParse,
-            tags: [...product.tags, 'SEO'],
-          },
-        })
-        .catch((error) => {
-          console.log(error.response.body)
-        })
-
-      return updatedProduct
-    }
-    return
-  }
-
-  // TODO: chạy song song, config được thread
-  async syncSEOProductDescription({ options }: { options?: PaginationInput }) {
-    const paginate = this.sapo.paginate<SapoProductItem>(
-      'products.json',
-      getPaginationOptions(options),
-    )
-
-    // filter category
-    for await (const product of paginate) {
-      this.ensureSEOProductDescription(product)
     }
   }
 }
