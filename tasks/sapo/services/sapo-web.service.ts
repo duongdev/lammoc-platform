@@ -38,7 +38,7 @@ export class SapoWeb {
 
   async generateProductDescriptionByVendors() {
     const vendors = SAPO_WEB_GPT_PROD_VENDOR_WHITELIST
-    const THREADS = 4
+    const THREADS = 20
     const processors = Array.from(
       { length: THREADS },
       (_, i) =>
@@ -73,7 +73,9 @@ export class SapoWeb {
               filePath,
               `isWorking: ${processor.isWorking}\nTotal items: ${
                 processor.items.length
-              }\n${processor.items.map((item) => item.name).join('\n')}`,
+              }\n${processor.items
+                .map((item) => `[${item.id}] ${item.name}`)
+                .join('\n')}`,
             )
 
             if (processor.isWorking) {
@@ -96,7 +98,9 @@ export class SapoWeb {
             )
 
             try {
-              await this.ensureSEOProductDescription(product)
+              await this.ensureSEOProductDescription(product).catch(
+                async () => await this.ensureSEOProductDescription(product),
+              )
               log(
                 '[%s] Processed product: [%s] %s',
                 processor.name,
@@ -105,6 +109,12 @@ export class SapoWeb {
               )
             } catch (error) {
               console.error(error)
+              // Append to errors.txt file
+              writeFileSync(
+                join(__dirname, './processors/errors.txt'),
+                `[${product.id}] ${product.name}\n${error}\n=====\n`,
+                { flag: 'a' },
+              )
             }
             processor.isWorking = false
           }
@@ -183,14 +193,40 @@ export class SapoWeb {
       product.content.trim(),
     )
 
-    const generatedContent = await generateProductDescription(productInput)
-    // const generatedContent = mock
+    try {
+      const generatedContent = await generateProductDescription(productInput)
 
-    if (!generatedContent) {
-      console.log(`[${product.id}] No generated content`)
+      if (!generatedContent) {
+        throw new Error('No generated content')
+      }
 
+      const htmlParse = convertToHtml(generatedContent as any)
+
+      // Update description
+      const updatedProduct = await this.sapoWeb
+        .put(`products/${product.id}.json`, {
+          json: {
+            product: {
+              id: product.id,
+              content: htmlParse,
+              tags: uniq([
+                ...product.tags.split(', ').filter((t) => t !== 'GPT_ERR'),
+                'SEO',
+              ]).join(', '),
+              summary: generatedContent.shortDescription,
+              meta_description: generatedContent.shortDescription,
+            },
+          },
+        })
+        .json()
+        .catch((error) => {
+          console.log(error.response.body)
+        })
+
+      return updatedProduct
+    } catch (error) {
       // update GPT_ERR to tag
-      const updatedFailGPTProduct = await this.sapoWeb
+      await this.sapoWeb
         .put(`products/${product.id}.json`, {
           json: {
             product: {
@@ -203,32 +239,8 @@ export class SapoWeb {
         .catch((error) => {
           console.log(error.response.body)
         })
-      return updatedFailGPTProduct
+
+      throw error
     }
-
-    const htmlParse = convertToHtml(generatedContent as any)
-
-    // Update description
-    const updatedProduct = await this.sapoWeb
-      .put(`products/${product.id}.json`, {
-        json: {
-          product: {
-            id: product.id,
-            content: htmlParse,
-            tags: uniq([
-              ...product.tags.split(', ').filter((t) => t !== 'GPT_ERR'),
-              'SEO',
-            ]).join(', '),
-            summary: generatedContent.shortDescription,
-            meta_description: generatedContent.shortDescription,
-          },
-        },
-      })
-      .json()
-      .catch((error) => {
-        console.log(error.response.body)
-      })
-
-    return updatedProduct
   }
 }

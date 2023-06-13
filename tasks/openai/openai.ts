@@ -87,6 +87,11 @@ export const generateProductDescription = async (product: {
     } catch (error) {
       console.log(content)
       debug('JSON parse error:', error)
+
+      if (error instanceof Error) {
+        throw new Error(`JSON parse error: ${error.message}\n${content}`)
+      }
+
       return null
     }
   } catch (error: any) {

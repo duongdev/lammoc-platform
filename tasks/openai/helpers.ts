@@ -11,6 +11,7 @@ export type GeneratedContent = {
   overview: string
   coreFeatures: BulletSection
   whoShouldBuy: BulletSection
+  whoShouldBy: BulletSection
   safetyNotes: BulletSection
   maintenance: BulletSection
   conclusion: string
@@ -18,15 +19,24 @@ export type GeneratedContent = {
 }
 
 export function convertToHtml(json: GeneratedContent) {
-  const { coreFeatures, whoShouldBuy, safetyNotes, maintenance } = json
+  try {
+    const {
+      coreFeatures,
+      whoShouldBuy,
+      whoShouldBy,
+      safetyNotes,
+      maintenance,
+    } = json
 
-  const coreFeaturesHtml = convertBulletSectionToHtml(coreFeatures)
-  const whoShouldBuyHtml = convertBulletSectionToHtml(whoShouldBuy)
-  const safetyNotesHtml = convertBulletSectionToHtml(safetyNotes)
-  const maintenanceHtml = convertBulletSectionToHtml(maintenance)
+    const coreFeaturesHtml = convertBulletSectionToHtml(coreFeatures)
+    const whoShouldBuyHtml = convertBulletSectionToHtml(
+      whoShouldBuy || whoShouldBy,
+    )
+    const safetyNotesHtml = convertBulletSectionToHtml(safetyNotes)
+    const maintenanceHtml = convertBulletSectionToHtml(maintenance)
 
-  /* cSpell:disable */
-  return `
+    /* cSpell:disable */
+    return `
     <h4><strong>Giới thiệu tổng quan</strong></h4>
     <p>${json.overview}</p>
     <h4><strong>Những điểm nổi bật của sản phẩm</strong></h4>
@@ -55,7 +65,12 @@ export function convertToHtml(json: GeneratedContent) {
       </tbody>
     </table>
   `
-  /* cSpell:enable */
+    /* cSpell:enable */
+  } catch (error) {
+    if (error instanceof Error) {
+      throw new Error(`${error.message}\n${JSON.stringify(json, null, 2)}`)
+    }
+  }
 }
 
 function convertBulletSectionToHtml(section: BulletSection) {
