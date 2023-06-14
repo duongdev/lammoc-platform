@@ -1,10 +1,12 @@
 import jsdom from 'jsdom'
 
-export type BulletSection = {
-  ul: true
-  text: string
-  points: string[]
-}
+export type BulletSection =
+  | {
+      ul: true
+      text: string
+      points: string[]
+    }
+  | Omit<Record<string, string>, 'ul' | 'points'>
 
 export type GeneratedContent = {
   shortDescription: string
@@ -74,8 +76,9 @@ export function convertToHtml(json: GeneratedContent) {
 }
 
 function convertBulletSectionToHtml(section: BulletSection) {
-  const { points } = section
-  return `
+  if (section.points instanceof Array) {
+    const { points } = section
+    return `
     <ul>
       ${points
         .map((point) => {
@@ -84,6 +87,17 @@ function convertBulletSectionToHtml(section: BulletSection) {
         .join('')}
     </ul>
   `
+  }
+
+  return `<ul>
+    ${Object.entries(section)
+      .map(([key, value]) => {
+        return `<li><p><strong>${key}</strong>${
+          value ? `: ${value}` : ''
+        }</p></li>`
+      })
+      .join('')}
+  </ul>`
 }
 
 export function getPlainProductInput(name: string, description: string) {

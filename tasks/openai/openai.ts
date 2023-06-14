@@ -43,12 +43,15 @@ export const generateProductDescription = async (product: {
     let content: string = ''
 
     while (shouldContinue) {
-      const response = await openai.createChatCompletion({
-        model: 'gpt-3.5-turbo',
-        messages,
-        temperature: 0.7,
-        top_p: 1,
-      })
+      const response = await openai.createChatCompletion(
+        {
+          model: 'gpt-3.5-turbo',
+          messages,
+          temperature: 0.7,
+          top_p: 1,
+        },
+        { timeout: 3 * 60 * 1000 },
+      )
 
       data = response.data
 
@@ -70,10 +73,15 @@ export const generateProductDescription = async (product: {
       return null
     }
 
+    debug('Content:', content)
+
     try {
       // Safe JSON parse
       const json = JSON.parse(
-        content.replace(/[\n\r]+/g, '\n').trim(),
+        content
+          .replace(/[\n\r]+/g, '\n')
+          .replace(/,\n\]/g, '\n]')
+          .trim(),
         (key, value) => {
           if (typeof value === 'string') {
             return value.trim()
@@ -81,7 +89,7 @@ export const generateProductDescription = async (product: {
 
           return value
         },
-      )
+      ) as GeneratedContent
 
       return json
     } catch (error) {

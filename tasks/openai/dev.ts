@@ -11,8 +11,10 @@ const DESCRIPTION = `
 `
 
 async function dev() {
-  const sapoWeb = new SapoWeb('store-lam-moc')
-  sapoWeb.generateProductDescriptionByVendors()
+  const sapoWeb1 = new SapoWeb('store-lam-moc')
+  const sapoWeb2 = new SapoWeb('thichtulam')
+  sapoWeb1.generateProductDescriptionByVendors()
+  sapoWeb2.generateProductDescriptionByVendors()
   // const product = getPlainProductInput(NAME, DESCRIPTION.trim())
 
   // const generatedContent = await generateProductDescription(product)

@@ -43,6 +43,17 @@ export const SAPO_WEB_GPT_PROD_VENDOR_WHITELIST = [
   'Star-M',
   'Gyokucho',
   'Ringstar',
+  'Ingco',
+  'Tolsen',
+  'Kingblue',
+  'Workpro',
+  'DCA',
+  'Makute',
+  'Sasuke',
+  'Cmart',
+  'C-mart',
+  'Buddy',
+  'Senka',
 ]
 
 export const SAPO_WEB_GPT_PROD_VENDOR_BLACKLIST = ['L.Co']

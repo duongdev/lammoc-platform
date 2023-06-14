@@ -25,7 +25,7 @@ export class SapoWeb {
     private readonly tenant: SapoTenant,
     private logger?: Debugger,
   ) {
-    this.log = logger || Debug('sapo-web')
+    this.log = logger || Debug(`sapo-web:${tenant}`)
 
     const prefixUrl = SAPO_WEB_API_BASE_URL_PREFIX[tenant]
 
@@ -38,7 +38,7 @@ export class SapoWeb {
 
   async generateProductDescriptionByVendors() {
     const vendors = SAPO_WEB_GPT_PROD_VENDOR_WHITELIST
-    const THREADS = 20
+    const THREADS = +(process.env.THREADS || '1')
     const processors = Array.from(
       { length: THREADS },
       (_, i) =>
@@ -48,15 +48,20 @@ export class SapoWeb {
           isWorking: boolean
         }),
     )
+    /** Finished adding all products to processors */
     let finished = false
 
     const processThreads = () =>
       new Promise((resolve) => {
         const log = this.log.extend(
-          `${this.generateProductDescriptionByVendors.name}:processThreads}`,
+          `${this.generateProductDescriptionByVendors.name}:processThreads`,
         )
         const interval = setInterval(async () => {
-          if (finished) {
+          const isEmpty = processors.every(
+            (processor) => !processor.items.length,
+          )
+
+          if (finished && isEmpty) {
             log('All threads finished. Exit!')
             clearInterval(interval)
             resolve(true)
@@ -66,7 +71,7 @@ export class SapoWeb {
             // Log status to file
             const filePath = join(
               __dirname,
-              `./processors/${processor.name}.txt`,
+              `./processors/${this.tenant}/${processor.name}.txt`,
             )
 
             writeFileSync(
@@ -98,9 +103,7 @@ export class SapoWeb {
             )
 
             try {
-              await this.ensureSEOProductDescription(product).catch(
-                async () => await this.ensureSEOProductDescription(product),
-              )
+              await this.ensureSEOProductDescription(product)
               log(
                 '[%s] Processed product: [%s] %s',
                 processor.name,
@@ -111,7 +114,7 @@ export class SapoWeb {
               console.error(error)
               // Append to errors.txt file
               writeFileSync(
-                join(__dirname, './processors/errors.txt'),
+                join(__dirname, `./processors/${this.tenant}/errors.txt`),
                 `[${product.id}] ${product.name}\n${error}\n=====\n`,
                 { flag: 'a' },
               )
@@ -125,7 +128,7 @@ export class SapoWeb {
 
     for await (const vendor of vendors) {
       const log = this.log.extend(
-        `${this.generateProductDescriptionByVendors.name}:${this.generateProductDescriptionByVendors.name}`,
+        `${this.generateProductDescriptionByVendors.name}`,
       )
 
       log('Start generating product description for vendor: %s', vendor)
@@ -163,8 +166,12 @@ export class SapoWeb {
       for await (const product of paginate) {
         // log(`Processing product: [${product.id}] ${product.name}`)
 
-        if (product.tags.split(', ').includes('SEO')) {
-          log(`[${product.id}] Product already have SEO tag. Skipped`)
+        if (
+          product.tags.split(', ').includes('SEO') &&
+          !product.content.includes(`</ul>
+<p>}</p>`)
+        ) {
+          // log(`[${product.id}] Product already have SEO tag. Skipped`)
           continue
         }
 
@@ -181,6 +188,8 @@ export class SapoWeb {
         processor.items.push(product)
       }
     }
+
+    finished = true
   }
 
   async ensureSEOProductDescription(product: SapoWebProduct) {
@@ -212,6 +221,7 @@ export class SapoWeb {
               tags: uniq([
                 ...product.tags.split(', ').filter((t) => t !== 'GPT_ERR'),
                 'SEO',
+                'GPT_1.0.0',
               ]).join(', '),
               summary: generatedContent.shortDescription,
               meta_description: generatedContent.shortDescription,
