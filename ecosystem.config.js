@@ -23,7 +23,7 @@ module.exports = {
     {
       name: 'gpt',
       script: 'yarn',
-      args: 'openai:gen-prod-description',
+      args: 'openai:gen-prod-desc',
       env: {
         THREADS: 1,
       },
