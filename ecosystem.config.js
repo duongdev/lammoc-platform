@@ -20,5 +20,13 @@ module.exports = {
         PORT: 80,
       },
     },
+    {
+      name: 'gpt',
+      script: 'yarn',
+      args: 'openai:gen-prod-description',
+      env: {
+        THREADS: 1,
+      },
+    },
   ],
 }

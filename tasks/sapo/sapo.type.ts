@@ -8,6 +8,7 @@ import type loyalty_point_event_item from './sample-data/loyalty_point_event_ite
 import type loyalty_tier_item from './sample-data/loyalty_tier_item.json'
 import type order_item from './sample-data/order_item.json'
 import type product_item from './sample-data/product_item.json'
+import type sapo_web_product from './sample-data/sapo_web_product.json'
 
 export type SapoTenant = 'store-lam-moc' | 'thichtulam'
 export type SapoAccount = typeof account
@@ -20,6 +21,7 @@ export type SapoDeliveryServiceProviderItem =
 export type SapoLoyaltyPointEventItem = typeof loyalty_point_event_item
 export type SapoLoyaltyMemberItem = typeof loyalty_member_item
 export type SapoLoyaltyTierItem = typeof loyalty_tier_item
+export type SapoWebProduct = typeof sapo_web_product
 
 export type SapoProductCategory = {
   id: number
