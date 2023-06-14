@@ -1,4 +1,5 @@
 import { SapoWeb } from 'tasks/sapo/services/sapo-web.service'
+import { wait } from '~/utils/common'
 
 async function run() {
   const sapoWeb1 = new SapoWeb('store-lam-moc')
@@ -9,6 +10,8 @@ async function run() {
     sapoWeb2.generateProductDescriptionByVendors(),
   ])
 
+  await wait(60 * 1000)
+  
   run()
 }
 
