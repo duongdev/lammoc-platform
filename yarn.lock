@@ -2821,6 +2821,13 @@
     set-cookie-parser "^2.4.8"
     source-map "^0.7.3"
 
+"@remix-run/v1-route-convention@^0.1.2":
+  version "0.1.2"
+  resolved "https://registry.yarnpkg.com/@remix-run/v1-route-convention/-/v1-route-convention-0.1.2.tgz#617e021ffd3b5c8c1ba2a3da36c87c365e81abb5"
+  integrity sha512-vlcG2+uNVMf0euoFzM3BR3fgj0xYhjQPSufxK0sCCOXVGCteAqfXtcMQs2pZVYrKjeXLL+8ok2L9ThyZkhyt+A==
+  dependencies:
+    minimatch "^7.4.3"
+
 "@remix-run/vercel@1.18.1":
   version "1.18.1"
   resolved "https://registry.yarnpkg.com/@remix-run/vercel/-/vercel-1.18.1.tgz#994bf7c5101cecc41b5f6d1fc7954ed11de7b647"
@@ -8039,6 +8046,13 @@ minimatch@^5.0.1, minimatch@^5.1.0:
   dependencies:
     brace-expansion "^2.0.1"
 
+minimatch@^7.4.3:
+  version "7.4.6"
+  resolved "https://registry.yarnpkg.com/minimatch/-/minimatch-7.4.6.tgz#845d6f254d8f4a5e4fd6baf44d5f10c8448365fb"
+  integrity sha512-sBz8G/YjVniEz6lKPNpKxXwazJe4c19fEfV2GDMX6AjFz+MX9uDWIZW8XreVhkFW3fkIdTv/gxWr/Kks5FFAVw==
+  dependencies:
+    brace-expansion "^2.0.1"
+
 minimatch@^9.0.0:
   version "9.0.1"
   resolved "https://registry.yarnpkg.com/minimatch/-/minimatch-9.0.1.tgz#8a555f541cf976c622daf078bb28f29fb927c253"
@@ -9511,11 +9525,12 @@ remark-rehype@^9.0.0:
     mdast-util-to-hast "^11.0.0"
     unified "^10.0.0"
 
-remix-flat-routes@0.5.8:
-  version "0.5.8"
-  resolved "https://registry.yarnpkg.com/remix-flat-routes/-/remix-flat-routes-0.5.8.tgz#3267d398491d07d6e069385d15838044b7342659"
-  integrity sha512-wMKS48CR5NN+wcMu34JUljcVfkKzuLIZ6eP0ksxE0zgJIeqz4mdPi/TZxvHAVossxAg174iLRh1E9d4wPmxAQg==
+remix-flat-routes@0.5.10:
+  version "0.5.10"
+  resolved "https://registry.yarnpkg.com/remix-flat-routes/-/remix-flat-routes-0.5.10.tgz#ec0741ffd92460f17dc46718101ac187e81aaa6b"
+  integrity sha512-9pn3vx8q66wmWmaEEUDqFKobKVD6EtC9K/gsZsPAUfRVyzWfcS6GkPq9IKZm/nJ+7WuTpiDOVxvx2j22kbReXw==
   dependencies:
+    "@remix-run/v1-route-convention" "^0.1.2"
     minimatch "^5.1.0"
 
 remix-island@0.1.2:
