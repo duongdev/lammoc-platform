@@ -8242,10 +8242,10 @@ netmask@^2.0.2:
   resolved "https://registry.yarnpkg.com/netmask/-/netmask-2.0.2.tgz#8b01a07644065d536383835823bc52004ebac5e7"
   integrity sha512-dBpDMdxv9Irdq66304OLfEmQ9tbNRFnFTuZiLo+bD+r332bBmMJ8GBLXklIXXgxd3+v9+KUnZaUR5PJMa75Gsg==
 
-next-barcode@1.4.0:
-  version "1.4.0"
-  resolved "https://registry.yarnpkg.com/next-barcode/-/next-barcode-1.4.0.tgz#e62dcc31fae05585bad1d9e52af94d674e3c48a2"
-  integrity sha512-Sfbs/ToYPkAUQ4AgMEpRUZhCM0BXXMUF49JhquRir8YyC7KDfTGEpbF3Vu5v3JJx8aManG2k9LOVhMU9kbg11w==
+next-barcode@1.5.0:
+  version "1.5.0"
+  resolved "https://registry.yarnpkg.com/next-barcode/-/next-barcode-1.5.0.tgz#f527a56ac2de1e83ddc32772b1418c37f29fd1f9"
+  integrity sha512-Aj6ID/BRXBlL7sQgJbMcYQZx+sCxQLYx7+CXvh9wlnmtBP6ajVPmbXHs3Y+99JH9gfB+TH7PGadIzRR6YzQiNw==
   dependencies:
     jsbarcode "^3.11.3"
 
