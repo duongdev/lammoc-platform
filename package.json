@@ -81,7 +81,7 @@
     "eslint": "8.45.0",
     "eslint-config-prettier": "8.8.0",
     "eslint-plugin-import": "2.27.5",
-    "eslint-plugin-react": "7.32.2",
+    "eslint-plugin-react": "7.33.0",
     "mock-aws-s3": "4.0.2",
     "nock": "13.3.2",
     "nodemon": "3.0.1",
