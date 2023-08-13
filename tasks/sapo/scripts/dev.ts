@@ -1,15 +1,14 @@
 import { SapoLoyalty } from '../services/sapo-loyalty.service'
+import { Sapo } from '../services/sapo.service'
 
 async function main() {
-  const sapo = new SapoLoyalty('store-lam-moc')
+  const sapo = new Sapo('thichtulam')
 
-  await sapo.fixUnintendedLoyaltyPoints()
-  // await sapo.adjustLoyaltyPoint('8316', {
-  //   adjustPoint: 100,
-  //   currentPoint: 2,
-  //   customerName: '!!! Dương Test !!!',
-  //   phone: '0979477635',
-  // })
+  const importPrice = await sapo.getVariantImportPrice({
+    variantId: '236951019'
+  })
+
+  console.log(importPrice)
 }
 
 main()
