@@ -841,7 +841,7 @@ export class Sapo {
   }
 
   /**
-   * (#6) Calculates the prices and sync one product variant price to Sapo
+   * Calculates the prices and sync one product variant price to Sapo (#6)
    */
   async syncOneProductVariantPrice({ variantId }: { variantId: string }) {
     const log = this.log.extend(this.syncOneProductVariantPrice.name)
@@ -944,6 +944,11 @@ export class Sapo {
     return variant
   }
 
+  /**
+   * Get the import price of a variant.
+   * If the variant has no import price, calculate it from the inventories.
+   * Otherwise, return the import price from Sapo API.
+   */
   async getVariantImportPrice({
     variantId,
     variant: $variant,
@@ -953,6 +958,7 @@ export class Sapo {
   }) {
     const log = this.log.extend(this.getVariantImportPrice.name)
 
+    // If variant is passed directly, use it. Otherwise, fetch from Sapo.
     let variant: SapoVariantItem | null | undefined = $variant
 
     if (!variant && variantId) {
@@ -973,6 +979,8 @@ export class Sapo {
       return importPriceItem
     }
 
+    // If it has no import price or import price equals to 0,
+    // calculate it from inventories.
     // importPrice is the average of positive inventories.mac
     const importPrice =
       variant.inventories

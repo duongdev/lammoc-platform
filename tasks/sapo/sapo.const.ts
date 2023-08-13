@@ -18,6 +18,7 @@ export const VAT_IDS = {
   },
 }
 
+/** Use to determine whether using the fLow or fHigh */
 export const BASE_VARIANT_PRICE = 2_000_000
 export const VARIANT_PRICE = {
   retail: {
@@ -64,7 +65,8 @@ export const VARIANT_PRICE = {
   },
 }
 
+/** Price list ID of the variant import price */
 export const IMPORT_PRICE: Record<SapoTenant, number> = {
   'store-lam-moc': 705927,
-  thichtulam: 1994793,
+  thichtulam: 919811,
 }
