@@ -15,6 +15,7 @@ import {
   SAPO_WEB_GPT_PROD_VENDOR_WHITELIST,
 } from '../sapo.config'
 import type { SapoTenant, SapoWebProduct } from '../sapo.type'
+import { wait } from '~/utils/common'
 
 export class SapoWeb {
   private sapoWeb: Got
@@ -39,6 +40,9 @@ export class SapoWeb {
   async generateProductDescriptionByVendors() {
     const vendors = SAPO_WEB_GPT_PROD_VENDOR_WHITELIST
     const THREADS = +(process.env.THREADS || '1')
+    const SLEEP_BETWEEN_PRODUCTS = +(
+      process.env.SAPO_GPT_DESCRIPTION_SLEEP_BETWEEN_PRODUCTS_MS || '0'
+    )
     const processors = Array.from(
       { length: THREADS },
       (_, i) =>
@@ -119,6 +123,11 @@ export class SapoWeb {
                 { flag: 'a' },
               )
             }
+
+            if (SLEEP_BETWEEN_PRODUCTS > 0) {
+              await wait(SLEEP_BETWEEN_PRODUCTS)
+            }
+
             processor.isWorking = false
           }
         }, 1000)
@@ -166,6 +175,7 @@ export class SapoWeb {
       for await (const product of paginate) {
         // log(`Processing product: [${product.id}] ${product.name}`)
 
+        // Skip if product already have SEO tag
         if (
           product.tags.split(', ').includes('SEO') &&
           !product.content.includes(`</ul>
@@ -192,6 +202,9 @@ export class SapoWeb {
     finished = true
   }
 
+  /**
+   * Auto generate product description for products then tag them with SEO tag
+   */
   async ensureSEOProductDescription(product: SapoWebProduct) {
     const log = this.log.extend(this.ensureSEOProductDescription.name)
     log('updateProductContent')
