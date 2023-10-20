@@ -75,7 +75,7 @@
     "@types/react": "18.2.31",
     "@types/react-dom": "18.2.14",
     "@types/tough-cookie": "4.0.4",
-    "aws-sdk": "2.1477.0",
+    "aws-sdk": "2.1478.0",
     "cross-env": "7.0.3",
     "dotenv": "16.3.1",
     "eslint": "8.51.0",
