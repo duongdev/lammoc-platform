@@ -9138,10 +9138,10 @@ open@^8.4.0:
     is-docker "^2.1.1"
     is-wsl "^2.2.0"
 
-openai@4.17.0:
-  version "4.17.0"
-  resolved "https://registry.yarnpkg.com/openai/-/openai-4.17.0.tgz#92e2397032e95c39bb1f25caece44060eb5218f3"
-  integrity sha512-fJUdfOzKE49L2oitQ+L8oCYcTDI2oLOYmQvnPjklFrmH7M+8w65/8Ag9120ky1A3Xr3lCivALs2oBmNaZIvTgg==
+openai@4.17.1:
+  version "4.17.1"
+  resolved "https://registry.yarnpkg.com/openai/-/openai-4.17.1.tgz#160fa9f0cdc778eda2c0a28bc72e64aba8ef462b"
+  integrity sha512-8IrjeT9B63/6rKA2NI/0LFnjRA37G+NvNwbRvcEH9+AjAahReSMtT8xs4J+ClhzdUL9d91GJymgbo9RJt+HQuQ==
   dependencies:
     "@types/node" "^18.11.18"
     "@types/node-fetch" "^2.6.4"
