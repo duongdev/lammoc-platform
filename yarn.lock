@@ -3301,10 +3301,10 @@
     "@types/scheduler" "*"
     csstype "^3.0.2"
 
-"@types/react@18.2.49":
-  version "18.2.49"
-  resolved "https://registry.yarnpkg.com/@types/react/-/react-18.2.49.tgz#04c766b253b8eaa303d5a61d870de4c9587e1b70"
-  integrity sha512-nEJonYlS7+LUVdqRBHldXLRa7ZDeOm/rJbJwGbjmn2hqhmdO4C6vSgvhhNv2qBDhGSv2oLuUA+f5JtyUJDY6bA==
+"@types/react@18.2.50":
+  version "18.2.50"
+  resolved "https://registry.yarnpkg.com/@types/react/-/react-18.2.50.tgz#f5cf38ed7d6f5b37668e313fea85db51f6b36380"
+  integrity sha512-y0XIDJkqp9HynS1VBktZG9mUziHTK5WZTAFDP/UfzSq+poV1drUKsr4VkjMyHTbqMz26BwgLZVYdx/EgPm7EkQ==
   dependencies:
     "@types/prop-types" "*"
     "@types/scheduler" "*"

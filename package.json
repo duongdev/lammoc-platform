@@ -72,7 +72,7 @@
     "@types/jsonwebtoken": "9.0.5",
     "@types/lodash": "4.14.202",
     "@types/numeral": "2.0.5",
-    "@types/react": "18.2.49",
+    "@types/react": "18.2.50",
     "@types/react-dom": "18.2.18",
     "@types/tough-cookie": "4.0.5",
     "aws-sdk": "2.1548.0",
