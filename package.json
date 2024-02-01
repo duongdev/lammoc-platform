@@ -85,7 +85,7 @@
     "mock-aws-s3": "4.0.2",
     "nock": "13.5.1",
     "nodemon": "3.0.3",
-    "npm-run-all2": "6.1.1",
+    "npm-run-all2": "6.1.2",
     "prisma": "5.9.0",
     "remix-flat-routes": "0.6.4",
     "ts-node-dev": "2.0.0",
