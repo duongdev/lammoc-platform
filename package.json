@@ -77,7 +77,7 @@
     "@types/tough-cookie": "4.0.5",
     "aws-sdk": "2.1555.0",
     "cross-env": "7.0.3",
-    "dotenv": "16.4.2",
+    "dotenv": "16.4.3",
     "eslint": "8.56.0",
     "eslint-config-prettier": "9.1.0",
     "eslint-plugin-import": "2.29.1",
