@@ -8698,10 +8698,10 @@ next-barcode@1.5.0:
   dependencies:
     jsbarcode "^3.11.3"
 
-nock@13.5.2:
-  version "13.5.2"
-  resolved "https://registry.yarnpkg.com/nock/-/nock-13.5.2.tgz#129e79d4620d7ad90cab7e536f1b677801fc82dc"
-  integrity sha512-XVklYp4w1GclTXzSipjVX1TBxr+37yu5DUZ1Q8KzwZ0GKyN86ty2C9ndyFdr+2FpqbevU/7GDF0VtbOetSM1mw==
+nock@13.5.3:
+  version "13.5.3"
+  resolved "https://registry.yarnpkg.com/nock/-/nock-13.5.3.tgz#9858adf5b840696a410baf98bda720d5fad4f075"
+  integrity sha512-2NlGmHIK2rTeyy7UaY1ZNg0YZfEJMxghXgZi0b4DBsUyoDNTTxZeCSG1nmirAWF44RkkoV8NnegLVQijgVapNQ==
   dependencies:
     debug "^4.1.0"
     json-stringify-safe "^5.0.1"
