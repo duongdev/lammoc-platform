@@ -10240,10 +10240,10 @@ remix-flat-routes@0.6.4:
     fs-extra "^11.1.1"
     minimatch "^5.1.0"
 
-remix-island@0.1.2:
-  version "0.1.2"
-  resolved "https://registry.yarnpkg.com/remix-island/-/remix-island-0.1.2.tgz#fa7b36044bf8ebd10e812b1890d2787a8591d1c8"
-  integrity sha512-1vXF56y7ZKb8caUduCKdkbxObAxZnTO+arQ94QlwKK6a7wVozGCfiOOk3lr919rm7cy54eeqOVI0hud3cfHlLg==
+remix-island@0.2.0:
+  version "0.2.0"
+  resolved "https://registry.yarnpkg.com/remix-island/-/remix-island-0.2.0.tgz#5d38806afe41f26ab4e05f9feefd07a559de1e35"
+  integrity sha512-NujWtmulgupxNOMiWKAj8lg56eYsy09aV/2pML8rov8N8LmY1UnSml4XYad+KHLy/pgZ1D9UxAmjI6GBJydTUg==
 
 require-directory@^2.1.1:
   version "2.1.1"
