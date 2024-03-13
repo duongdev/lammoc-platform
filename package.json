@@ -73,7 +73,7 @@
     "@types/lodash": "4.17.0",
     "@types/numeral": "2.0.5",
     "@types/react": "18.2.65",
-    "@types/react-dom": "18.2.21",
+    "@types/react-dom": "18.2.22",
     "@types/tough-cookie": "4.0.5",
     "aws-sdk": "2.1576.0",
     "cross-env": "7.0.3",
