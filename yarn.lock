@@ -3018,17 +3018,17 @@
   dependencies:
     defer-to-connect "^2.0.1"
 
-"@tabler/icons-react@3.0.3":
-  version "3.0.3"
-  resolved "https://registry.yarnpkg.com/@tabler/icons-react/-/icons-react-3.0.3.tgz#dab4a7b14329ea4ccdc9129f5fcf890a723b10b8"
-  integrity sha512-3YUafkLCmdJ0Nr/2vWO8++nWhLe1OeAka0lGr9rvZIoaUMwPyNGQJFPe/zYUyICOANqMnKpovUSeHNEyizk6Mw==
+"@tabler/icons-react@3.1.0":
+  version "3.1.0"
+  resolved "https://registry.yarnpkg.com/@tabler/icons-react/-/icons-react-3.1.0.tgz#5202b5cc7c6e57dde75c41981b618dcfebd69b50"
+  integrity sha512-k/WTlax2vbj/LpxvaJ+BmaLAAhVUgyLj4Ftgaczz66tUSNzqrAZXCFdOU7cRMYPNVBqyqE2IdQd2rzzhDEJvkw==
   dependencies:
-    "@tabler/icons" "3.0.3"
+    "@tabler/icons" "3.1.0"
 
-"@tabler/icons@3.0.3":
-  version "3.0.3"
-  resolved "https://registry.yarnpkg.com/@tabler/icons/-/icons-3.0.3.tgz#46124f4e5d0f0cb0937808993cf3ef341a3461a9"
-  integrity sha512-jcumpc/BqyAitWVzgZ0GgDmA915h4RbWIALcSEWbzdxEZRSMmuJdUPEoPZayUd57x374viFSCkwk0CMuMQFeJw==
+"@tabler/icons@3.1.0":
+  version "3.1.0"
+  resolved "https://registry.yarnpkg.com/@tabler/icons/-/icons-3.1.0.tgz#d69d184eae572db6adb452b511562442133cc26d"
+  integrity sha512-CpZGyS1IVJKFcv88yZ2sYZIpWWhQ6oy76BQKQ5SF0fGgOqgyqKdBGG/YGyyMW632on37MX7VqQIMTzN/uQqmFg==
 
 "@testing-library/dom@^8.11.1":
   version "8.13.0"
