@@ -4059,10 +4059,10 @@ available-typed-arrays@^1.0.6, available-typed-arrays@^1.0.7:
   dependencies:
     possible-typed-array-names "^1.0.0"
 
-aws-sdk@2.1589.0:
-  version "2.1589.0"
-  resolved "https://registry.yarnpkg.com/aws-sdk/-/aws-sdk-2.1589.0.tgz#b000aff456e2046c45c0d6a5d1e1281c14a7a7fe"
-  integrity sha512-Tt3UHH6hoUEAjbCscqvfEAoq9VSTN5iSQO9XSisiiH/QJo8sf+iLCYmfJHM4tVkd92bQH61/xxj9t2Mazwc/WQ==
+aws-sdk@2.1592.0:
+  version "2.1592.0"
+  resolved "https://registry.yarnpkg.com/aws-sdk/-/aws-sdk-2.1592.0.tgz#082703581bed09e2fe07cc71595a252e6170e10b"
+  integrity sha512-iwmS46jOEHMNodfrpNBJ5eHwjKAY05t/xYV2cp+KyzMX2yGgt2/EtWWnlcoMGBKR31qKTsjMj5ZPouC9/VeDOA==
   dependencies:
     buffer "4.9.2"
     events "1.1.1"
