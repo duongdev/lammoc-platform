@@ -50,7 +50,7 @@
     "lodash": "4.17.21",
     "next-barcode": "1.5.0",
     "numeral": "2.0.6",
-    "openai": "4.34.0",
+    "openai": "4.35.0",
     "parse-json": "8.1.0",
     "puppeteer": "22.6.5",
     "query-string": "9.0.0",
