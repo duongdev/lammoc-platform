@@ -12272,10 +12272,10 @@ zod@3.22.4:
   resolved "https://registry.yarnpkg.com/zod/-/zod-3.22.4.tgz#f31c3a9386f61b1f228af56faa9255e845cf3fff"
   integrity sha512-iC+8Io04lddc+mVqQ9AZ7OQ2MrUKGN+oIQyq1vemgt46jwCwLfhq7/pwnBnNXXXZb8VTVLKwp9EDkx+ryxIWmg==
 
-zod@3.23.1:
-  version "3.23.1"
-  resolved "https://registry.yarnpkg.com/zod/-/zod-3.23.1.tgz#c1b59a0b9b28dc7954277e337a1eebcb32dc2386"
-  integrity sha512-fwxuO7wwRmBv1+OvqlZF0t73s3xhR0Cr7mRIFSca6Z/ZNsrzvCPl4Az4KJqi1mgkXdODuan91Cyyg8it0my1ag==
+zod@3.23.3:
+  version "3.23.3"
+  resolved "https://registry.yarnpkg.com/zod/-/zod-3.23.3.tgz#eeb068f83acb55310174673dee631dfa0be5510d"
+  integrity sha512-tPvq1B/2Yu/dh2uAIH2/BhUlUeLIUvAjr6dpL/75I0pCYefHgjhXk1o1Kob3kTU8C7yU1j396jFHlsVWFi9ogg==
 
 zwitch@^2.0.0:
   version "2.0.2"
