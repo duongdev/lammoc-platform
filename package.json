@@ -61,7 +61,7 @@
     "superjson": "2.2.1",
     "tough-cookie": "4.1.4",
     "ts-node": "10.9.2",
-    "zod": "3.23.7"
+    "zod": "3.23.8"
   },
   "devDependencies": {
     "@remix-run/dev": "1.19.3",
