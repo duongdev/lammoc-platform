@@ -87,7 +87,7 @@
     "nodemon": "3.1.0",
     "npm-run-all2": "6.1.2",
     "prisma": "5.13.0",
-    "remix-flat-routes": "0.6.4",
+    "remix-flat-routes": "0.6.5",
     "ts-node-dev": "2.0.0",
     "tsconfig-paths": "4.2.0",
     "typescript": "5.4.5"
