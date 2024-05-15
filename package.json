@@ -41,7 +41,7 @@
     "debug": "4.3.4",
     "firebase": "10.12.0",
     "firebase-admin": "12.1.0",
-    "fuzzysort": "2.0.4",
+    "fuzzysort": "3.0.0",
     "got": "13.0.0",
     "got-cjs": "12.5.4",
     "isbot": "5.1.6",
