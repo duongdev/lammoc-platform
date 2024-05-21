@@ -40,7 +40,7 @@
     "dayjs": "1.11.11",
     "debug": "4.3.4",
     "firebase": "10.12.1",
-    "firebase-admin": "12.1.0",
+    "firebase-admin": "12.1.1",
     "fuzzysort": "3.0.1",
     "got": "13.0.0",
     "got-cjs": "12.5.4",
