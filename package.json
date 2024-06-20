@@ -90,7 +90,7 @@
     "remix-flat-routes": "0.6.5",
     "ts-node-dev": "2.0.0",
     "tsconfig-paths": "4.2.0",
-    "typescript": "5.4.5"
+    "typescript": "5.5.2"
   },
   "engines": {
     "node": "16.x.x || 18.x.x || 20.x"
