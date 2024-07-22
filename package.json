@@ -53,7 +53,7 @@
     "openai": "4.52.7",
     "parse-json": "8.1.0",
     "puppeteer": "22.13.1",
-    "query-string": "9.0.0",
+    "query-string": "9.1.0",
     "react": "18.3.1",
     "react-dom": "18.3.1",
     "react-hook-form": "7.52.1",
