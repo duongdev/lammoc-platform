@@ -39,7 +39,7 @@
     "date-fns": "3.6.0",
     "dayjs": "1.11.12",
     "debug": "4.3.6",
-    "firebase": "10.12.5",
+    "firebase": "10.13.0",
     "firebase-admin": "12.3.1",
     "fuzzysort": "3.0.2",
     "got": "13.0.0",
