@@ -37,7 +37,7 @@
     "bluebird": "3.7.2",
     "constate": "3.3.2",
     "date-fns": "3.6.0",
-    "dayjs": "1.11.12",
+    "dayjs": "1.11.13",
     "debug": "4.3.6",
     "firebase": "10.13.0",
     "firebase-admin": "12.3.1",
