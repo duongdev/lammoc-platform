@@ -52,7 +52,7 @@
     "numeral": "2.0.6",
     "openai": "4.61.1",
     "parse-json": "8.1.0",
-    "puppeteer": "23.3.0",
+    "puppeteer": "23.3.1",
     "query-string": "9.1.0",
     "react": "18.3.1",
     "react-dom": "18.3.1",
