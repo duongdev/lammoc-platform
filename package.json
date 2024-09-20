@@ -78,7 +78,7 @@
     "aws-sdk": "2.1691.0",
     "cross-env": "7.0.3",
     "dotenv": "16.4.5",
-    "eslint": "9.10.0",
+    "eslint": "9.11.0",
     "eslint-config-prettier": "9.1.0",
     "eslint-plugin-import": "2.30.0",
     "eslint-plugin-react": "7.36.1",
