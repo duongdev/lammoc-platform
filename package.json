@@ -16,7 +16,7 @@
     "openai:gen-prod-desc": "DEBUG=openai:*,sapo-web:* ts-node -r dotenv/config -r tsconfig-paths/register --transpileOnly ./tasks/openai/run.ts"
   },
   "dependencies": {
-    "@emotion/react": "11.13.5",
+    "@emotion/react": "11.14.0",
     "@emotion/server": "11.11.0",
     "@hookform/resolvers": "3.9.1",
     "@mantine/carousel": "6.0.22",
