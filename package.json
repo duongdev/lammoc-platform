@@ -27,7 +27,7 @@
     "@mantine/nprogress": "6.0.22",
     "@mantine/remix": "6.0.22",
     "@mantine/ssr": "6.0.22",
-    "@prisma/client": "6.0.1",
+    "@prisma/client": "6.1.0",
     "@remix-run/node": "1.19.3",
     "@remix-run/react": "1.19.3",
     "@remix-run/serve": "1.19.3",
