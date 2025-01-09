@@ -59,7 +59,7 @@
     "react-hook-form": "7.54.2",
     "remix-island": "0.2.0",
     "superjson": "2.2.2",
-    "tough-cookie": "5.0.0",
+    "tough-cookie": "5.1.0",
     "ts-node": "10.9.2",
     "zod": "3.24.1"
   },
