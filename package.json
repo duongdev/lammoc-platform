@@ -45,7 +45,7 @@
     "got": "13.0.0",
     "got-cjs": "12.5.4",
     "isbot": "5.1.21",
-    "jsdom": "25.0.1",
+    "jsdom": "26.0.0",
     "jsonwebtoken": "9.0.2",
     "lodash": "4.17.21",
     "next-barcode": "1.5.0",
