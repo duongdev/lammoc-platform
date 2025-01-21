@@ -10844,10 +10844,10 @@ remark-rehype@^9.0.0:
     mdast-util-to-hast "^11.0.0"
     unified "^10.0.0"
 
-remix-flat-routes@0.7.0:
-  version "0.7.0"
-  resolved "https://registry.yarnpkg.com/remix-flat-routes/-/remix-flat-routes-0.7.0.tgz#3b4e0c78c5b567dfb7c65dd2dfa5be39d9eeb040"
-  integrity sha512-hBIvnOpTzAqQLGHtCalLCwDI+tdSKstQkhAgHdfH8zl9NBK6/b1pVfE/dszuuOHCZ0RaqCSV79eM9UkStXTm8w==
+remix-flat-routes@0.7.1:
+  version "0.7.1"
+  resolved "https://registry.yarnpkg.com/remix-flat-routes/-/remix-flat-routes-0.7.1.tgz#7a3c41d428d3b2627c3bc37971b63403433591cd"
+  integrity sha512-LVIvHYUvil9Gu7hqpdsa57EUWpjvkGORUiQ8KO/22TZmkVkDpRR0jnnVTyBgaS8/LqVxarD4VUiiFwWXq87J8g==
   dependencies:
     fs-extra "^11.2.0"
     minimatch "^10.0.1"
