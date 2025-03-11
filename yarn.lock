@@ -10009,10 +10009,10 @@ open@^8.4.0:
     is-docker "^2.1.1"
     is-wsl "^2.2.0"
 
-openai@4.87.1:
-  version "4.87.1"
-  resolved "https://registry.yarnpkg.com/openai/-/openai-4.87.1.tgz#3eed04ec063c76bda3ddacb52ea27d481b7b6016"
-  integrity sha512-mwZ4N4KKGUE5JSTR4IdQZzuxFyStJFqSR62JuWob7ka286tbFacYkOf+Ypk/2IPAUCmhzft5C3UqzcFYaliVMA==
+openai@4.87.3:
+  version "4.87.3"
+  resolved "https://registry.yarnpkg.com/openai/-/openai-4.87.3.tgz#82679f09d91f0e8e9da94b9ee0369c44733577da"
+  integrity sha512-d2D54fzMuBYTxMW8wcNmhT1rYKcTfMJ8t+4KjH2KtvYenygITiGBgHoIrzHwnDQWW+C5oCA+ikIR2jgPCFqcKQ==
   dependencies:
     "@types/node" "^18.11.18"
     "@types/node-fetch" "^2.6.4"
