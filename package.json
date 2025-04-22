@@ -56,7 +56,7 @@
     "query-string": "9.1.1",
     "react": "19.1.0",
     "react-dom": "19.1.0",
-    "react-hook-form": "7.56.0",
+    "react-hook-form": "7.56.1",
     "remix-island": "0.2.0",
     "superjson": "2.2.2",
     "tough-cookie": "5.1.2",
