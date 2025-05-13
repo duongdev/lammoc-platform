@@ -38,7 +38,7 @@
     "constate": "3.3.3",
     "date-fns": "4.1.0",
     "dayjs": "1.11.13",
-    "debug": "4.4.0",
+    "debug": "4.4.1",
     "firebase": "11.7.1",
     "firebase-admin": "13.4.0",
     "fuzzysort": "3.1.0",
