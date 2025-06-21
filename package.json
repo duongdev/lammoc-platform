@@ -80,7 +80,7 @@
     "dotenv": "16.5.0",
     "eslint": "9.29.0",
     "eslint-config-prettier": "10.1.5",
-    "eslint-plugin-import": "2.31.0",
+    "eslint-plugin-import": "2.32.0",
     "eslint-plugin-react": "7.37.5",
     "mock-aws-s3": "4.0.2",
     "nock": "14.0.5",
