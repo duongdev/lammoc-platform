@@ -9885,10 +9885,10 @@ open@^8.4.0:
     is-docker "^2.1.1"
     is-wsl "^2.2.0"
 
-openai@5.8.3:
-  version "5.8.3"
-  resolved "https://registry.yarnpkg.com/openai/-/openai-5.8.3.tgz#b2872539e416e80fb4f9015ed9f6672c65d2cea1"
-  integrity sha512-IdotKmquCnpouTRvF9xRXVhMx6K5Sc8zkD6Usf+so+NTQ+qiJ8bLSCd7LBb8b/Rof7uYltlSxJhNp+spphKI4Q==
+openai@5.8.4:
+  version "5.8.4"
+  resolved "https://registry.yarnpkg.com/openai/-/openai-5.8.4.tgz#d758dee48b43a24b0f672309ccfb9e8dd8de405d"
+  integrity sha512-aVzelCIODrYQ1pW4Kf4FfaVyIBSi/6jNszQ4KuolwmEa0UNgMicOfczSPWIT6LsY58R6fvPWknBUGSDxjzkrLQ==
 
 optionator@^0.9.3:
   version "0.9.3"
