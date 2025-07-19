@@ -83,7 +83,7 @@
     "eslint-plugin-import": "2.32.0",
     "eslint-plugin-react": "7.37.5",
     "mock-aws-s3": "4.0.2",
-    "nock": "14.0.5",
+    "nock": "14.0.6",
     "nodemon": "3.1.10",
     "npm-run-all2": "8.0.4",
     "prisma": "6.12.0",
