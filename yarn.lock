@@ -10111,10 +10111,10 @@ open@^8.4.0:
     is-docker "^2.1.1"
     is-wsl "^2.2.0"
 
-openai@6.7.0:
-  version "6.7.0"
-  resolved "https://registry.yarnpkg.com/openai/-/openai-6.7.0.tgz#86c3add2a14fba23307ed4c5b9ba7f6cb48c0262"
-  integrity sha512-mgSQXa3O/UXTbA8qFzoa7aydbXBJR5dbLQXCRapAOtoNT+v69sLdKMZzgiakpqhclRnhPggPAXoniVGn2kMY2A==
+openai@6.8.0:
+  version "6.8.0"
+  resolved "https://registry.yarnpkg.com/openai/-/openai-6.8.0.tgz#94bf60ec638b87b18fd4b8e30a522f916c406a4e"
+  integrity sha512-GQUpzb9FoNkh1wqJuDIQ8e/Sq8dW+T3GakG6wJTXBE8Lufx1GaUcgZd087vhm8f/MiOzsTEkfRamYxzJ/jOoiw==
 
 optionator@^0.9.3:
   version "0.9.3"
