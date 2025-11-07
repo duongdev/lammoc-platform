@@ -3215,13 +3215,6 @@
   dependencies:
     defer-to-connect "^2.0.0"
 
-"@szmarczak/http-timer@^5.0.1":
-  version "5.0.1"
-  resolved "https://registry.yarnpkg.com/@szmarczak/http-timer/-/http-timer-5.0.1.tgz#c7c1bf1141cdd4751b0399c8fc7b8b664cd5be3a"
-  integrity sha512-+PmQX0PiAYPMeVYe237LJAYvOMYW1j2rH5YROyS3b4CTVJum34HfRvKvAzozHAQG0TnHNdUfY9nCeUyRAs//cw==
-  dependencies:
-    defer-to-connect "^2.0.1"
-
 "@tabler/icons-react@3.35.0":
   version "3.35.0"
   resolved "https://registry.yarnpkg.com/@tabler/icons-react/-/icons-react-3.35.0.tgz#27f295f36b42f8dc2e7841dd651c8905d0097818"
@@ -5284,7 +5277,7 @@ defaults@^1.0.3:
   dependencies:
     clone "^1.0.2"
 
-defer-to-connect@^2.0.0, defer-to-connect@^2.0.1:
+defer-to-connect@^2.0.0:
   version "2.0.1"
   resolved "https://registry.yarnpkg.com/defer-to-connect/-/defer-to-connect-2.0.1.tgz#8016bdb4143e4632b77a3449c6236277de520587"
   integrity sha512-4tvttepXG1VaYGrRibk5EwJd1t4udunSOVMdLSAL6mId1ix438oPwPZMALY41FCijukO1L0twNcGsdzS7dHgDg==
@@ -7483,13 +7476,12 @@ got-cjs@12.5.4:
     p-cancelable "2.1.1"
     responselike "2.0.1"
 
-got@14.6.2:
-  version "14.6.2"
-  resolved "https://registry.yarnpkg.com/got/-/got-14.6.2.tgz#1b1deb4d9c3e1e4a4d8db85d3796c21f41173c32"
-  integrity sha512-bnhvxegqufyxHAmzwCZSscjGLVpw6/NzTXOk2tQVu/b9Q9FeMAgLabYulXEQRwP04UYltnkcZwvBq14fsdqvyw==
+got@14.6.3:
+  version "14.6.3"
+  resolved "https://registry.yarnpkg.com/got/-/got-14.6.3.tgz#f50d61c77268d394b59b8e93364de6425190e812"
+  integrity sha512-u1nNamHo7oAkyTkMD7g0F0pIvW6vNAF9CCmtkh8ZQrlToKJZ5wEPQHFqt6RzaZC0rJMzH+rnjIElyTsIkT0wQw==
   dependencies:
     "@sindresorhus/is" "^7.0.1"
-    "@szmarczak/http-timer" "^5.0.1"
     byte-counter "^0.1.0"
     cacheable-lookup "^7.0.0"
     cacheable-request "^13.0.12"
