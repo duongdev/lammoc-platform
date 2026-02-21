@@ -84,7 +84,7 @@
     "eslint-plugin-react": "7.37.5",
     "mock-aws-s3": "4.0.2",
     "nock": "14.0.11",
-    "nodemon": "3.1.13",
+    "nodemon": "3.1.14",
     "npm-run-all2": "8.0.4",
     "prisma": "7.4.1",
     "remix-flat-routes": "0.8.5",
